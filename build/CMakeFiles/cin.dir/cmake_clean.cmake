@@ -1,0 +1,27 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/cin.dir/common/FastNoiseLite.cpp.o"
+  "CMakeFiles/cin.dir/common/FastNoiseLite.cpp.o.d"
+  "CMakeFiles/cin.dir/common/Model.cpp.o"
+  "CMakeFiles/cin.dir/common/Model.cpp.o.d"
+  "CMakeFiles/cin.dir/common/Shader.cpp.o"
+  "CMakeFiles/cin.dir/common/Shader.cpp.o.d"
+  "CMakeFiles/cin.dir/common/Texture.cpp.o"
+  "CMakeFiles/cin.dir/common/Texture.cpp.o.d"
+  "CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.o"
+  "CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.o.d"
+  "CMakeFiles/cin.dir/src/Camera.cpp.o"
+  "CMakeFiles/cin.dir/src/Camera.cpp.o.d"
+  "CMakeFiles/cin.dir/src/Scene.cpp.o"
+  "CMakeFiles/cin.dir/src/Scene.cpp.o.d"
+  "CMakeFiles/cin.dir/src/Terrain.cpp.o"
+  "CMakeFiles/cin.dir/src/Terrain.cpp.o.d"
+  "CMakeFiles/cin.dir/src/main.cpp.o"
+  "CMakeFiles/cin.dir/src/main.cpp.o.d"
+  "cin"
+  "cin.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang C CXX)
+  include(CMakeFiles/cin.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()
