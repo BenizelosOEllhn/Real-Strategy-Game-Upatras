@@ -20,6 +20,7 @@ find_package(OpenGL REQUIRED)
 # ---------------------------------------------------------
 set(EXT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(GAME_DIR "${SRC_DIR}/game")
 
 include_directories(
     "${EXT_DIR}/glm-0.9.7.1"
@@ -28,6 +29,7 @@ include_directories(
     "${EXT_DIR}/tinyxml2"
     "${CMAKE_CURRENT_SOURCE_DIR}/common"
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/game"
 )
 
 # ---------------------------------------------------------
@@ -55,7 +57,20 @@ endif()
 add_definitions(-DGLEW_STATIC)
 
 # ---------------------------------------------------------
-# 4. Executable
+# 4. Entity system source files
+# ---------------------------------------------------------
+set(GAME_SOURCES
+    ${GAME_DIR}/GameEntity.cpp
+    ${GAME_DIR}/TownCenter.cpp
+    ${GAME_DIR}/Barracks.cpp
+    ${GAME_DIR}/Worker.cpp
+    ${GAME_DIR}/Archer.cpp
+    ${GAME_DIR}/Knight.cpp
+    ${GAME_DIR}/Unit.cpp
+)
+
+# ---------------------------------------------------------
+# 5. Executable
 # ---------------------------------------------------------
 add_executable(cin  
     ${SRC_DIR}/main.cpp
@@ -63,11 +78,12 @@ add_executable(cin
     ${SRC_DIR}/Camera.cpp
     ${SRC_DIR}/Scene.cpp
 
+    ${GAME_SOURCES}
+
     common/Shader.cpp
     common/Texture.cpp
     common/Model.cpp
 
-    # ---------- NEW: Noise System ----------
     common/FastNoiseLite.cpp
     common/FastNoiseLite.h
     common/Noise.h
@@ -76,7 +92,7 @@ add_executable(cin
 )
 
 # ---------------------------------------------------------
-# 5. Includes
+# 6. Includes
 # ---------------------------------------------------------
 target_include_directories(cin PUBLIC
     ${GLEW_INCLUDE_DIR}
@@ -86,10 +102,11 @@ target_include_directories(cin PUBLIC
     "${EXT_DIR}/tinyobjloader/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/common"
     ${SRC_DIR}
+    ${GAME_DIR}
 )
 
 # ---------------------------------------------------------
-# 6. Linking
+# 7. Linking
 # ---------------------------------------------------------
 target_link_libraries(cin
     OpenGL::GL
@@ -97,7 +114,7 @@ target_link_libraries(cin
 )
 
 # ---------------------------------------------------------
-# 7. Asset Path Definition
+# 8. Asset Path Definition
 # ---------------------------------------------------------
 target_compile_definitions(cin PRIVATE 
     ASSET_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/"

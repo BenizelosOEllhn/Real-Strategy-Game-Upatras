@@ -128,10 +128,108 @@ CMakeFiles/cin.dir/src/Scene.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cin.dir/src/Scene.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/konstantinoskanellopoulos/Desktop/rts/src/Scene.cpp -o CMakeFiles/cin.dir/src/Scene.cpp.s
 
+CMakeFiles/cin.dir/src/game/GameEntity.cpp.o: CMakeFiles/cin.dir/flags.make
+CMakeFiles/cin.dir/src/game/GameEntity.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/GameEntity.cpp
+CMakeFiles/cin.dir/src/game/GameEntity.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/cin.dir/src/game/GameEntity.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/GameEntity.cpp.o -MF CMakeFiles/cin.dir/src/game/GameEntity.cpp.o.d -o CMakeFiles/cin.dir/src/game/GameEntity.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/GameEntity.cpp
+
+CMakeFiles/cin.dir/src/game/GameEntity.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cin.dir/src/game/GameEntity.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/konstantinoskanellopoulos/Desktop/rts/src/game/GameEntity.cpp > CMakeFiles/cin.dir/src/game/GameEntity.cpp.i
+
+CMakeFiles/cin.dir/src/game/GameEntity.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cin.dir/src/game/GameEntity.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/konstantinoskanellopoulos/Desktop/rts/src/game/GameEntity.cpp -o CMakeFiles/cin.dir/src/game/GameEntity.cpp.s
+
+CMakeFiles/cin.dir/src/game/TownCenter.cpp.o: CMakeFiles/cin.dir/flags.make
+CMakeFiles/cin.dir/src/game/TownCenter.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/TownCenter.cpp
+CMakeFiles/cin.dir/src/game/TownCenter.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/cin.dir/src/game/TownCenter.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/TownCenter.cpp.o -MF CMakeFiles/cin.dir/src/game/TownCenter.cpp.o.d -o CMakeFiles/cin.dir/src/game/TownCenter.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/TownCenter.cpp
+
+CMakeFiles/cin.dir/src/game/TownCenter.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cin.dir/src/game/TownCenter.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/konstantinoskanellopoulos/Desktop/rts/src/game/TownCenter.cpp > CMakeFiles/cin.dir/src/game/TownCenter.cpp.i
+
+CMakeFiles/cin.dir/src/game/TownCenter.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cin.dir/src/game/TownCenter.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/konstantinoskanellopoulos/Desktop/rts/src/game/TownCenter.cpp -o CMakeFiles/cin.dir/src/game/TownCenter.cpp.s
+
+CMakeFiles/cin.dir/src/game/Barracks.cpp.o: CMakeFiles/cin.dir/flags.make
+CMakeFiles/cin.dir/src/game/Barracks.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Barracks.cpp
+CMakeFiles/cin.dir/src/game/Barracks.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/cin.dir/src/game/Barracks.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/Barracks.cpp.o -MF CMakeFiles/cin.dir/src/game/Barracks.cpp.o.d -o CMakeFiles/cin.dir/src/game/Barracks.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Barracks.cpp
+
+CMakeFiles/cin.dir/src/game/Barracks.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cin.dir/src/game/Barracks.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Barracks.cpp > CMakeFiles/cin.dir/src/game/Barracks.cpp.i
+
+CMakeFiles/cin.dir/src/game/Barracks.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cin.dir/src/game/Barracks.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Barracks.cpp -o CMakeFiles/cin.dir/src/game/Barracks.cpp.s
+
+CMakeFiles/cin.dir/src/game/Worker.cpp.o: CMakeFiles/cin.dir/flags.make
+CMakeFiles/cin.dir/src/game/Worker.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Worker.cpp
+CMakeFiles/cin.dir/src/game/Worker.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/cin.dir/src/game/Worker.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/Worker.cpp.o -MF CMakeFiles/cin.dir/src/game/Worker.cpp.o.d -o CMakeFiles/cin.dir/src/game/Worker.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Worker.cpp
+
+CMakeFiles/cin.dir/src/game/Worker.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cin.dir/src/game/Worker.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Worker.cpp > CMakeFiles/cin.dir/src/game/Worker.cpp.i
+
+CMakeFiles/cin.dir/src/game/Worker.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cin.dir/src/game/Worker.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Worker.cpp -o CMakeFiles/cin.dir/src/game/Worker.cpp.s
+
+CMakeFiles/cin.dir/src/game/Archer.cpp.o: CMakeFiles/cin.dir/flags.make
+CMakeFiles/cin.dir/src/game/Archer.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Archer.cpp
+CMakeFiles/cin.dir/src/game/Archer.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/cin.dir/src/game/Archer.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/Archer.cpp.o -MF CMakeFiles/cin.dir/src/game/Archer.cpp.o.d -o CMakeFiles/cin.dir/src/game/Archer.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Archer.cpp
+
+CMakeFiles/cin.dir/src/game/Archer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cin.dir/src/game/Archer.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Archer.cpp > CMakeFiles/cin.dir/src/game/Archer.cpp.i
+
+CMakeFiles/cin.dir/src/game/Archer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cin.dir/src/game/Archer.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Archer.cpp -o CMakeFiles/cin.dir/src/game/Archer.cpp.s
+
+CMakeFiles/cin.dir/src/game/Knight.cpp.o: CMakeFiles/cin.dir/flags.make
+CMakeFiles/cin.dir/src/game/Knight.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Knight.cpp
+CMakeFiles/cin.dir/src/game/Knight.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/cin.dir/src/game/Knight.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/Knight.cpp.o -MF CMakeFiles/cin.dir/src/game/Knight.cpp.o.d -o CMakeFiles/cin.dir/src/game/Knight.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Knight.cpp
+
+CMakeFiles/cin.dir/src/game/Knight.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cin.dir/src/game/Knight.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Knight.cpp > CMakeFiles/cin.dir/src/game/Knight.cpp.i
+
+CMakeFiles/cin.dir/src/game/Knight.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cin.dir/src/game/Knight.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Knight.cpp -o CMakeFiles/cin.dir/src/game/Knight.cpp.s
+
+CMakeFiles/cin.dir/src/game/Unit.cpp.o: CMakeFiles/cin.dir/flags.make
+CMakeFiles/cin.dir/src/game/Unit.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.cpp
+CMakeFiles/cin.dir/src/game/Unit.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/cin.dir/src/game/Unit.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/Unit.cpp.o -MF CMakeFiles/cin.dir/src/game/Unit.cpp.o.d -o CMakeFiles/cin.dir/src/game/Unit.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.cpp
+
+CMakeFiles/cin.dir/src/game/Unit.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cin.dir/src/game/Unit.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.cpp > CMakeFiles/cin.dir/src/game/Unit.cpp.i
+
+CMakeFiles/cin.dir/src/game/Unit.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cin.dir/src/game/Unit.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.cpp -o CMakeFiles/cin.dir/src/game/Unit.cpp.s
+
 CMakeFiles/cin.dir/common/Shader.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/common/Shader.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.cpp
 CMakeFiles/cin.dir/common/Shader.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/cin.dir/common/Shader.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/cin.dir/common/Shader.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/common/Shader.cpp.o -MF CMakeFiles/cin.dir/common/Shader.cpp.o.d -o CMakeFiles/cin.dir/common/Shader.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.cpp
 
 CMakeFiles/cin.dir/common/Shader.cpp.i: cmake_force
@@ -145,7 +243,7 @@ CMakeFiles/cin.dir/common/Shader.cpp.s: cmake_force
 CMakeFiles/cin.dir/common/Texture.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/common/Texture.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/common/Texture.cpp
 CMakeFiles/cin.dir/common/Texture.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/cin.dir/common/Texture.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/cin.dir/common/Texture.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/common/Texture.cpp.o -MF CMakeFiles/cin.dir/common/Texture.cpp.o.d -o CMakeFiles/cin.dir/common/Texture.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/common/Texture.cpp
 
 CMakeFiles/cin.dir/common/Texture.cpp.i: cmake_force
@@ -159,7 +257,7 @@ CMakeFiles/cin.dir/common/Texture.cpp.s: cmake_force
 CMakeFiles/cin.dir/common/Model.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/common/Model.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/common/Model.cpp
 CMakeFiles/cin.dir/common/Model.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/cin.dir/common/Model.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/cin.dir/common/Model.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/common/Model.cpp.o -MF CMakeFiles/cin.dir/common/Model.cpp.o.d -o CMakeFiles/cin.dir/common/Model.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/common/Model.cpp
 
 CMakeFiles/cin.dir/common/Model.cpp.i: cmake_force
@@ -173,7 +271,7 @@ CMakeFiles/cin.dir/common/Model.cpp.s: cmake_force
 CMakeFiles/cin.dir/common/FastNoiseLite.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/common/FastNoiseLite.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/common/FastNoiseLite.cpp
 CMakeFiles/cin.dir/common/FastNoiseLite.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/cin.dir/common/FastNoiseLite.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/cin.dir/common/FastNoiseLite.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/common/FastNoiseLite.cpp.o -MF CMakeFiles/cin.dir/common/FastNoiseLite.cpp.o.d -o CMakeFiles/cin.dir/common/FastNoiseLite.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/common/FastNoiseLite.cpp
 
 CMakeFiles/cin.dir/common/FastNoiseLite.cpp.i: cmake_force
@@ -187,7 +285,7 @@ CMakeFiles/cin.dir/common/FastNoiseLite.cpp.s: cmake_force
 CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.o: /Users/konstantinoskanellopoulos/Desktop/rts/external/glew-1.13.0/src/glew.c
 CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.o -MF CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.o.d -o CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.o -c /Users/konstantinoskanellopoulos/Desktop/rts/external/glew-1.13.0/src/glew.c
 
 CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.i: cmake_force
@@ -204,6 +302,13 @@ cin_OBJECTS = \
 "CMakeFiles/cin.dir/src/Terrain.cpp.o" \
 "CMakeFiles/cin.dir/src/Camera.cpp.o" \
 "CMakeFiles/cin.dir/src/Scene.cpp.o" \
+"CMakeFiles/cin.dir/src/game/GameEntity.cpp.o" \
+"CMakeFiles/cin.dir/src/game/TownCenter.cpp.o" \
+"CMakeFiles/cin.dir/src/game/Barracks.cpp.o" \
+"CMakeFiles/cin.dir/src/game/Worker.cpp.o" \
+"CMakeFiles/cin.dir/src/game/Archer.cpp.o" \
+"CMakeFiles/cin.dir/src/game/Knight.cpp.o" \
+"CMakeFiles/cin.dir/src/game/Unit.cpp.o" \
 "CMakeFiles/cin.dir/common/Shader.cpp.o" \
 "CMakeFiles/cin.dir/common/Texture.cpp.o" \
 "CMakeFiles/cin.dir/common/Model.cpp.o" \
@@ -217,6 +322,13 @@ cin: CMakeFiles/cin.dir/src/main.cpp.o
 cin: CMakeFiles/cin.dir/src/Terrain.cpp.o
 cin: CMakeFiles/cin.dir/src/Camera.cpp.o
 cin: CMakeFiles/cin.dir/src/Scene.cpp.o
+cin: CMakeFiles/cin.dir/src/game/GameEntity.cpp.o
+cin: CMakeFiles/cin.dir/src/game/TownCenter.cpp.o
+cin: CMakeFiles/cin.dir/src/game/Barracks.cpp.o
+cin: CMakeFiles/cin.dir/src/game/Worker.cpp.o
+cin: CMakeFiles/cin.dir/src/game/Archer.cpp.o
+cin: CMakeFiles/cin.dir/src/game/Knight.cpp.o
+cin: CMakeFiles/cin.dir/src/game/Unit.cpp.o
 cin: CMakeFiles/cin.dir/common/Shader.cpp.o
 cin: CMakeFiles/cin.dir/common/Texture.cpp.o
 cin: CMakeFiles/cin.dir/common/Model.cpp.o
@@ -226,7 +338,7 @@ cin: CMakeFiles/cin.dir/build.make
 cin: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework
 cin: external/glfw-3.4/src/libglfw3.a
 cin: CMakeFiles/cin.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable cin"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Linking CXX executable cin"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/cin.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

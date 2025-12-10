@@ -5,7 +5,7 @@
 # compile CXX with /usr/bin/c++
 C_DEFINES = -DASSET_PATH=\"/Users/konstantinoskanellopoulos/Desktop/rts/assets/\" -DGLEW_STATIC
 
-C_INCLUDES = -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1 -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyxml2 -I/Users/konstantinoskanellopoulos/Desktop/rts/common -I/Users/konstantinoskanellopoulos/Desktop/rts/src -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glew-1.13.0/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include -iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks
+C_INCLUDES = -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1 -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyxml2 -I/Users/konstantinoskanellopoulos/Desktop/rts/common -I/Users/konstantinoskanellopoulos/Desktop/rts/src -I/Users/konstantinoskanellopoulos/Desktop/rts/src/game -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glew-1.13.0/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include -iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks
 
 C_FLAGSarm64 =  -arch arm64   -Wno-deprecated-declarations
 
@@ -13,7 +13,7 @@ C_FLAGS =  -arch arm64   -Wno-deprecated-declarations
 
 CXX_DEFINES = -DASSET_PATH=\"/Users/konstantinoskanellopoulos/Desktop/rts/assets/\" -DGLEW_STATIC
 
-CXX_INCLUDES = -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1 -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyxml2 -I/Users/konstantinoskanellopoulos/Desktop/rts/common -I/Users/konstantinoskanellopoulos/Desktop/rts/src -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glew-1.13.0/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include -iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks
+CXX_INCLUDES = -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1 -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyxml2 -I/Users/konstantinoskanellopoulos/Desktop/rts/common -I/Users/konstantinoskanellopoulos/Desktop/rts/src -I/Users/konstantinoskanellopoulos/Desktop/rts/src/game -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glew-1.13.0/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include -iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks
 
 CXX_FLAGSarm64 = -std=gnu++17 -arch arm64   -Wno-deprecated-declarations
 

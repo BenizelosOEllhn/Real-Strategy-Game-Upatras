@@ -5,7 +5,7 @@
 # compile OBJC with /usr/bin/cc
 C_DEFINES = -D_GLFW_COCOA
 
-C_INCLUDES = -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1 -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyxml2 -I/Users/konstantinoskanellopoulos/Desktop/rts/common -I/Users/konstantinoskanellopoulos/Desktop/rts/src -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/src -I/Users/konstantinoskanellopoulos/Desktop/rts/build/external/glfw-3.4/src
+C_INCLUDES = -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1 -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyxml2 -I/Users/konstantinoskanellopoulos/Desktop/rts/common -I/Users/konstantinoskanellopoulos/Desktop/rts/src -I/Users/konstantinoskanellopoulos/Desktop/rts/src/game -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/src -I/Users/konstantinoskanellopoulos/Desktop/rts/build/external/glfw-3.4/src
 
 C_FLAGSarm64 = -std=c99 -arch arm64 -fPIC   -Wno-deprecated-declarations -Wall
 
@@ -13,7 +13,7 @@ C_FLAGS = -std=c99 -arch arm64 -fPIC   -Wno-deprecated-declarations -Wall
 
 OBJC_DEFINES = -D_GLFW_COCOA
 
-OBJC_INCLUDES = -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1 -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyxml2 -I/Users/konstantinoskanellopoulos/Desktop/rts/common -I/Users/konstantinoskanellopoulos/Desktop/rts/src -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/src -I/Users/konstantinoskanellopoulos/Desktop/rts/build/external/glfw-3.4/src
+OBJC_INCLUDES = -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1 -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/tinyxml2 -I/Users/konstantinoskanellopoulos/Desktop/rts/common -I/Users/konstantinoskanellopoulos/Desktop/rts/src -I/Users/konstantinoskanellopoulos/Desktop/rts/src/game -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include -I/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/src -I/Users/konstantinoskanellopoulos/Desktop/rts/build/external/glfw-3.4/src
 
 OBJC_FLAGSarm64 = -std=c99 -arch arm64 -fPIC   -Wno-deprecated-declarations -Wall
 

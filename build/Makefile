@@ -405,6 +405,174 @@ src/Terrain.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/Terrain.cpp.s
 .PHONY : src/Terrain.cpp.s
 
+src/game/Archer.o: src/game/Archer.cpp.o
+.PHONY : src/game/Archer.o
+
+# target to build an object file
+src/game/Archer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Archer.cpp.o
+.PHONY : src/game/Archer.cpp.o
+
+src/game/Archer.i: src/game/Archer.cpp.i
+.PHONY : src/game/Archer.i
+
+# target to preprocess a source file
+src/game/Archer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Archer.cpp.i
+.PHONY : src/game/Archer.cpp.i
+
+src/game/Archer.s: src/game/Archer.cpp.s
+.PHONY : src/game/Archer.s
+
+# target to generate assembly for a file
+src/game/Archer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Archer.cpp.s
+.PHONY : src/game/Archer.cpp.s
+
+src/game/Barracks.o: src/game/Barracks.cpp.o
+.PHONY : src/game/Barracks.o
+
+# target to build an object file
+src/game/Barracks.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Barracks.cpp.o
+.PHONY : src/game/Barracks.cpp.o
+
+src/game/Barracks.i: src/game/Barracks.cpp.i
+.PHONY : src/game/Barracks.i
+
+# target to preprocess a source file
+src/game/Barracks.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Barracks.cpp.i
+.PHONY : src/game/Barracks.cpp.i
+
+src/game/Barracks.s: src/game/Barracks.cpp.s
+.PHONY : src/game/Barracks.s
+
+# target to generate assembly for a file
+src/game/Barracks.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Barracks.cpp.s
+.PHONY : src/game/Barracks.cpp.s
+
+src/game/GameEntity.o: src/game/GameEntity.cpp.o
+.PHONY : src/game/GameEntity.o
+
+# target to build an object file
+src/game/GameEntity.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/GameEntity.cpp.o
+.PHONY : src/game/GameEntity.cpp.o
+
+src/game/GameEntity.i: src/game/GameEntity.cpp.i
+.PHONY : src/game/GameEntity.i
+
+# target to preprocess a source file
+src/game/GameEntity.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/GameEntity.cpp.i
+.PHONY : src/game/GameEntity.cpp.i
+
+src/game/GameEntity.s: src/game/GameEntity.cpp.s
+.PHONY : src/game/GameEntity.s
+
+# target to generate assembly for a file
+src/game/GameEntity.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/GameEntity.cpp.s
+.PHONY : src/game/GameEntity.cpp.s
+
+src/game/Knight.o: src/game/Knight.cpp.o
+.PHONY : src/game/Knight.o
+
+# target to build an object file
+src/game/Knight.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Knight.cpp.o
+.PHONY : src/game/Knight.cpp.o
+
+src/game/Knight.i: src/game/Knight.cpp.i
+.PHONY : src/game/Knight.i
+
+# target to preprocess a source file
+src/game/Knight.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Knight.cpp.i
+.PHONY : src/game/Knight.cpp.i
+
+src/game/Knight.s: src/game/Knight.cpp.s
+.PHONY : src/game/Knight.s
+
+# target to generate assembly for a file
+src/game/Knight.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Knight.cpp.s
+.PHONY : src/game/Knight.cpp.s
+
+src/game/TownCenter.o: src/game/TownCenter.cpp.o
+.PHONY : src/game/TownCenter.o
+
+# target to build an object file
+src/game/TownCenter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/TownCenter.cpp.o
+.PHONY : src/game/TownCenter.cpp.o
+
+src/game/TownCenter.i: src/game/TownCenter.cpp.i
+.PHONY : src/game/TownCenter.i
+
+# target to preprocess a source file
+src/game/TownCenter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/TownCenter.cpp.i
+.PHONY : src/game/TownCenter.cpp.i
+
+src/game/TownCenter.s: src/game/TownCenter.cpp.s
+.PHONY : src/game/TownCenter.s
+
+# target to generate assembly for a file
+src/game/TownCenter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/TownCenter.cpp.s
+.PHONY : src/game/TownCenter.cpp.s
+
+src/game/Unit.o: src/game/Unit.cpp.o
+.PHONY : src/game/Unit.o
+
+# target to build an object file
+src/game/Unit.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Unit.cpp.o
+.PHONY : src/game/Unit.cpp.o
+
+src/game/Unit.i: src/game/Unit.cpp.i
+.PHONY : src/game/Unit.i
+
+# target to preprocess a source file
+src/game/Unit.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Unit.cpp.i
+.PHONY : src/game/Unit.cpp.i
+
+src/game/Unit.s: src/game/Unit.cpp.s
+.PHONY : src/game/Unit.s
+
+# target to generate assembly for a file
+src/game/Unit.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Unit.cpp.s
+.PHONY : src/game/Unit.cpp.s
+
+src/game/Worker.o: src/game/Worker.cpp.o
+.PHONY : src/game/Worker.o
+
+# target to build an object file
+src/game/Worker.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Worker.cpp.o
+.PHONY : src/game/Worker.cpp.o
+
+src/game/Worker.i: src/game/Worker.cpp.i
+.PHONY : src/game/Worker.i
+
+# target to preprocess a source file
+src/game/Worker.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Worker.cpp.i
+.PHONY : src/game/Worker.cpp.i
+
+src/game/Worker.s: src/game/Worker.cpp.s
+.PHONY : src/game/Worker.s
+
+# target to generate assembly for a file
+src/game/Worker.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Worker.cpp.s
+.PHONY : src/game/Worker.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -469,6 +637,27 @@ help:
 	@echo "... src/Terrain.o"
 	@echo "... src/Terrain.i"
 	@echo "... src/Terrain.s"
+	@echo "... src/game/Archer.o"
+	@echo "... src/game/Archer.i"
+	@echo "... src/game/Archer.s"
+	@echo "... src/game/Barracks.o"
+	@echo "... src/game/Barracks.i"
+	@echo "... src/game/Barracks.s"
+	@echo "... src/game/GameEntity.o"
+	@echo "... src/game/GameEntity.i"
+	@echo "... src/game/GameEntity.s"
+	@echo "... src/game/Knight.o"
+	@echo "... src/game/Knight.i"
+	@echo "... src/game/Knight.s"
+	@echo "... src/game/TownCenter.o"
+	@echo "... src/game/TownCenter.i"
+	@echo "... src/game/TownCenter.s"
+	@echo "... src/game/Unit.o"
+	@echo "... src/game/Unit.i"
+	@echo "... src/game/Unit.s"
+	@echo "... src/game/Worker.o"
+	@echo "... src/game/Worker.i"
+	@echo "... src/game/Worker.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
