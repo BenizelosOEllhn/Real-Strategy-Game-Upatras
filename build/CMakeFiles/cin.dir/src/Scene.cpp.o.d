@@ -1002,16 +1002,16 @@ CMakeFiles/cin.dir/src/Scene.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/integer.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/detail/func_integer.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/detail/func_integer.inl \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../common/Model.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glew-1.13.0/include/GL/glew.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/glu.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/OpenGLAvailability.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/os/availability.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/gl.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/../common/Model.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/../common/Shader.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/../common/Texture.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/GameEntity.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/GameEntity.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/matrix_transform.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../mat4x4.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../vec2.hpp \
@@ -1024,17 +1024,19 @@ CMakeFiles/cin.dir/src/Scene.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../geometric.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../trigonometric.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../matrix.hpp \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/../../common/Shader.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/../../common/Model.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/EntityType.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Resources.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Worker.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Unit.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Knight.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Archer.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/TownCenter.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Building.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Barracks.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/../../common/Shader.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/../../common/Model.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/EntityType.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Resources.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Worker.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Knight.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Archer.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/TownCenter.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Building.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Barracks.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include/GLFW/glfw3.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/constants.hpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/random \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__random/bernoulli_distribution.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__random/uniform_real_distribution.h \

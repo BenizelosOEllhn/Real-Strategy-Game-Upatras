@@ -1078,16 +1078,16 @@ CMakeFiles/cin.dir/src/main.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/../common/Model.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/../common/Shader.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/../common/Texture.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/GameEntity.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/../../common/Shader.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/../../common/Model.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/EntityType.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Resources.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Worker.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Unit.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Knight.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Archer.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/TownCenter.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Building.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../src/game/Barracks.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/GameEntity.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/../../common/Shader.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/../../common/Model.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/EntityType.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Resources.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Worker.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Knight.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Archer.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/TownCenter.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Building.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Barracks.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/Camera.h

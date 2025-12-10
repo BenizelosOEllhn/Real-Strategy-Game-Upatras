@@ -2404,6 +2404,32 @@ CMakeFiles/cin.dir/common/Shader.cpp.o: /Users/konstantinoskanellopoulos/Desktop
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/fwd.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/geometric.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/glm.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/exponential.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/geometric.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/detail/setup.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/constants.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/constants.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/mat3x3.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/mat4x4.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/trigonometric.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vec3.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vec4.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/quaternion.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/quaternion.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/mat2x2.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/mat2x3.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/mat2x4.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/mat3x2.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/mat3x3.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/mat3x4.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/mat4x2.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/mat4x3.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/mat4x4.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vec2.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vec3.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vec4.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/type_ptr.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/type_ptr.inl \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/integer.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/mat2x2.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/mat2x3.hpp \
@@ -5584,6 +5610,7 @@ CMakeFiles/cin.dir/src/Scene.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stdint.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glew-1.13.0/include/GL/glew.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include/GLFW/glfw3.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/common.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/detail/precision.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/detail/setup.hpp \
@@ -5668,6 +5695,7 @@ CMakeFiles/cin.dir/src/Scene.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vec2.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vec3.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vec4.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/constants.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/matrix_transform.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/matrix_transform.inl \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/integer.hpp \
@@ -5690,6 +5718,8 @@ CMakeFiles/cin.dir/src/Scene.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts
   /Users/konstantinoskanellopoulos/Desktop/rts/common/Model.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/common/Texture.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/Scene.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/common/Model.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Archer.h \
@@ -5701,9 +5731,7 @@ CMakeFiles/cin.dir/src/Scene.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Resources.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/TownCenter.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Worker.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/Scene.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.h
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Worker.h
 
 CMakeFiles/cin.dir/src/Terrain.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.cpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/OpenGLAvailability.h \
@@ -15083,6 +15111,9 @@ CMakeFiles/cin.dir/src/main.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/
   /Users/konstantinoskanellopoulos/Desktop/rts/common/Model.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/common/Texture.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/Camera.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/Scene.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/common/Model.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Archer.h \
@@ -15094,13 +15125,8 @@ CMakeFiles/cin.dir/src/main.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Resources.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/TownCenter.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Worker.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/Camera.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/Scene.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.h
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Worker.h
 
-
-/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include/GLFW/glfw3.h:
 
 /Users/konstantinoskanellopoulos/Desktop/rts/src/main.cpp:
 
@@ -15114,8 +15140,6 @@ CMakeFiles/cin.dir/src/main.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/
 
 /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.cpp:
 
-/Users/konstantinoskanellopoulos/Desktop/rts/src/Scene.h:
-
 /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.h:
 
 /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Resources.h:
@@ -15127,6 +15151,10 @@ CMakeFiles/cin.dir/src/main.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/
 /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Building.h:
 
 /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Barracks.h:
+
+/Users/konstantinoskanellopoulos/Desktop/rts/src/Scene.h:
+
+/Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include/GLFW/glfw3.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/random:
 
@@ -15176,10 +15204,6 @@ CMakeFiles/cin.dir/src/main.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/
 
 /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/matrix_transform.hpp:
 
-/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/constants.inl:
-
-/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/constants.hpp:
-
 /Users/konstantinoskanellopoulos/Desktop/rts/src/Camera.cpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stdbool.h:
@@ -15195,6 +15219,16 @@ CMakeFiles/cin.dir/src/main.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/
 /Users/konstantinoskanellopoulos/Desktop/rts/common/stb_image.h:
 
 /Users/konstantinoskanellopoulos/Desktop/rts/common/Texture.cpp:
+
+/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/type_ptr.inl:
+
+/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/quaternion.inl:
+
+/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/quaternion.hpp:
+
+/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/constants.inl:
+
+/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/constants.hpp:
 
 /Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader/include/tiny_obj_loader.h:
 
@@ -17045,6 +17079,8 @@ CMakeFiles/cin.dir/src/main.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/sys/_types/_null.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/remove_const.h:
+
+/Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/type_ptr.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_trivial.h:
 
