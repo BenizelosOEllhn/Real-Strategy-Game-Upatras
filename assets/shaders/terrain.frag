@@ -13,9 +13,10 @@ uniform sampler2D grass2;
 uniform sampler2D grass3;
 uniform sampler2D noiseDetail;
 
-// --- Terrain Layers (Renamed to match Scene.cpp) ---
-uniform sampler2D textureRock; // Was rockTex
-uniform sampler2D texturePeak; // Was peakTex
+// --- Terrain Layers ---
+uniform sampler2D textureRock;
+uniform sampler2D texturePeak;
+uniform sampler2D sandTex;
 
 // --- Shadows & Lighting ---
 uniform sampler2D shadowMap;
@@ -23,8 +24,8 @@ uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform vec3 lightColor;
 
-// --- Terrain Config ---
-uniform vec2 peakHeightRange;
+// (no need for peakHeightRange anymore)
+// uniform vec2 peakHeightRange;
 
 // ----------------------------------------------------------
 // Shadow Calculation (PCF)
@@ -48,7 +49,8 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     {
         for (int y = -1; y <= 1; ++y)
         {
-            float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+            float pcfDepth = texture(shadowMap,
+                                     projCoords.xy + vec2(x, y) * texelSize).r;
             shadow += currentDepth > pcfDepth ? 1.0 : 0.0;
         }
     }
@@ -65,17 +67,16 @@ void main()
     // ======================================================
     // 1. GRASS MIXING
     // ======================================================
-
     float grassTiling = 0.6;
     vec2 grassUV      = TexCoords * grassTiling;
 
     float noiseTiling = 0.4;
     float n = texture(noiseDetail, grassUV * noiseTiling).r;
 
-    float w1 = smoothstep(0.0, 0.4, n);
+    float w1     = smoothstep(0.0, 0.4, n);
     float w3_raw = smoothstep(0.6, 1.0, n);
-    float w2 = clamp(1.0 - w1 - w3_raw, 0.0, 1.0);
-    float w3 = clamp(1.0 - w1 - w2, 0.0, 1.0);
+    float w2     = clamp(1.0 - w1 - w3_raw, 0.0, 1.0);
+    float w3     = clamp(1.0 - w1 - w2,    0.0, 1.0);
 
     vec3 g1 = texture(grass1, grassUV).rgb;
     vec3 g2 = texture(grass2, grassUV * 1.1).rgb;
@@ -83,38 +84,57 @@ void main()
 
     vec3 blendedGrass = g1 * w1 + g2 * w2 + g3 * w3;
 
-    float detail = texture(noiseDetail, grassUV * 3.0).r; 
-    float detailFactor = 0.8 + detail * 0.3;              
+    float detail       = texture(noiseDetail, grassUV * 3.0).r;
+    float detailFactor = 0.8 + detail * 0.3;
     vec3 finalGrassColor = blendedGrass * detailFactor;
 
-
-    // ======================================================
-    // 2. TERRAIN LAYERING
-    // ======================================================
+    // ------------------------------------------------------
+    // 2. HEIGHT-BASED TEXTURE LAYERING
+    // ------------------------------------------------------
+    float h = FragPos.y;
     vec3 norm = normalize(Normal);
-    vec3 up   = vec3(0.0, 1.0, 0.0);
-    float slope = dot(norm, up); 
 
-    // Steep => more rock, flat => more grass
-    float blendAmount = smoothstep(0.3, 0.8, slope);
+    // --- Sand band ---
+    float sandStart = -15.0;
+    float sandEnd   =  -10.0;
+    float sandLerp  = smoothstep(sandStart, sandEnd, h);
+    vec3 sandColor  = texture(sandTex, TexCoords * 0.4).rgb;
 
-    // Use corrected uniform names here
-    vec4 rockColor = texture(textureRock, TexCoords * 0.4);
-    vec4 peakColor = texture(texturePeak, TexCoords * 0.25);
+    // --- Grass band ---
+    float grassStart = -10.0;
+    float grassEnd   = 12.0;
+    float grassLerp  = smoothstep(grassStart, grassEnd, h);
 
-    vec3 baseColor = mix(rockColor.rgb, finalGrassColor, blendAmount);
+    // --- Rock band ---
+    float rockStart = 12.0;
+    float rockEnd   = 14.0;
+    float rockLerp  = smoothstep(rockStart, rockEnd, h);
+    vec3 rockColor  = texture(textureRock, TexCoords * 0.35).rgb;
 
-    // Height-based snow
-    float height = FragPos.y;
-    float peakLerp = clamp((height - peakHeightRange.x) / max(0.001, peakHeightRange.y - peakHeightRange.x), 0.0, 1.0);
-    peakLerp = smoothstep(0.0, 1.0, peakLerp);
+    // --- Peak / snow band ---
+    float peakStart = 14.0;
+    float peakEnd   = 999.0;
+    float peakLerp  = smoothstep(peakStart, peakEnd, h);
+    vec3 peakColor  = texture(texturePeak, TexCoords * 0.25).rgb;
 
-    // Prefer snow on flatter tops
-    float flatFactor = smoothstep(0.6, 1.0, slope); 
-    float peakBlend  = peakLerp * flatFactor;
+    // ==================================================
+    // BLENDING ORDER (bottom → top)
+    // ==================================================
+    vec3 col = sandColor;
 
-    vec3 objectColor = mix(baseColor, peakColor.rgb, peakBlend);
+    // 1) sand → grass
+    col = mix(col, finalGrassColor, grassLerp);
 
+    // 2) grass → rock
+    col = mix(col, rockColor, rockLerp);
+
+    // 3) rock → peak
+    col = mix(col, peakColor, peakLerp);
+
+    // Extra: rock on steep slopes
+    float slope     = dot(norm, vec3(0.0, 1.0, 0.0)); // 1 = flat, 0 = vertical
+    float slopeRock = 1.0 - slope;                    // 0 = flat, 1 = vertical
+    col = mix(col, rockColor, slopeRock * 0.6);
 
     // ======================================================
     // 3. LIGHTING & SHADOWS
@@ -123,18 +143,18 @@ void main()
     vec3 ambient = ambientStrength * lightColor;
 
     vec3 lightDir = normalize(lightPos - FragPos);
-    float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor;
+    float diff    = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse  = diff * lightColor;
 
     float specularStrength = 0.12;
-    vec3 viewDir = normalize(viewPos - FragPos);
+    vec3 viewDir    = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
-    vec3 specular = specularStrength * spec * lightColor;
+    float spec      = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+    vec3 specular   = specularStrength * spec * lightColor;
 
     float shadow = ShadowCalculation(FragPosLightSpace);
 
-    vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * objectColor;
+    vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * col;
 
     FragColor = vec4(lighting, 1.0);
 }

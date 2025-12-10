@@ -67,6 +67,7 @@ private:
     Texture* peakTex    = nullptr;
     Texture* treeTex    = nullptr;
     Texture* boulderTex = nullptr;
+    Texture* sandTex    = nullptr;
 
     // ===========================
     //         WATER

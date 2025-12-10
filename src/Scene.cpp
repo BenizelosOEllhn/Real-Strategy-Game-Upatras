@@ -16,8 +16,8 @@
 // Terrain & Generation Constants
 // ------------------------------------------------------------
 namespace {
-    constexpr int   kTerrainWidth     = 270;
-    constexpr int   kTerrainDepth     = 300;
+    constexpr int   kTerrainWidth     = 600;
+    constexpr int   kTerrainDepth     = 600;
     constexpr int   kTreeCount        = 360;
     constexpr int   kRockCount        = 110;
 
@@ -100,8 +100,10 @@ void Scene::Init() {
     grass1Tex   = new Texture((base + "textures/grass.png").c_str());
     grass2Tex   = new Texture((base + "textures/grass2.jpeg").c_str());
     grass3Tex   = new Texture((base + "textures/grass3.jpeg").c_str());
-    rockTex    = new Texture((base + "textures/rock.jpeg").c_str());
+    rockTex    = new Texture((base + "textures/smallRockTexture.jpg").c_str());
+    sandTex = new Texture((base + "textures/sand.jpeg").c_str());
     treeTex    = new Texture((base + "textures/leaf.png").c_str());
+    peakTex    = new Texture((base + "textures/peak.jpeg").c_str());
     boulderTex = new Texture((base + "textures/smallRockTexture.jpg").c_str());
     waterTex   = new Texture((base + "textures/water.jpeg").c_str());
     noiseTex   = new Texture((base + "textures/perlin.png").c_str());
@@ -174,19 +176,22 @@ void Scene::Draw(Shader& terrainShader,
         grass2Tex->Bind(1);
         grass3Tex->Bind(2);
         noiseTex->Bind(3);
-
         rockTex->Bind(4);
+        sandTex->Bind(5);
+        peakTex->Bind(6);
 
         glActiveTexture(GL_TEXTURE7);
         glBindTexture(GL_TEXTURE_2D, shadowMap);
 
-        // Shader uniform mapping
         terrainShader.SetInt("grass1", 0);
         terrainShader.SetInt("grass2", 1);
         terrainShader.SetInt("grass3", 2);
         terrainShader.SetInt("noiseDetail", 3);
-        terrainShader.SetInt("rockTex", 4);
+        terrainShader.SetInt("textureRock", 4);
+        terrainShader.SetInt("sandTex", 5);
+        terrainShader.SetInt("texturePeak", 6);
         terrainShader.SetInt("shadowMap", 7);
+
 
 
         terrainShader.SetVec3("lightPos", lightPos);
