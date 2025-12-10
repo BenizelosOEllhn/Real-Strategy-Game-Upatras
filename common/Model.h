@@ -3,7 +3,7 @@
 #include <string>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
-#include "Shader.h"
+#include "Shader.h" 
 
 struct ModelVertex {
     glm::vec3 Position;
@@ -14,16 +14,16 @@ struct ModelVertex {
 class Model {
 public:
     Model(const char* path);
-
+    
     void Draw(Shader& shader);
-    void DrawInstanced(Shader& shader, const std::vector<glm::mat4>& transforms);
+    // NEW: Function to draw many copies at once
+    void DrawInstanced(Shader& shader, const std::vector<glm::mat4>& models);
 
 private:
-    void setupMesh();
-
-    GLuint VAO = 0;
-    GLuint VBO = 0;
-    GLuint instanceVBO = 0;  
-
+    unsigned int VAO, VBO;
+    // NEW: We need a buffer for the matrices
+    unsigned int instanceVBO; 
+    
     std::vector<ModelVertex> vertices;
+    void setupMesh();
 };

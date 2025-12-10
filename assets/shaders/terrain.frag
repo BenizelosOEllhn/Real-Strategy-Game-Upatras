@@ -7,95 +7,134 @@ in vec3 Normal;
 in vec2 TexCoords;
 in vec4 FragPosLightSpace;
 
-uniform sampler2D textureGrass;
-uniform sampler2D textureRock;
-uniform sampler2D texturePeak;
-uniform sampler2D shadowMap;
+// --- Grass Variations ---
+uniform sampler2D grass1;
+uniform sampler2D grass2;
+uniform sampler2D grass3;
+uniform sampler2D noiseDetail;
 
+// --- Terrain Layers (Renamed to match Scene.cpp) ---
+uniform sampler2D textureRock; // Was rockTex
+uniform sampler2D texturePeak; // Was peakTex
+
+// --- Shadows & Lighting ---
+uniform sampler2D shadowMap;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform vec3 lightColor;
+
+// --- Terrain Config ---
 uniform vec2 peakHeightRange;
 
-// Adjust to your SHADOW_WIDTH if you change it in C++
-const float SHADOW_MAP_SIZE = 2048.0;
-
-// PCF soft shadow
-float computeShadow(vec4 fragPosLightSpace)
+// ----------------------------------------------------------
+// Shadow Calculation (PCF)
+// ----------------------------------------------------------
+float ShadowCalculation(vec4 fragPosLightSpace)
 {
-    // Transform from clip space to [0,1] texture space
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     projCoords = projCoords * 0.5 + 0.5;
 
-    // Outside light frustum -> no shadow
     if (projCoords.z > 1.0)
         return 0.0;
 
     float shadow = 0.0;
-    float bias = 0.0015;               // tweak if acne / peter-panning
-    float texelSize = 1.0 / SHADOW_MAP_SIZE;
+    float bias = 0.0015;
+    float currentDepth = projCoords.z - bias;
 
-    // 3x3 PCF kernel
-    for (int x = -1; x <= 1; ++x) {
-        for (int y = -1; y <= 1; ++y) {
-            vec2 offset = vec2(x, y) * texelSize;
-            float closestDepth = texture(shadowMap, projCoords.xy + offset).r;
-            float currentDepth = projCoords.z - bias;
-            shadow += currentDepth > closestDepth ? 1.0 : 0.0;
+    vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+
+    // 3x3 PCF
+    for (int x = -1; x <= 1; ++x)
+    {
+        for (int y = -1; y <= 1; ++y)
+        {
+            float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r;
+            shadow += currentDepth > pcfDepth ? 1.0 : 0.0;
         }
     }
-
     shadow /= 9.0;
+
     return shadow;
 }
 
+// ----------------------------------------------------------
+// Main
+// ----------------------------------------------------------
 void main()
 {
+    // ======================================================
+    // 1. GRASS MIXING
+    // ======================================================
+
+    float grassTiling = 0.6;
+    vec2 grassUV      = TexCoords * grassTiling;
+
+    float noiseTiling = 0.4;
+    float n = texture(noiseDetail, grassUV * noiseTiling).r;
+
+    float w1 = smoothstep(0.0, 0.4, n);
+    float w3_raw = smoothstep(0.6, 1.0, n);
+    float w2 = clamp(1.0 - w1 - w3_raw, 0.0, 1.0);
+    float w3 = clamp(1.0 - w1 - w2, 0.0, 1.0);
+
+    vec3 g1 = texture(grass1, grassUV).rgb;
+    vec3 g2 = texture(grass2, grassUV * 1.1).rgb;
+    vec3 g3 = texture(grass3, grassUV * 0.9).rgb;
+
+    vec3 blendedGrass = g1 * w1 + g2 * w2 + g3 * w3;
+
+    float detail = texture(noiseDetail, grassUV * 3.0).r; 
+    float detailFactor = 0.8 + detail * 0.3;              
+    vec3 finalGrassColor = blendedGrass * detailFactor;
+
+
+    // ======================================================
+    // 2. TERRAIN LAYERING
+    // ======================================================
     vec3 norm = normalize(Normal);
     vec3 up   = vec3(0.0, 1.0, 0.0);
+    float slope = dot(norm, up); 
 
-    // --- Terrain texture blending (your style, kept intact) ---
-    float slope = dot(norm, up);
+    // Steep => more rock, flat => more grass
+    float blendAmount = smoothstep(0.3, 0.8, slope);
 
-    float blendAmount = clamp((slope - 0.7) * 10.0, 0.0, 1.0);
-    vec4 grassColor   = texture(textureGrass, TexCoords);
-    vec4 rockColor    = texture(textureRock,  TexCoords);
-    vec4 peakColor    = texture(texturePeak,  TexCoords * 0.4);
+    // Use corrected uniform names here
+    vec4 rockColor = texture(textureRock, TexCoords * 0.4);
+    vec4 peakColor = texture(texturePeak, TexCoords * 0.25);
 
-    vec3 baseColor = mix(rockColor, grassColor, blendAmount).rgb;
+    vec3 baseColor = mix(rockColor.rgb, finalGrassColor, blendAmount);
 
-    float height   = FragPos.y;
-    float peakLerp = clamp((height - peakHeightRange.x) /
-                           max(0.001, peakHeightRange.y - peakHeightRange.x),
-                           0.0, 1.0);
+    // Height-based snow
+    float height = FragPos.y;
+    float peakLerp = clamp((height - peakHeightRange.x) / max(0.001, peakHeightRange.y - peakHeightRange.x), 0.0, 1.0);
     peakLerp = smoothstep(0.0, 1.0, peakLerp);
 
-    float steepFactor = clamp((0.85 - slope) * 3.0, 0.0, 1.0);
-    float peakBlend   = peakLerp * (0.4 + 0.6 * steepFactor);
+    // Prefer snow on flatter tops
+    float flatFactor = smoothstep(0.6, 1.0, slope); 
+    float peakBlend  = peakLerp * flatFactor;
 
     vec3 objectColor = mix(baseColor, peakColor.rgb, peakBlend);
 
-    // --- Phong lighting ---
+
+    // ======================================================
+    // 3. LIGHTING & SHADOWS
+    // ======================================================
+    float ambientStrength = 0.22;
+    vec3 ambient = ambientStrength * lightColor;
+
     vec3 lightDir = normalize(lightPos - FragPos);
-    float diff    = max(dot(norm, lightDir), 0.0);
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diff * lightColor;
 
-    float ambientStrength = 0.2;
-    vec3 ambient  = ambientStrength * lightColor;
-
-    vec3 diffuse  = diff * lightColor;
-
-    float specularStrength = 0.1;
-    vec3 viewDir   = normalize(viewPos - FragPos);
+    float specularStrength = 0.12;
+    vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec     = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
-    vec3 specular  = specularStrength * spec * lightColor;
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+    vec3 specular = specularStrength * spec * lightColor;
 
-    // --- Shadows (PCF) ---
-    float shadow = computeShadow(FragPosLightSpace);
+    float shadow = ShadowCalculation(FragPosLightSpace);
 
-    // Ambient always visible, diffuse+spec under shadow
-    vec3 lighting = ambient + (1.0 - shadow) * (diffuse + specular);
+    vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * objectColor;
 
-    vec3 result = lighting * objectColor;
-    FragColor = vec4(result, 1.0);
+    FragColor = vec4(lighting, 1.0);
 }
