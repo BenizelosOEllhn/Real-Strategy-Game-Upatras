@@ -1075,19 +1075,8 @@ CMakeFiles/cin.dir/src/main.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../matrix.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/Scene.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../common/Model.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../common/Shader.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/../common/Texture.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/GameEntity.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/../../common/Shader.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/../../common/Model.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/EntityType.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Resources.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Worker.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Knight.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Archer.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/TownCenter.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Building.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Barracks.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/Camera.h
+  /Users/konstantinoskanellopoulos/Desktop/rts/common/Model.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/common/Texture.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/Camera.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/../common/Shader.h

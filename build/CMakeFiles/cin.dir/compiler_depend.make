@@ -5609,6 +5609,9 @@ CMakeFiles/cin.dir/src/Scene.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stdint.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/common/Model.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/common/Texture.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glew-1.13.0/include/GL/glew.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include/GLFW/glfw3.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/common.hpp \
@@ -5715,23 +5718,8 @@ CMakeFiles/cin.dir/src/Scene.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vec3.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vec4.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vector_relational.hpp \
-  /Users/konstantinoskanellopoulos/Desktop/rts/common/Model.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/common/Texture.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/Scene.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/common/Model.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Archer.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Barracks.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Building.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/EntityType.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/GameEntity.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Knight.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Resources.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/TownCenter.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Worker.h
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.h
 
 CMakeFiles/cin.dir/src/Terrain.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.cpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/OpenGLAvailability.h \
@@ -15003,6 +14991,9 @@ CMakeFiles/cin.dir/src/main.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/16/include/stdint.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/common/Model.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/common/Texture.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glew-1.13.0/include/GL/glew.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glfw-3.4/include/GLFW/glfw3.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/common.hpp \
@@ -15108,24 +15099,10 @@ CMakeFiles/cin.dir/src/main.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vec3.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vec4.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/vector_relational.hpp \
-  /Users/konstantinoskanellopoulos/Desktop/rts/common/Model.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/common/Texture.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/Camera.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/Scene.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/common/Model.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Archer.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Barracks.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Building.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/EntityType.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/GameEntity.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Knight.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Resources.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/TownCenter.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Worker.h
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.h
 
 
 /Users/konstantinoskanellopoulos/Desktop/rts/src/main.cpp:
@@ -15136,21 +15113,19 @@ CMakeFiles/cin.dir/src/main.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/
 
 /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Knight.cpp:
 
-/Users/konstantinoskanellopoulos/Desktop/rts/src/game/Barracks.cpp:
-
-/Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.cpp:
-
-/Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.h:
-
-/Users/konstantinoskanellopoulos/Desktop/rts/src/game/Resources.h:
-
 /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Knight.h:
-
-/Users/konstantinoskanellopoulos/Desktop/rts/src/game/EntityType.h:
 
 /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Building.h:
 
 /Users/konstantinoskanellopoulos/Desktop/rts/src/game/Barracks.h:
+
+/Users/konstantinoskanellopoulos/Desktop/rts/src/game/Barracks.cpp:
+
+/Users/konstantinoskanellopoulos/Desktop/rts/src/game/Unit.h:
+
+/Users/konstantinoskanellopoulos/Desktop/rts/src/game/EntityType.h:
+
+/Users/konstantinoskanellopoulos/Desktop/rts/src/Terrain.cpp:
 
 /Users/konstantinoskanellopoulos/Desktop/rts/src/Scene.h:
 
