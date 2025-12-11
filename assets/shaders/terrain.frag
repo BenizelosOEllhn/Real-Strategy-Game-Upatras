@@ -67,7 +67,7 @@ void main()
     // ======================================================
     // 1. GRASS MIXING
     // ======================================================
-    float grassTiling = 0.6;
+    float grassTiling = 0.15;
     vec2 grassUV      = TexCoords * grassTiling;
 
     float noiseTiling = 0.4;
@@ -88,53 +88,43 @@ void main()
     float detailFactor = 0.8 + detail * 0.3;
     vec3 finalGrassColor = blendedGrass * detailFactor;
 
-    // ------------------------------------------------------
-    // 2. HEIGHT-BASED TEXTURE LAYERING
-    // ------------------------------------------------------
-    float h = FragPos.y;
+//------------------------------------------------------
+// HARD BIOME LAYERS (no smoothing, no blending)
+//------------------------------------------------------
+float h = FragPos.y;
+
+// Final color output
+vec3 col;
+
+// ---- HARD SAND ----
+if (h < 1.2)
+{
+    col = texture(sandTex, TexCoords * 0.4).rgb;
+}
+// ---- HARD GRASS ----
+else if (h < 14.0)
+{
+    col = finalGrassColor;
+}
+// ---- HARD ROCK ----
+else if (h < 28.0)
+{
+    col = texture(textureRock, TexCoords * 0.35).rgb;
+}
+// ---- HARD PEAK ----
+else
+{
+    col = texture(texturePeak, TexCoords * 0.25).rgb;
+}
+
+// Optional rock override for steep slopes:
+float slope = dot(normalize(Normal), vec3(0.0, 1.0, 0.0));
+if (slope < 0.55)  // lower = steeper
+{
+    vec3 rockColor = texture(textureRock, TexCoords * 0.35).rgb;
+    col = rockColor;
+}
     vec3 norm = normalize(Normal);
-
-    // --- Sand band ---
-    float sandStart = -15.0;
-    float sandEnd   =  -10.0;
-    float sandLerp  = smoothstep(sandStart, sandEnd, h);
-    vec3 sandColor  = texture(sandTex, TexCoords * 0.4).rgb;
-
-    // --- Grass band ---
-    float grassStart = -10.0;
-    float grassEnd   = 12.0;
-    float grassLerp  = smoothstep(grassStart, grassEnd, h);
-
-    // --- Rock band ---
-    float rockStart = 12.0;
-    float rockEnd   = 14.0;
-    float rockLerp  = smoothstep(rockStart, rockEnd, h);
-    vec3 rockColor  = texture(textureRock, TexCoords * 0.35).rgb;
-
-    // --- Peak / snow band ---
-    float peakStart = 14.0;
-    float peakEnd   = 999.0;
-    float peakLerp  = smoothstep(peakStart, peakEnd, h);
-    vec3 peakColor  = texture(texturePeak, TexCoords * 0.25).rgb;
-
-    // ==================================================
-    // BLENDING ORDER (bottom → top)
-    // ==================================================
-    vec3 col = sandColor;
-
-    // 1) sand → grass
-    col = mix(col, finalGrassColor, grassLerp);
-
-    // 2) grass → rock
-    col = mix(col, rockColor, rockLerp);
-
-    // 3) rock → peak
-    col = mix(col, peakColor, peakLerp);
-
-    // Extra: rock on steep slopes
-    float slope     = dot(norm, vec3(0.0, 1.0, 0.0)); // 1 = flat, 0 = vertical
-    float slopeRock = 1.0 - slope;                    // 0 = flat, 1 = vertical
-    col = mix(col, rockColor, slopeRock * 0.6);
 
     // ======================================================
     // 3. LIGHTING & SHADOWS

@@ -1,113 +1,107 @@
 #pragma once
 
-#include <vector>
-#include <glm/glm.hpp>
 #include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <vector>
+#include <string>
 
 #include "Terrain.h"
-#include "../common/Model.h"
-#include "../common/Shader.h"
-#include "../common/Texture.h"
+#include "Model.h"
+#include "Texture.h"
+#include "Shader.h"
 
-// --- Game Entities ---
-// (Ensure these header files exist in src/game/ or code will fail to compile)
-#include "game/GameEntity.h"
-#include "game/Resources.h"
-#include "game/Worker.h"
-#include "game/Knight.h"
-#include "game/Archer.h"
-#include "game/TownCenter.h"
-#include "game/Barracks.h"
-
-class Scene {
+class Scene
+{
 public:
     Scene();
     ~Scene();
 
     void Init();
-    void Update(float dt); // Update logic for units/buildings
 
-    // Depth-only pass for shadow mapping
     void DrawDepth(Shader& depthShader, const glm::mat4& lightSpaceMatrix);
 
-    // Main render pass
     void Draw(Shader& terrainShader,
               Shader& objectShader,
               glm::mat4 view,
-              glm::mat4 proj,
+              glm::mat4 projection,
               glm::vec3 lightPos,
               glm::vec3 viewPos,
               const glm::mat4& lightSpaceMatrix,
               unsigned int shadowMap);
 
-    // Terrain needs to be public for Camera collision/height checks
-    Terrain* terrain = nullptr;
-
 private:
-    // ===========================
-    //         ASSETS
-    // ===========================
-    
-    // -- Environment Models --
-    Model* treeModel = nullptr;
-    Model* rockModel = nullptr;
+    // --------------------------------------------------------
+    // Core world data
+    // --------------------------------------------------------
+    Terrain* terrain;
 
-    // -- Unit/Building Models --
-    Model* workerModel     = nullptr;
-    Model* knightModel     = nullptr;
-    Model* archerModel     = nullptr;
-    Model* townCenterModel = nullptr;
-    Model* barracksModel   = nullptr;
+    Model* treeModel;
+    Model* rockModel;
 
-    // -- Textures --
-    Texture* grass1Tex;        
-    Texture* grass2Tex;      
-    Texture* grass3Tex;       
-    Texture* rockTex    = nullptr;
-    Texture* peakTex    = nullptr;
-    Texture* treeTex    = nullptr;
-    Texture* boulderTex = nullptr;
-    Texture* sandTex    = nullptr;
+    // Textures
+    Texture* grass1Tex;
+    Texture* grass2Tex;
+    Texture* grass3Tex;
+    Texture* rockTex;
+    Texture* sandTex;
+    Texture* treeTex;
+    Texture* peakTex;
+    Texture* boulderTex;
+    Texture* waterTex;
+    Texture* noiseTex;
+    Texture* overlayTex;
 
-    // ===========================
-    //         WATER
-    // ===========================
-    Shader* waterShader = nullptr;
-    Texture* waterTex    = nullptr;
-    Texture* noiseTex    = nullptr;
-    Texture* overlayTex  = nullptr;
+    // Water shader (used by ocean, lake and river)
+    Shader* waterShader;
 
-    GLuint waterVAO = 0;
-    GLuint waterVBO = 0;
-    GLuint waterEBO = 0;
-
-    void GenerateWaterGeometry();
-    void DrawWater(const glm::mat4& view, const glm::mat4& proj);
-
-    // ===========================
-    //      SCENE GENERATION
-    // ===========================
-    
-    // Instancing Data (Static scenery)
+    // --------------------------------------------------------
+    // Instanced foliage / rocks
+    // --------------------------------------------------------
     std::vector<glm::mat4> treeTransforms;
     std::vector<glm::mat4> rockTransforms;
 
     void generateTrees();
     void generateRocks();
 
-    // ===========================
-    //      GAMEPLAY / ENTITIES
-    // ===========================
-    
-    // Dynamic Game Objects
-    std::vector<GameEntity*> entities;
+    // --------------------------------------------------------
+    // BIG OCEAN WATER PLANE
+    // --------------------------------------------------------
+    GLuint waterVAO;
+    GLuint waterVBO;
+    GLuint waterEBO;
 
-    Resources player1;
-    Resources player2;
+    void GenerateWaterGeometry();
+    void DrawWater(const glm::mat4& view, const glm::mat4& proj);
 
-    void SpawnInitialBuildings();
-    
-    // Helpers to render the dynamic list of entities
-    void DrawEntities(Shader& shader);
-    void DrawEntitiesDepth(Shader& depthShader, const glm::mat4& lightSpaceMatrix);
+    // --------------------------------------------------------
+    // LOCAL WATER MESHES (LAKE + RIVERS)
+    // --------------------------------------------------------
+    struct WaterVertex
+    {
+        glm::vec3 position;
+        glm::vec2 uv;
+    };
+
+    // --- Lake water mesh ---
+    std::vector<WaterVertex>    lakeWaterVerts;
+    std::vector<unsigned int>   lakeWaterIndices;
+    GLuint                      lakeVAO;
+    GLuint                      lakeVBO;
+    GLuint                      lakeEBO;
+
+    // --- River water mesh ---
+    std::vector<WaterVertex>    riverWaterVerts;
+    std::vector<unsigned int>   riverWaterIndices;
+    GLuint                      riverVAO;
+    GLuint                      riverVBO;
+    GLuint                      riverEBO;
+
+    void generateLakeWater();
+    void uploadLakeWaterMesh();
+    void DrawLakeWater(const glm::mat4& view, const glm::mat4& proj);
+
+    void generateRiverWater();
+    void uploadRiverWaterMesh();
+    void DrawRiverWater(const glm::mat4& view, const glm::mat4& proj);
 };
+    

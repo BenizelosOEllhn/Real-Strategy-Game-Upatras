@@ -70,7 +70,7 @@ float Terrain::getHeight(float x, float z)
     float tCape = clamp((Z - zBase) / (zTip - zBase), 0.0f, 1.0f); // 0 north, 1 near tip
 
     const float maxWidth = 1.0f;   // full width at base
-    const float minWidth = 0.25f;  // narrow width at tip
+    const float minWidth = 0.3f;  // narrow width at tip
     float landWidth = maxWidth + (minWidth - maxWidth) * tCape;
 
     // Gentle rounding at tip
@@ -129,63 +129,96 @@ float Terrain::getHeight(float x, float z)
     
 
     float yBeforeLake = y; // store to blend lake nicely
+    float inwardSlope = (1.0f - (symX / halfW)); // 1 at center, 0 at edges
+    inwardSlope = clamp(inwardSlope, 0.0f, 1.0f);
+    y += inwardSlope * 3.0f;  // adjust strength as needed
 
-    // --------------------------------------------------------------------
-    // 4) SHALLOW MOUNTAIN LAKE (NO MORE CRAZY CRATER)
-    // --------------------------------------------------------------------
-    const float lakeX      = 0.0f;
-    const float lakeZ      = -200.0f;
-    const float lakeOuterR = 90.0f;
-    const float lakeInnerR = 55.0f;
-    const float lakeFloorH = 2.5f;   // approximate water height
+// ------------------------------------------------------------
+// 4) IRREGULAR MOUNTAIN LAKE
+// ------------------------------------------------------------
+const float lakeX      = 0.0f;
+const float lakeZ      = -200.0f;
+const float lakeOuterR = 90.0f;
+const float lakeInnerR = 55.0f;
+const float lakeFloorH = -2.0f;
 
-    float dx = X - lakeX;
-    float dz = Z - lakeZ;
-    float distLake = std::sqrt(dx * dx + dz * dz);
+float lx = X - lakeX;
+float lz = Z - lakeZ;
+float distLake = sqrt(lx*lx + lz*lz);
+float angle = atan2(lz, lx);
 
-    // Outer ring: blend from mountain terrain into lake rim
-    if (distLake < lakeOuterR) {
-        float t = 0.0f;
-        if (distLake > lakeInnerR) {
-            t = (distLake - lakeInnerR) / (lakeOuterR - lakeInnerR); // 0 at inner, 1 at outer
-            t = clamp(t, 0.0f, 1.0f);
-        }
-        float rimHeight = yBeforeLake;   // original mountain height
-        float rimBlendH = rimHeight * t + (lakeFloorH + 3.0f) * (1.0f - t);
-        y = y * t + rimBlendH * (1.0f - t);
-    }
+// Irregular radius
+float irregular =
+      1.0f
+    + 0.18f * cos(3.0f * angle)
+    + 0.08f * cos(5.0f * angle);
 
-    // Inner bowl: shallow, almost flat lake bottom
-    if (distLake < lakeInnerR) {
-        float k = (lakeInnerR - distLake) / lakeInnerR; // 0 at rim, 1 at center
-        k = k * k;
-        float bowlDepth = 1.5f * k; // max ~1.5 units below lakeFloorH
-        float target = lakeFloorH - bowlDepth;
-        y = y * 0.3f + target * 0.7f; // bias strongly toward lake height
-    }
+float innerR = lakeInnerR * irregular;
+float outerR = lakeOuterR * irregular;
 
-    // --------------------------------------------------------------------
-    // 5) RIVER FROM LAKE → SOUTH (WIDER, SMOOTHER)
-    // --------------------------------------------------------------------
-    if (Z > lakeZ - 25.0f && Z < 220.0f) {
-        float dzLake = Z - lakeZ; // 0 at lake, grows south
-        float basePathX = -10.0f + dzLake * 0.22f; // trending east as it goes south
-        float snake     = std::sin(Z * 0.06f) * 14.0f;
-        float centerX   = basePathX + snake;
+if (distLake < outerR)
+{
+    float t = (distLake > innerR)
+        ? clamp((distLake - innerR) / (outerR - innerR), 0.0f, 1.0f)
+        : 0.0f;
 
-        float d = std::fabs(X - centerX);
-        float riverHalfWidth = 16.0f; // total width ~32
+    float rimTarget = yBeforeLake * 0.7f + 0.9f;
+    y = y * t + rimTarget * (1.0f - t);
+}
 
-        if (d < riverHalfWidth) {
-            float t = (riverHalfWidth - d) / riverHalfWidth; // 0 edge, 1 center
-            float trench = 1.5f + 2.5f * (t * t);           // deeper at center
-            y -= trench * t;                                // smooth depression
+if (distLake < innerR)
+{
+    float k = (innerR - distLake) / innerR;  
+    k *= k;
+    float bowlDepth = 2.0f + 1.5f * k;
+    float target = lakeFloorH - bowlDepth * 0.3f;
+    y = y * 0.25f + target * 0.75f;  
+}
 
-            // keep river near lakeFloorH - a bit
-            if (y < lakeFloorH - 2.0f)
-                y = lakeFloorH - 2.0f;
-        }
-    }
+
+// ------------------------------------------------------------
+// 5) TWO SYMMETRICAL RIVERS (deep + wide + curved)
+// ------------------------------------------------------------
+const float riverStartZ = lakeZ + 12.0f;
+const float riverEndZ   = 260.0f;
+const float minRiverH   = lakeFloorH + 1.0f ; // deeper rivers
+
+auto carveRiver = [&](float startX, float dir)
+{
+    if (Z < riverStartZ || Z > riverEndZ)
+        return;
+
+    float t = (Z - riverStartZ) / (riverEndZ - riverStartZ);
+
+    float endX  = dir * 180.0f;
+    float pathX = glm::mix(startX, endX, t);
+
+    pathX += dir * (30.0f * sin(Z * 0.035f));  
+    pathX +=        (12.0f * cos(Z * 0.02f));   
+
+    float halfWidth = glm::mix(28.0f, 18.0f, t);
+    float fade = glm::clamp((Z - 150.0f) / 30.0f, 0.0f, 1.0f);
+    halfWidth *= (1.0f - fade);
+
+    float d = fabs(X - pathX);
+    if (d > halfWidth)
+        return;
+
+    float u = (halfWidth - d) / halfWidth;
+    float depth = 3.0f + 5.0f * (u * u);  // deeper
+
+    y -= depth * u;
+    if (y < minRiverH)
+        y = minRiverH;
+};
+
+// Southwest river
+carveRiver(-15.0f, -1.0f);
+
+// Southeast river
+carveRiver(+15.0f, +1.0f);
+
+
 
     // --------------------------------------------------------------------
     // 6) SOUTHERN PLAINS SMOOTHING (FLATTER FOR GAMEPLAY)

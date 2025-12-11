@@ -1,12 +1,13 @@
 #include "Scene.h"
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/constants.hpp>
+#include <cmath>
 #include <random>
 #include <iostream>
 #include <string>
-#include <cmath>
 
 #ifndef ASSET_PATH
 #define ASSET_PATH "assets/"
@@ -23,8 +24,11 @@ namespace {
 
     constexpr float kMountainStart    = -90.0f;
     constexpr float kMountainAvoidZ   = -70.0f;
-    constexpr float kLakeCenterZ      = 80.0f;
-    constexpr float kLakeRadius       = 55.0f;
+
+    // NOTE: these should match your Terrain lake
+    constexpr float kLakeCenterZ      = -200.0f;
+    constexpr float kLakeRadius       = 60.0f;
+
     constexpr float kRiverTreeBuffer  = 14.0f;
     constexpr float kSouthForestBias  = 0.75f;
     constexpr float kMountainTreeBias = 0.2f;
@@ -36,18 +40,47 @@ namespace {
     constexpr float kRockMinHeight    = 5.0f;
 
     // Helper to check if a point is too close to the river
-    bool nearRiver(float x, float z) {
-        if (!(z < kLakeCenterZ && z > kMountainStart - 20.0f)) return false;
-        
-        float symX = std::abs(x);
-        float distFromLake = kLakeCenterZ - z;
-        float basePathX = 25.0f + (distFromLake * 0.4f);
-        float snakeWiggle = std::sin(z * 0.08f) * 12.0f;
-        float riverIdealX = basePathX + snakeWiggle;
-        float distToRiver = std::abs(symX - riverIdealX);
-        
-        return distToRiver < kRiverTreeBuffer;
-    }
+// Same path & width as Terrain::carveRiver(), but a bit wider for safety.
+bool nearRiver(float x, float z)
+{
+    // Must match Terrain constants
+    const float lakeZ      = -200.0f;
+    const float riverStartZ = lakeZ + 12.0f;   // -188
+    const float riverEndZ   = 260.0f;
+
+    if (z < riverStartZ || z > riverEndZ)
+        return false;
+
+    auto evalPath = [&](float startX, float dir) -> std::pair<float,float>
+    {
+        float t = (z - riverStartZ) / (riverEndZ - riverStartZ);
+
+        float endX  = dir * 180.0f;
+        float pathX = glm::mix(startX, endX, t);
+
+        pathX += dir * (30.0f * std::sin(z * 0.035f));
+        pathX +=        (12.0f * std::cos(z * 0.02f));
+
+        float halfWidth = glm::mix(28.0f, 18.0f, t);
+        float fade = glm::clamp((z - 150.0f) / 30.0f, 0.0f, 1.0f);
+        halfWidth *= (1.0f - fade);
+
+        // slightly padded for foliage rejection
+        halfWidth += 4.0f;
+
+        return { pathX - halfWidth, pathX + halfWidth };
+    };
+
+    // left & right rivers
+    auto [lMin, lMax] = evalPath(-15.0f, -1.0f);
+    auto [rMin, rMax] = evalPath(+15.0f, +1.0f);
+
+    if (x >= lMin && x <= lMax) return true;
+    if (x >= rMin && x <= rMax) return true;
+
+    return false;
+}
+
 }
 
 // ------------------------------------------------------------
@@ -57,11 +90,14 @@ Scene::Scene()
     : terrain(nullptr),
       treeModel(nullptr), rockModel(nullptr),
       grass1Tex(nullptr), grass2Tex(nullptr), grass3Tex(nullptr),
-      rockTex(nullptr), 
-      treeTex(nullptr), boulderTex(nullptr),
+      rockTex(nullptr),
+      sandTex(nullptr),
+      treeTex(nullptr), peakTex(nullptr), boulderTex(nullptr),
       waterTex(nullptr), noiseTex(nullptr), overlayTex(nullptr),
       waterShader(nullptr),
-      waterVAO(0), waterVBO(0), waterEBO(0)
+      waterVAO(0), waterVBO(0), waterEBO(0),
+      lakeVAO(0), lakeVBO(0), lakeEBO(0),
+      riverVAO(0), riverVBO(0), riverEBO(0)
 {
 }
 
@@ -73,17 +109,31 @@ Scene::~Scene() {
 
     // Cleanup Textures
     delete rockTex;
+    delete sandTex;
     delete boulderTex;
     delete treeTex;
+    delete peakTex;
     delete waterTex;
     delete noiseTex;
     delete overlayTex;
+    delete grass1Tex;
+    delete grass2Tex;
+    delete grass3Tex;
 
     // Cleanup Water Shader & Buffers
     delete waterShader;
+
     if (waterVAO) glDeleteVertexArrays(1, &waterVAO);
     if (waterVBO) glDeleteBuffers(1, &waterVBO);
     if (waterEBO) glDeleteBuffers(1, &waterEBO);
+
+    if (lakeVAO) glDeleteVertexArrays(1, &lakeVAO);
+    if (lakeVBO) glDeleteBuffers(1, &lakeVBO);
+    if (lakeEBO) glDeleteBuffers(1, &lakeEBO);
+
+    if (riverVAO) glDeleteVertexArrays(1, &riverVAO);
+    if (riverVBO) glDeleteBuffers(1, &riverVBO);
+    if (riverEBO) glDeleteBuffers(1, &riverEBO);
 }
 
 // ------------------------------------------------------------
@@ -94,32 +144,33 @@ void Scene::Init() {
     terrain = new Terrain(kTerrainWidth, kTerrainDepth);
 
     const std::string base = ASSET_PATH;
-    
 
     // 2. Load Textures
     grass1Tex   = new Texture((base + "textures/grass.png").c_str());
     grass2Tex   = new Texture((base + "textures/grass2.jpeg").c_str());
     grass3Tex   = new Texture((base + "textures/grass3.jpeg").c_str());
-    rockTex    = new Texture((base + "textures/smallRockTexture.jpg").c_str());
-    sandTex = new Texture((base + "textures/sand.jpeg").c_str());
-    treeTex    = new Texture((base + "textures/leaf.png").c_str());
-    peakTex    = new Texture((base + "textures/peak.jpeg").c_str());
-    boulderTex = new Texture((base + "textures/smallRockTexture.jpg").c_str());
-    waterTex   = new Texture((base + "textures/water.jpeg").c_str());
-    noiseTex   = new Texture((base + "textures/perlin.png").c_str());
-    overlayTex = new Texture((base + "textures/overlay.png").c_str());
+    rockTex     = new Texture((base + "textures/smallRockTexture.jpg").c_str());
+    sandTex     = new Texture((base + "textures/sand1.jpg").c_str());
+    treeTex     = new Texture((base + "textures/leaf.png").c_str());
+    peakTex     = new Texture((base + "textures/peak.jpeg").c_str());
+    boulderTex  = new Texture((base + "textures/smallRockTexture.jpg").c_str());
+    waterTex    = new Texture((base + "textures/water.jpeg").c_str());
+    noiseTex    = new Texture((base + "textures/perlin.png").c_str());
+    overlayTex  = new Texture((base + "textures/overlay.png").c_str());
 
     // 3. Load Models
-    treeModel  = new Model((base + "models/tree.obj").c_str());
-    rockModel  = new Model((base + "models/Rock.obj").c_str());
+    treeModel   = new Model((base + "models/tree.obj").c_str());
+    rockModel   = new Model((base + "models/Rock.obj").c_str());
 
     // 4. Load Water Shader
     waterShader = new Shader(base + "shaders/water.vert", base + "shaders/water.frag");
 
     // 5. Generate Procedural Content
-    GenerateWaterGeometry();
+    GenerateWaterGeometry(); // big ocean plane
     generateTrees();
     generateRocks();
+    generateLakeWater();     // local lake mesh
+    generateRiverWater();    // local river mesh
 }
 
 // ------------------------------------------------------------
@@ -183,19 +234,17 @@ void Scene::Draw(Shader& terrainShader,
         glActiveTexture(GL_TEXTURE7);
         glBindTexture(GL_TEXTURE_2D, shadowMap);
 
-        terrainShader.SetInt("grass1", 0);
-        terrainShader.SetInt("grass2", 1);
-        terrainShader.SetInt("grass3", 2);
-        terrainShader.SetInt("noiseDetail", 3);
-        terrainShader.SetInt("textureRock", 4);
-        terrainShader.SetInt("sandTex", 5);
-        terrainShader.SetInt("texturePeak", 6);
-        terrainShader.SetInt("shadowMap", 7);
+        terrainShader.SetInt("grass1",       0);
+        terrainShader.SetInt("grass2",       1);
+        terrainShader.SetInt("grass3",       2);
+        terrainShader.SetInt("noiseDetail",  3);
+        terrainShader.SetInt("textureRock",  4);
+        terrainShader.SetInt("sandTex",      5);
+        terrainShader.SetInt("texturePeak",  6);
+        terrainShader.SetInt("shadowMap",    7);
 
-
-
-        terrainShader.SetVec3("lightPos", lightPos);
-        terrainShader.SetVec3("viewPos", viewPos);
+        terrainShader.SetVec3("lightPos",  lightPos);
+        terrainShader.SetVec3("viewPos",   viewPos);
         terrainShader.SetVec3("lightColor", lightColor);
 
         terrain->Draw(terrainShader.ID);
@@ -215,8 +264,8 @@ void Scene::Draw(Shader& terrainShader,
         objectShader.SetMat4("lightSpaceMatrix", lightSpaceMatrix);
         objectShader.SetMat4("model", glm::mat4(1.0f));
 
-        objectShader.SetVec3("lightPos", lightPos);
-        objectShader.SetVec3("viewPos", viewPos);
+        objectShader.SetVec3("lightPos",  lightPos);
+        objectShader.SetVec3("viewPos",   viewPos);
         objectShader.SetVec3("lightColor", lightColor);
 
         glActiveTexture(GL_TEXTURE7);
@@ -241,8 +290,13 @@ void Scene::Draw(Shader& terrainShader,
     // ===============================
     // 3. WATER DRAW
     // ===============================
+    // Big ocean plane
     DrawWater(view, projection);
+    // Local meshes (lake & rivers)
+    DrawLakeWater(view, projection);
+    DrawRiverWater(view, projection);
 }
+
 
 
 // ------------------------------------------------------------
@@ -255,10 +309,10 @@ void Scene::generateTrees() {
     std::mt19937 rng(1337);
     std::bernoulli_distribution preferSouth(kSouthForestBias);
     std::bernoulli_distribution mountainChance(kMountainTreeBias);
-    std::uniform_real_distribution<float> forestX(-kTerrainWidth * 0.4f, kTerrainWidth * 0.4f);
+    std::uniform_real_distribution<float> forestX(-kTerrainWidth * 0.4f,  kTerrainWidth * 0.4f);
     std::uniform_real_distribution<float> generalX(-kTerrainWidth * 0.45f, kTerrainWidth * 0.45f);
-    std::uniform_real_distribution<float> forestZ(kLakeCenterZ + 10.0f, kTerrainDepth * 0.5f);
-    std::uniform_real_distribution<float> generalZ(-kTerrainDepth * 0.35f, kLakeCenterZ + 20.0f);
+    std::uniform_real_distribution<float> forestZ(60.0f + 10.0f,            kTerrainDepth * 0.5f);
+    std::uniform_real_distribution<float> generalZ(-kTerrainDepth * 0.35f,  60.0f + 20.0f);
     std::uniform_real_distribution<float> mountainX(-kTerrainWidth * 0.35f, kTerrainWidth * 0.35f);
     std::uniform_real_distribution<float> mountainZ(kMountainStart - 55.0f, kMountainStart + 10.0f);
     std::uniform_real_distribution<float> scaleDist(0.65f, 1.45f);
@@ -274,18 +328,30 @@ void Scene::generateTrees() {
         bool southBand = !mountainBand && preferSouth(rng);
         
         float x = 0.0f, z = 0.0f;
-        if (mountainBand) { x = mountainX(rng); z = mountainZ(rng); } 
-        else if (southBand) { x = forestX(rng); z = forestZ(rng); } 
-        else { x = generalX(rng); z = generalZ(rng); }
+        if (mountainBand) {
+            x = mountainX(rng);
+            z = mountainZ(rng);
+        } else if (southBand) {
+            x = forestX(rng);
+            z = forestZ(rng);
+        } else {
+            x = generalX(rng);
+            z = generalZ(rng);
+        }
 
         if (!mountainBand && z < kMountainAvoidZ) continue;
+
+        // Avoid lake (use real lake pos)
         float distToLake = std::sqrt(x * x + std::pow(z - kLakeCenterZ, 2));
         if (distToLake < kLakeRadius + 6.0f) continue;
+
+        // Avoid rivers (approx)
         if (nearRiver(x, z)) continue;
+
         if (z > kCornerPlainZ && std::abs(x) > kCornerPlainX) continue;
 
         float height = Terrain::getHeight(x, z);
-        if (height < -2.0f) continue;
+        if (height < 1.0f) continue;
         if (mountainBand && height < 8.0f) continue;
 
         glm::mat4 model = glm::mat4(1.0f);
@@ -308,18 +374,16 @@ void Scene::generateRocks() {
 
     std::mt19937 rng(42);
 
-    // Spread rocks across the entire map interior
     std::uniform_real_distribution<float> rockX(-kTerrainWidth * 0.45f, kTerrainWidth * 0.45f);
     std::uniform_real_distribution<float> rockZ(-kTerrainDepth * 0.45f, kTerrainDepth * 0.45f);
 
-    // Bigger rocks so they are visible in your RTS view
     std::uniform_real_distribution<float> scaleDist(1.0f, 3.5f);
     std::uniform_real_distribution<float> rotDist(0.0f, glm::two_pi<float>());
 
     rockTransforms.reserve(kRockCount);
 
     int attempts = 0;
-    const int maxAttempts = kRockCount * 80; // very generous
+    const int maxAttempts = kRockCount * 80;
 
     while (rockTransforms.size() < kRockCount && attempts < maxAttempts) {
         attempts++;
@@ -327,41 +391,24 @@ void Scene::generateRocks() {
         float x = rockX(rng);
         float z = rockZ(rng);
 
-        // Terrain height at this location
         float height = Terrain::getHeight(x, z);
 
-        // ---------- RULES FOR ROCK PLACEMENT ----------
-
-        // 1. Avoid lake area
         float distToLake = std::sqrt(x*x + std::pow(z - kLakeCenterZ, 2));
         if (distToLake < kLakeRadius + 8.0f) continue;
 
-        // 2. Avoid rivers
         if (nearRiver(x, z)) continue;
+        if (height < 1.0f) continue;
 
-        // 3. Avoid underwater or deep trenches
-        if (height < -1.0f) continue;
-
-        // 4. Avoid extreme slopes (almost vertical)
         glm::vec3 normal = terrain->getNormal(x, z);
         float slope = glm::dot(normal, glm::vec3(0, 1, 0));
-        if (slope < 0.25f) continue; // too steep
+        if (slope < 0.25f) continue;
 
-        // 5. Avoid bottom-most southern area (your base zones)
         if (z > 130.0f) continue;
 
-        // -------------------------------------------------
-
-        // Create rock transform matrix
         glm::mat4 model = glm::mat4(1.0f);
-
-        // Slight lift to avoid Z-fighting or burial
         model = glm::translate(model, glm::vec3(x, height + 5.0f, z));
-
-        // Random rotation
         model = glm::rotate(model, rotDist(rng), glm::vec3(0.0f, 1.0f, 0.0f));
 
-        // Visible rock size
         float scale = scaleDist(rng);
         glm::vec3 nonUniform(scale, scale * 1.25f, scale);
         model = glm::scale(model, nonUniform);
@@ -369,7 +416,7 @@ void Scene::generateRocks() {
         rockTransforms.push_back(model);
     }
 
-    // Optional: force 1 debug rock dead center for sanity check
+    // Debug rock in center
     {
         float x = 0.0f;
         float z = 0.0f;
@@ -382,17 +429,13 @@ void Scene::generateRocks() {
     std::cout << "Generated " << rockTransforms.size() << " rocks." << std::endl;
 }
 
+// ------------------------------------------------------------
+// BIG OCEAN WATER PLANE
+// ------------------------------------------------------------
 void Scene::GenerateWaterGeometry() {
-    // 128x128 grid for vertex waves
-    int resolution = 128; 
-    float size = 600.0f;  // Size of water plane
-    
-    // HEIGHT ADJUSTMENT: 
-    // Your Terrain.cpp clamps rivers at -2.0f. 
-    // We set water at -1.2f so it sits "inside" the river trench 
-    // but not high enough to flood the plains.
-    float y = -1.2f;      
-    
+    int resolution = 128;
+    float size = 600.0f;
+    float y = -1.2f;       // global water height
     float uvScale = 20.0f;
 
     std::vector<float> vertices;
@@ -458,7 +501,6 @@ void Scene::GenerateWaterGeometry() {
     glBindVertexArray(0);
 }
 
-// Ensure DrawWater uses the new index count
 void Scene::DrawWater(const glm::mat4& view, const glm::mat4& proj) {
     if (!waterShader || !waterTex || !waterVAO) return;
 
@@ -480,9 +522,321 @@ void Scene::DrawWater(const glm::mat4& view, const glm::mat4& proj) {
     overlayTex->Bind(2);
 
     glBindVertexArray(waterVAO);
-    // 128*128 quads * 6 indices
     glDrawElements(GL_TRIANGLES, 128 * 128 * 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     glDisable(GL_BLEND);
+}
+
+// ------------------------------------------------------------
+// LAKE WATER MESH
+// ------------------------------------------------------------
+void Scene::generateLakeWater()
+{
+    // Must match Terrain constants
+    const float lakeX       = 0.0f;
+    const float lakeZ       = -200.0f;
+    const float lakeOuterR  = 90.0f;
+    const float lakeInnerR  = 55.0f;
+
+    // Pick whatever you like visually; just keep it <= rim height
+    const float waterY      = 4.5f;   
+
+    const int segments = 96;
+
+    lakeWaterVerts.clear();
+    lakeWaterIndices.clear();
+
+    // Center vertex
+    lakeWaterVerts.push_back({
+        glm::vec3(lakeX, waterY, lakeZ),
+        glm::vec2(0.5f, 0.5f)
+    });
+
+    for (int i = 0; i <= segments; ++i)
+    {
+        float a = (float)i / segments * 2.0f * glm::pi<float>();
+
+        // Same irregular function as Terrain
+        float irregular =
+              1.0f
+            + 0.18f * std::cos(3.0f * a)
+            + 0.08f * std::cos(5.0f * a);
+
+        float innerR = lakeInnerR  * irregular;
+        float outerR = lakeOuterR  * irregular;
+
+        // Water radius: safely between inner & outer rim
+        float waterR = innerR + (outerR - innerR) * 0.55f;
+
+        float x = lakeX + std::cos(a) * waterR;
+        float z = lakeZ + std::sin(a) * waterR;
+
+        lakeWaterVerts.push_back({
+            glm::vec3(x, waterY, z),
+            glm::vec2((std::cos(a) + 1.0f) * 0.5f,
+                      (std::sin(a) + 1.0f) * 0.5f)
+        });
+    }
+
+    // Fan indices
+    for (int i = 1; i <= segments; ++i)
+    {
+        lakeWaterIndices.push_back(0);
+        lakeWaterIndices.push_back(i);
+        lakeWaterIndices.push_back(i + 1);
+    }
+
+    uploadLakeWaterMesh();
+}
+
+void Scene::uploadLakeWaterMesh()
+{
+    if (lakeVAO) glDeleteVertexArrays(1, &lakeVAO);
+    if (lakeVBO) glDeleteBuffers(1, &lakeVBO);
+    if (lakeEBO) glDeleteBuffers(1, &lakeEBO);
+
+    glGenVertexArrays(1, &lakeVAO);
+    glGenBuffers(1, &lakeVBO);
+    glGenBuffers(1, &lakeEBO);
+
+    glBindVertexArray(lakeVAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, lakeVBO);
+    glBufferData(GL_ARRAY_BUFFER,
+                 lakeWaterVerts.size() * sizeof(WaterVertex),
+                 lakeWaterVerts.data(),
+                 GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lakeEBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                 lakeWaterIndices.size() * sizeof(unsigned int),
+                 lakeWaterIndices.data(),
+                 GL_STATIC_DRAW);
+
+    // layout: 0 = position, 1 = uv
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
+                          sizeof(WaterVertex),
+                          (void*)offsetof(WaterVertex, position));
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
+                          sizeof(WaterVertex),
+                          (void*)offsetof(WaterVertex, uv));
+
+    glBindVertexArray(0);
+}
+
+void Scene::DrawLakeWater(const glm::mat4& view, const glm::mat4& proj)
+{
+    if (!waterShader || !waterTex || !lakeVAO || lakeWaterIndices.empty())
+        return;
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    waterShader->Use();
+    waterShader->SetMat4("model", glm::mat4(1.0f));
+    waterShader->SetMat4("view", view);
+    waterShader->SetMat4("projection", proj);
+    waterShader->SetFloat("time", static_cast<float>(glfwGetTime()));
+
+    waterShader->SetInt("textureSampler", 0);
+    waterShader->SetInt("noiseSampler",   1);
+    waterShader->SetInt("overlaySampler", 2);
+
+    waterTex->Bind(0);
+    noiseTex->Bind(1);
+    overlayTex->Bind(2);
+
+    glBindVertexArray(lakeVAO);
+    glDrawElements(GL_TRIANGLES,
+                   static_cast<GLsizei>(lakeWaterIndices.size()),
+                   GL_UNSIGNED_INT,
+                   0);
+    glBindVertexArray(0);
+
+    glDisable(GL_BLEND);
+}
+
+// ------------------------------------------------------------
+// RIVER WATER MESH
+// ------------------------------------------------------------
+void Scene::generateRiverWater()
+{
+    // Must match Terrain
+    const float lakeZ       = -200.0f;
+    const float riverStartZ = lakeZ + 12.0f;   // -188
+    const float riverEndZ   = 260.0f;
+
+    // Where Terrain's halfWidth has fully faded to 0 (see carveRiver)
+    const float visualEndZ  = 180.0f;          // stop mesh here
+
+    const float waterY = 1.5f;   // your chosen river surface height
+    const float step   = 3.0f;   // smaller step = smoother mesh
+
+    riverWaterVerts.clear();
+    riverWaterIndices.clear();
+
+    auto evalSlice = [&](float z, float startX, float dir,
+                         float& outLeft, float& outRight) -> bool
+    {
+        if (z < riverStartZ || z > riverEndZ)
+            return false;
+
+        float t = (z - riverStartZ) / (riverEndZ - riverStartZ);
+
+        float endX  = dir * 180.0f;
+        float pathX = glm::mix(startX, endX, t);
+
+        pathX += dir * (30.0f * std::sin(z * 0.035f));
+        pathX +=        (12.0f * std::cos(z * 0.02f));
+
+        float halfWidth = glm::mix(28.0f, 18.0f, t);
+        float fade = glm::clamp((z - 150.0f) / 30.0f, 0.0f, 1.0f);
+        halfWidth *= (1.0f - fade);
+
+        if (halfWidth <= 0.1f)
+            return false; // channel basically gone
+
+        outLeft  = pathX - halfWidth;
+        outRight = pathX + halfWidth;
+        return true;
+    };
+
+    // Start a little below the lake to avoid the nasty fan at the join
+    const float meshStartZ = riverStartZ + 18.0f;
+
+    for (float z = meshStartZ; z <= visualEndZ; z += step)
+    {
+        float lLeft, lRight, rLeft, rRight;
+        bool okL = evalSlice(z, -15.0f, -1.0f, lLeft, lRight);
+        bool okR = evalSlice(z, +15.0f, +1.0f, rLeft, rRight);
+
+        // If either river vanished here, skip this slice
+        if (!okL && !okR) continue;
+
+        // Store 4 verts per slice (left inner/outer, right inner/outer)
+        WaterVertex v0 { glm::vec3(lLeft,  waterY, z), glm::vec2(0.0f, 0.0f) };
+        WaterVertex v1 { glm::vec3(lRight, waterY, z), glm::vec2(1.0f, 0.0f) };
+        WaterVertex v2 { glm::vec3(rLeft,  waterY, z), glm::vec2(0.0f, 1.0f) };
+        WaterVertex v3 { glm::vec3(rRight, waterY, z), glm::vec2(1.0f, 1.0f) };
+
+        riverWaterVerts.push_back(v0);
+        riverWaterVerts.push_back(v1);
+        riverWaterVerts.push_back(v2);
+        riverWaterVerts.push_back(v3);
+    }
+
+    // Build indices (two strips, just like before)
+    int count = static_cast<int>(riverWaterVerts.size());
+    for (int i = 0; i < count - 4; i += 4)
+    {
+        // left strip
+        riverWaterIndices.push_back(i);
+        riverWaterIndices.push_back(i + 1);
+        riverWaterIndices.push_back(i + 4);
+
+        riverWaterIndices.push_back(i + 1);
+        riverWaterIndices.push_back(i + 5);
+        riverWaterIndices.push_back(i + 4);
+
+        // right strip
+        riverWaterIndices.push_back(i + 2);
+        riverWaterIndices.push_back(i + 3);
+        riverWaterIndices.push_back(i + 6);
+
+        riverWaterIndices.push_back(i + 3);
+        riverWaterIndices.push_back(i + 7);
+        riverWaterIndices.push_back(i + 6);
+    }
+
+    uploadRiverWaterMesh();
+}
+
+
+
+void Scene::uploadRiverWaterMesh()
+{
+    if (riverVAO) glDeleteVertexArrays(1, &riverVAO);
+    if (riverVBO) glDeleteBuffers(1, &riverVBO);
+    if (riverEBO) glDeleteBuffers(1, &riverEBO);
+
+    glGenVertexArrays(1, &riverVAO);
+    glGenBuffers(1, &riverVBO);
+    glGenBuffers(1, &riverEBO);
+
+    glBindVertexArray(riverVAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, riverVBO);
+    glBufferData(GL_ARRAY_BUFFER,
+                 riverWaterVerts.size() * sizeof(WaterVertex),
+                 riverWaterVerts.data(),
+                 GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, riverEBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                 riverWaterIndices.size() * sizeof(unsigned int),
+                 riverWaterIndices.data(),
+                 GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
+                          sizeof(WaterVertex),
+                          (void*)offsetof(WaterVertex, position));
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
+                          sizeof(WaterVertex),
+                          (void*)offsetof(WaterVertex, uv));
+
+    glBindVertexArray(0);
+}
+
+void Scene::DrawRiverWater(const glm::mat4& view, const glm::mat4& proj)
+{
+    if (!waterShader || !waterTex || !riverVAO || riverWaterIndices.empty())
+        return;
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    waterShader->Use();
+    waterShader->SetMat4("model", glm::mat4(1.0f));
+    waterShader->SetMat4("view", view);
+    waterShader->SetMat4("projection", proj);
+    waterShader->SetFloat("time", static_cast<float>(glfwGetTime()));
+
+    waterShader->SetInt("textureSampler", 0);
+    waterShader->SetInt("noiseSampler",   1);
+    waterShader->SetInt("overlaySampler", 2);
+
+    waterTex->Bind(0);
+    noiseTex->Bind(1);
+    overlayTex->Bind(2);
+
+    glBindVertexArray(riverVAO);
+    glDrawElements(GL_TRIANGLES,
+                   static_cast<GLsizei>(riverWaterIndices.size()),
+                   GL_UNSIGNED_INT,
+                   0);
+    glBindVertexArray(0);
+
+    glDisable(GL_BLEND);
+}
+
+void Scene::Update(float dt)
+{
+    uiManager.update(mouseX, mouseY);
+    buildingManager.update(dt, mouseX, mouseY);
+    entityManager.update(dt);
+}
+
+void Scene::Render()
+{
+    terrain.render();
+    entityManager.render();
+    buildingManager.renderGhost(camera);
+    uiManager.render();
 }
