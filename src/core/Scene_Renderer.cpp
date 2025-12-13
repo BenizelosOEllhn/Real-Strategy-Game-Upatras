@@ -1,6 +1,9 @@
 #include "Scene.h"
+#include "SceneConstants.h"
 
-
+// ------------------------------------------------------------
+// MAIN RENDER PASS
+// ------------------------------------------------------------
 void Scene::Draw(Shader& terrainShader,
                  Shader& objectShader,
                  glm::mat4 view,
@@ -92,10 +95,10 @@ void Scene::Draw(Shader& terrainShader,
     // 3. WATER DRAW
     // ===============================
     // Big ocean plane
-    DrawWater(view, projection);
+    DrawWater(view, projection, viewPos);
     // Local meshes (lake & rivers)
-    DrawLakeWater(view, projection);
-    DrawRiverWater(view, projection);
+    DrawLakeWater(view, projection, viewPos);
+    DrawRiverWater(view, projection, viewPos);
 
     // ===============================
     // 4. DRAW UI + BUILD PLACEMENT PREVIEW
@@ -104,6 +107,9 @@ if (buildingManager_.isPlacing() &&
     buildingManager_.hasPreview() &&
     buildingManager_.getPreviewModel())
 {
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -111,50 +117,36 @@ if (buildingManager_.isPlacing() &&
     previewShader->SetMat4("view", view);
     previewShader->SetMat4("projection", projection);
 
-    glm::mat4 model = glm::translate(glm::mat4(1.0f),
-                                     buildingManager_.getPreviewPos());
+    glm::mat4 model = glm::translate(
+        glm::mat4(1.0f),
+        buildingManager_.getPreviewPos()
+    );
     previewShader->SetMat4("model", model);
 
-    previewShader->SetVec4("tint",
-                           glm::vec4(1.0, 1.0, 1.0, 0.35)); // transparent
+    // FORCE visible green
+    previewShader->SetVec4("uTint",
+        glm::vec4(0.1f, 1.0f, 0.1f, 0.6f)
+    );
 
     buildingManager_.getPreviewModel()->Draw(*previewShader);
 
-    glDisable(GL_BLEND);
-}
+    glBindVertexArray(0);
+    glUseProgram(0);
 
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 
-
-
-    // (A) Draw ghost preview (currently nothing, but we add simple debug)
-    if (buildingManager_.hasPreview()) {
-        glm::vec3 p = buildingManager_.getPreviewPos();
-
-        // Simple debug ghost (draw a colored point)
-        glPointSize(20.0f);
-        glBegin(GL_POINTS);
-        glColor3f(1.0f, 1.0f, 0.0f);
-        glVertex3f(p.x, p.y + 2.0f, p.z);
-        glEnd();
-    }
-
-    if (buildingManager_.hasPreview()) {
-    glm::vec3 p = buildingManager_.getPreviewPos();
-
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), p);
-    model = glm::scale(model, glm::vec3(5.0f)); // size of building footprint
-
-    ghostShader->Use();
-    ghostShader->SetMat4("uModel", model);
-    ghostShader->SetMat4("uView", view);
-    ghostShader->SetMat4("uProj", projection);
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    ghostCube->Draw(*ghostShader);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
 
     glDisable(GL_BLEND);
+
+
+    std::cout << "[Scene] Drawing preview at "
+          << buildingManager_.getPreviewPos().x << ", "
+          << buildingManager_.getPreviewPos().y << ", "
+          << buildingManager_.getPreviewPos().z << std::endl;
+
 }
 
     // (B) Draw UI buttons

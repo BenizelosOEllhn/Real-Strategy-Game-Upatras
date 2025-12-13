@@ -44,13 +44,10 @@ void BuildingManager::update(double mouseX, double mouseY)
     if (!previewModel_)
         return;
 
-    // --------- IMPORTANT: Fix macOS Retina & bottom-left UI mismatch ---------
-    float flippedY = screenH_ - (float)mouseY;
-
     // Generate ray from mouse
     Ray ray = Raycaster::screenPointToRay(
         (float)mouseX,
-        flippedY,
+        (float)mouseY,
         screenW_,
         screenH_,
         *camera_

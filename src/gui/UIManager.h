@@ -1,5 +1,5 @@
-// UIManager.h
 #pragma once
+
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <vector>
@@ -7,17 +7,7 @@
 #include <string>
 
 #include "Shader.h"
-
-struct UIButton
-{
-    glm::vec2 pos;
-    glm::vec2 size;
-    GLuint    texture = 0;
-
-    bool hovered = false;
-
-    std::function<void()> onClick;
-};
+#include "UIButton.h"   
 
 struct UILabel
 {
@@ -40,10 +30,9 @@ public:
                   float scale = 1.0f);
 
     void update(float mouseX, float mouseY);
-    void handleClick(float mouseX, float mouseY);
+    bool handleClick(float mouseX, float mouseY);
     void render();
 
-    // On-the-fly text rendering (used by labels internally, but you can call it too)
     void drawText(const std::string& text, float x, float y, float scale = 1.0f);
 
 private:

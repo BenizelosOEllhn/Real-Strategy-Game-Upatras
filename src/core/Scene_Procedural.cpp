@@ -1,84 +1,30 @@
 #include "Scene.h"
+#include "SceneConstants.h"
 
-namespace
-{
-    // ------------------------------------------------------------
-    // Vegetation Bias
-    // ------------------------------------------------------------
-    constexpr float kSouthForestBias   = 0.75f; // more trees in south
-    constexpr float kMountainTreeBias  = 0.35f; // fewer trees at altitude
-
-    // ------------------------------------------------------------
-    // Plain / corner flattening
-    // ------------------------------------------------------------
-    constexpr float kCornerPlainX = 120.0f;
-    constexpr float kCornerPlainZ = -120.0f;
-}
-
-
-bool Scene::nearRiver(float x, float z) 
-{
-    // Must match Terrain river parameters
-    const float lakeZ       = kLakeCenterZ;
-    const float riverStartZ = lakeZ + 12.0f;
-    const float riverEndZ   = 260.0f;
-
-    if (z < riverStartZ || z > riverEndZ)
-        return false;
-
-    auto evalPath = [&](float startX, float dir,
-                        float& outMin, float& outMax)
-    {
-        float t = (z - riverStartZ) / (riverEndZ - riverStartZ);
-
-        float endX  = dir * 180.0f;
-        float pathX = glm::mix(startX, endX, t);
-
-        pathX += dir * (30.0f * std::sin(z * 0.035f));
-        pathX +=        (12.0f * std::cos(z * 0.02f));
-
-        float halfWidth = glm::mix(28.0f, 18.0f, t);
-        float fade = glm::clamp((z - 150.0f) / 30.0f, 0.0f, 1.0f);
-        halfWidth *= (1.0f - fade);
-
-        // Slight padding so foliage doesn’t clip water
-        halfWidth += 4.0f;
-
-        outMin = pathX - halfWidth;
-        outMax = pathX + halfWidth;
-    };
-
-    float lMin, lMax, rMin, rMax;
-    evalPath(-15.0f, -1.0f, lMin, lMax);
-    evalPath( 15.0f,  1.0f, rMin, rMax);
-
-    if (x >= lMin && x <= lMax) return true;
-    if (x >= rMin && x <= rMax) return true;
-
-    return false;
-}
-
+// ------------------------------------------------------------
+// Procedural Generation: Trees
+// ------------------------------------------------------------
 void Scene::generateTrees() {
     treeTransforms.clear();
     if (!terrain) return;
 
     std::mt19937 rng(1337);
-    std::bernoulli_distribution preferSouth(kSouthForestBias);
-    std::bernoulli_distribution mountainChance(kMountainTreeBias);
-    std::uniform_real_distribution<float> forestX(-kTerrainWidth * 0.4f,  kTerrainWidth * 0.4f);
-    std::uniform_real_distribution<float> generalX(-kTerrainWidth * 0.45f, kTerrainWidth * 0.45f);
-    std::uniform_real_distribution<float> forestZ(60.0f + 10.0f,            kTerrainDepth * 0.5f);
-    std::uniform_real_distribution<float> generalZ(-kTerrainDepth * 0.35f,  60.0f + 20.0f);
-    std::uniform_real_distribution<float> mountainX(-kTerrainWidth * 0.35f, kTerrainWidth * 0.35f);
-    std::uniform_real_distribution<float> mountainZ(kMountainStart - 55.0f, kMountainStart + 10.0f);
+    std::bernoulli_distribution preferSouth(SceneConst::kSouthForestBias);
+    std::bernoulli_distribution mountainChance(SceneConst::kMountainTreeBias);
+    std::uniform_real_distribution<float> forestX(SceneConst::kTerrainWidth * -0.4f,  SceneConst::kTerrainWidth * 0.4f);
+    std::uniform_real_distribution<float> generalX(SceneConst::kTerrainWidth * -0.45f, SceneConst::kTerrainWidth * 0.45f);
+    std::uniform_real_distribution<float> forestZ(60.0f + 10.0f,  SceneConst::kTerrainDepth * 0.5f);
+    std::uniform_real_distribution<float> generalZ(SceneConst::kTerrainDepth * -0.35f,  60.0f + 20.0f);
+    std::uniform_real_distribution<float> mountainX(SceneConst::kTerrainWidth * -0.35f, SceneConst::kTerrainWidth * 0.35f);
+    std::uniform_real_distribution<float> mountainZ(SceneConst::kMountainStart - 55.0f, SceneConst::kMountainStart + 10.0f);
     std::uniform_real_distribution<float> scaleDist(0.65f, 1.45f);
     std::uniform_real_distribution<float> rotDist(0.0f, glm::two_pi<float>());
 
-    treeTransforms.reserve(kTreeCount);
+    treeTransforms.reserve(SceneConst::kTreeCount);
 
     int attempts = 0;
-    const int maxAttempts = kTreeCount * 15;
-    while (treeTransforms.size() < kTreeCount && attempts < maxAttempts) {
+    const int maxAttempts = SceneConst::kTreeCount * 15;
+    while (treeTransforms.size() < SceneConst::kTreeCount && attempts < maxAttempts) {
         attempts++;
         bool mountainBand = mountainChance(rng);
         bool southBand = !mountainBand && preferSouth(rng);
@@ -95,16 +41,16 @@ void Scene::generateTrees() {
             z = generalZ(rng);
         }
 
-        if (!mountainBand && z < kMountainAvoidZ) continue;
+        if (!mountainBand && z < SceneConst::kMountainAvoidZ) continue;
 
         // Avoid lake (use real lake pos)
-        float distToLake = std::sqrt(x * x + std::pow(z - kLakeCenterZ, 2));
-        if (distToLake < kLakeRadius + 6.0f) continue;
+        float distToLake = std::sqrt(x * x + std::pow(z - SceneConst::kLakeCenterZ, 2));
+        if (distToLake < SceneConst::kLakeRadius + 6.0f) continue;
 
         // Avoid rivers (approx)
-        if (nearRiver(x, z)) continue;
+        if (SceneConst::nearRiver(x, z)) continue;
 
-        if (z > kCornerPlainZ && std::abs(x) > kCornerPlainX) continue;
+        if (z > SceneConst::kCornerPlainZ && std::abs(x) > SceneConst::kCornerPlainX) continue;
 
         float height = Terrain::getHeight(x, z);
         if (height < 1.0f) continue;
@@ -130,18 +76,18 @@ void Scene::generateRocks() {
 
     std::mt19937 rng(42);
 
-    std::uniform_real_distribution<float> rockX(-kTerrainWidth * 0.45f, kTerrainWidth * 0.45f);
-    std::uniform_real_distribution<float> rockZ(-kTerrainDepth * 0.45f, kTerrainDepth * 0.45f);
+    std::uniform_real_distribution<float> rockX(SceneConst::kTerrainWidth * -0.45f, SceneConst::kTerrainWidth * 0.45f);
+    std::uniform_real_distribution<float> rockZ(SceneConst::kTerrainDepth * -0.45f, SceneConst::kTerrainDepth * 0.45f);
 
     std::uniform_real_distribution<float> scaleDist(1.0f, 3.5f);
     std::uniform_real_distribution<float> rotDist(0.0f, glm::two_pi<float>());
 
-    rockTransforms.reserve(kRockCount);
+    rockTransforms.reserve(SceneConst::kRockCount);
 
     int attempts = 0;
-    const int maxAttempts = kRockCount * 80;
+    const int maxAttempts = SceneConst::kRockCount * 80;
 
-    while (rockTransforms.size() < kRockCount && attempts < maxAttempts) {
+    while (rockTransforms.size() < SceneConst::kRockCount && attempts < maxAttempts) {
         attempts++;
 
         float x = rockX(rng);
@@ -149,10 +95,10 @@ void Scene::generateRocks() {
 
         float height = Terrain::getHeight(x, z);
 
-        float distToLake = std::sqrt(x*x + std::pow(z - kLakeCenterZ, 2));
-        if (distToLake < kLakeRadius + 8.0f) continue;
+        float distToLake = std::sqrt(x*x + std::pow(z - SceneConst::kLakeCenterZ, 2));
+        if (distToLake < SceneConst::kLakeRadius + 8.0f) continue;
 
-        if (nearRiver(x, z)) continue;
+        if (SceneConst::nearRiver(x, z)) continue;
         if (height < 1.0f) continue;
 
         glm::vec3 normal = terrain->getNormal(x, z);

@@ -46,19 +46,6 @@
 #define ASSET_PATH "assets/"
 #endif
 
-// ============================================================
-// Shared Scene Constants (HEADER SAFE)
-// ============================================================
-constexpr int   kTerrainWidth  = 600;
-constexpr int   kTerrainDepth  = 600;
-constexpr int   kTreeCount     = 360;
-constexpr int   kRockCount     = 110;
-
-constexpr float kMountainStart  = -90.0f;
-constexpr float kMountainAvoidZ = -70.0f;
-
-constexpr float kLakeCenterZ    = -200.0f;
-constexpr float kLakeRadius     = 60.0f;
 
 // ============================================================
 // Scene
@@ -141,6 +128,7 @@ private:
     struct WaterVertex {
         glm::vec3 position;
         glm::vec2 uv;
+        float fade;
     };
 
     // Ocean
@@ -152,7 +140,9 @@ private:
     Shader* waterShader = nullptr;
 
     void GenerateWaterGeometry();
-    void DrawWater(const glm::mat4& view, const glm::mat4& proj);
+void DrawWater(const glm::mat4& view,
+               const glm::mat4& proj,
+               const glm::vec3& viewPos);
 
     // Lake
     std::vector<WaterVertex>  lakeWaterVerts;
@@ -161,7 +151,10 @@ private:
 
     void generateLakeWater();
     void uploadLakeWaterMesh();
-    void DrawLakeWater(const glm::mat4& view, const glm::mat4& proj);
+
+void DrawLakeWater(const glm::mat4& view,
+                   const glm::mat4& proj,
+                   const glm::vec3& viewPos);
 
     // River
     std::vector<WaterVertex>  riverWaterVerts;
@@ -170,7 +163,11 @@ private:
 
     void generateRiverWater();
     void uploadRiverWaterMesh();
-    void DrawRiverWater(const glm::mat4& view, const glm::mat4& proj);
+
+void DrawRiverWater(const glm::mat4& view,
+                    const glm::mat4& proj,
+                    const glm::vec3& viewPos);
+
     bool nearRiver(float x, float z);
     void Resize(int fbW, int fbH);
 
@@ -201,6 +198,13 @@ private:
     void beginReflectionPass(int w, int h);
     void beginRefractionPass(int w, int h);
     void endWaterPass(int w, int h);
+    
+    //MousePlacement
+    glm::vec3 GetMouseWorldPos(double mouseX, double mouseY,
+                            int screenW, int screenH,
+                            const glm::mat4& view,
+                            const glm::mat4& projection,
+                            float groundY);
 
     // ========================================================
     // UI + BUILDING
@@ -212,8 +216,6 @@ private:
     double mouseY_ = 0.0;
 
     Shader* previewShader = nullptr;
-    Shader* ghostShader   = nullptr;
-    Model*  ghostCube     = nullptr;
 
     // ========================================================
     // GAME STATE

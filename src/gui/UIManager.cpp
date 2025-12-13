@@ -1,4 +1,3 @@
-// UIManager.cpp
 #include "UIManager.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
@@ -62,20 +61,34 @@ void UIManager::update(float mouseX, float mouseY)
 
 }
 
-void UIManager::handleClick(float mouseX, float mouseY)
+bool UIManager::handleClick(float mx, float my)
 {
-    for (auto& b : buttons_) {
-        if (!b.onClick) continue;
-        bool inside =
-            mouseX >= b.pos.x &&
-            mouseX <= b.pos.x + b.size.x &&
-            mouseY >= b.pos.y &&
-            mouseY <= b.pos.y + b.size.y;
-        if (inside) {
-            b.onClick();
+    std::cout << "[UI] Click test at: " << mx << ", " << my << std::endl;
+
+    for (UIButton& b : buttons_)
+    {
+        std::cout << "  Button @ "
+                  << b.pos.x << "," << b.pos.y
+                  << " size " << b.size.x << "x" << b.size.y << std::endl;
+
+        if (b.contains(mx, my))
+        {
+            std::cout << "  -> HIT BUTTON\n";
+        if (b.contains(mx, my))
+        {
+            if (b.onClick) {
+                b.onClick();
+                return true; // consumed ONLY if clickable
+            }
+            // not clickable -> ignore, keep searching
+        }
+
         }
     }
+    return false;
 }
+
+
 
 void UIManager::render()
 {
@@ -251,3 +264,4 @@ void UIManager::drawText(const std::string& text, float x, float y, float scale)
         cursorX += cw;
     }
 }
+

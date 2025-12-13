@@ -1130,6 +1130,7 @@ CMakeFiles/cin.dir/src/core/Scene_Events.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/Camera.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../gui/UIManager.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/common/Shader.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../gui/UIButton.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/managers/BuildingManager.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/raycast/Raycaster.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/rendering/terrain/Terrain.h \

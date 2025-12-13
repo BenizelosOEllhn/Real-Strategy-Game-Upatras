@@ -20,13 +20,14 @@ void Scene::setupBuildingBar()
     bar.size = glm::vec2(fbWidth, barHeight);
     bar.texture = 0;        // special = solid color
     bar.onClick = nullptr;  // not clickable
+    bar.clickable = false;
 
     uiManager_.addButton(bar);
 
     // 2) Building buttons + labels
     int i = 0;
     const float labelOffsetY = 6.0f;
-    const float labelScale   = 1.0f;
+    const float labelScale   = 1.6f;
     const float charW        = 8.0f * labelScale;  // matches setFontTexture
 
     auto addButton = [&](const char* fileName,
@@ -53,7 +54,7 @@ void Scene::setupBuildingBar()
         float textWidth = text.size() * charW;
         float centerX   = btn.pos.x + btn.size.x * 0.5f;
         float labelX    = centerX - textWidth * 0.5f;
-        float labelY    = bar.pos.y + 4.0f;  // near bottom of bar
+        float labelY    = bar.pos.y + 8.0f;  // near bottom of bar
 
         uiManager_.addLabel(text, glm::vec2(labelX, labelY), labelScale);
 
@@ -74,24 +75,66 @@ void Scene::onMouseMove(double x, double y)
     int fbW, fbH;
     glfwGetFramebufferSize(glfwGetCurrentContext(), &fbW, &fbH);
 
-    // Convert from window (GLFW) coords → framebuffer (pixel) coords correctly
     int winW, winH;
     glfwGetWindowSize(glfwGetCurrentContext(), &winW, &winH);
 
     float scaleX = (float)fbW / (float)winW;
     float scaleY = (float)fbH / (float)winH;
 
-    mouseX_ = x * scaleX;
-    mouseY_ = fbH - (y * scaleY);   // ← CORRECT: flip AFTER scaling
+    // Convert to framebuffer pixels
+    double px = x * scaleX;
+    double py = y * scaleY;
+
+    // IMPORTANT: store bottom-left origin
+    mouseX_ = px;
+    mouseY_ = (double)fbH - py;
 }
+    
 
 void Scene::onMouseButton(int button, int action, int mods)
 {
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        // first let UI consume it
-        uiManager_.handleClick(mouseX_, mouseY_);
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+    {
+        bool uiConsumed = uiManager_.handleClick(mouseX_, mouseY_);
+std::cout << "[Scene] UI consumed: " << uiConsumed << std::endl;
 
-        // then building placement
-        buildingManager_.confirmPlacement(mouseX_, mouseY_);
+        if (!uiConsumed)
+        {
+            buildingManager_.confirmPlacement(mouseX_, mouseY_);
+        }
     }
 }
+
+
+glm::vec3 Scene::GetMouseWorldPos(double mouseX, double mouseY,
+                                  int screenW, int screenH,
+                                  const glm::mat4& view,
+                                  const glm::mat4& projection,
+                                  float groundY)
+{
+    // 1. NDC
+    float x = (2.0f * mouseX) / screenW - 1.0f;
+    float y = 1.0f - (2.0f * mouseY) / screenH;
+
+    glm::vec4 rayClip(x, y, -1.0f, 1.0f);
+
+    // 2. Eye space
+    glm::vec4 rayEye = glm::inverse(projection) * rayClip;
+    rayEye = glm::vec4(rayEye.x, rayEye.y, -1.0f, 0.0f);
+
+    // 3. World space
+    glm::vec3 rayWorld = glm::normalize(
+        glm::vec3(glm::inverse(view) * rayEye)
+    );
+
+    // 4. Ray-plane intersection
+    glm::vec3 camPos = camera->GetPosition();
+
+    if (fabs(rayWorld.y) < 0.0001f)
+        return camPos; // fallback, avoids NaN
+
+    float t = (groundY - camPos.y) / rayWorld.y;
+    return camPos + rayWorld * t;
+
+}
+

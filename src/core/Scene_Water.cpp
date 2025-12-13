@@ -1,5 +1,5 @@
 #include "Scene.h"
-
+#include "SceneConstants.h"
 
 // ------------------------------------------------------------
 // Helpers
@@ -120,41 +120,59 @@ void Scene::GenerateWaterGeometry()
     const float y          = oceanY;
     const float uvScale    = 20.0f;
 
-    std::vector<float> vertices;
+    std::vector<WaterVertex> vertices;
     std::vector<unsigned int> indices;
 
     float step = (size * 2.0f) / resolution;
 
-    for (int z = 0; z <= resolution; ++z) {
-        for (int x = 0; x <= resolution; ++x) {
+    // ----------------------------
+    // Vertices
+    // ----------------------------
+    for (int z = 0; z <= resolution; ++z)
+    {
+        for (int x = 0; x <= resolution; ++x)
+        {
             float xPos = -size + x * step;
             float zPos = -size + z * step;
 
-            vertices.push_back(xPos);
-            vertices.push_back(y);
-            vertices.push_back(zPos);
-
             float u = (float)x / resolution * uvScale;
             float v = (float)z / resolution * uvScale;
-            vertices.push_back(u);
-            vertices.push_back(v);
+
+            vertices.push_back({
+                glm::vec3(xPos, y, zPos),   // position
+                glm::vec2(u, v),             // UV
+                1.0f                          // fade (ALWAYS visible)
+            });
         }
     }
 
-    for (int z = 0; z < resolution; ++z) {
-        for (int x = 0; x < resolution; ++x) {
+    // ----------------------------
+    // Indices
+    // ----------------------------
+    for (int z = 0; z < resolution; ++z)
+    {
+        for (int x = 0; x < resolution; ++x)
+        {
             int tl = z * (resolution + 1) + x;
             int tr = tl + 1;
             int bl = (z + 1) * (resolution + 1) + x;
             int br = bl + 1;
 
-            indices.push_back(tl); indices.push_back(bl); indices.push_back(tr);
-            indices.push_back(tr); indices.push_back(bl); indices.push_back(br);
+            indices.push_back(tl);
+            indices.push_back(bl);
+            indices.push_back(tr);
+
+            indices.push_back(tr);
+            indices.push_back(bl);
+            indices.push_back(br);
         }
     }
 
     waterIndexCount = indices.size();
 
+    // ----------------------------
+    // OpenGL buffers
+    // ----------------------------
     if (waterVAO) glDeleteVertexArrays(1, &waterVAO);
     if (waterVBO) glDeleteBuffers(1, &waterVBO);
     if (waterEBO) glDeleteBuffers(1, &waterEBO);
@@ -166,21 +184,47 @@ void Scene::GenerateWaterGeometry()
     glBindVertexArray(waterVAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, waterVBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER,
+                 vertices.size() * sizeof(WaterVertex),
+                 vertices.data(),
+                 GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, waterEBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                 indices.size() * sizeof(unsigned int),
+                 indices.data(),
+                 GL_STATIC_DRAW);
 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    // ----------------------------
+    // Vertex attributes
+    // ----------------------------
+    glEnableVertexAttribArray(0); // position
+    glVertexAttribPointer(
+        0, 3, GL_FLOAT, GL_FALSE,
+        sizeof(WaterVertex),
+        (void*)offsetof(WaterVertex, position)
+    );
 
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1); // UV
+    glVertexAttribPointer(
+        1, 2, GL_FLOAT, GL_FALSE,
+        sizeof(WaterVertex),
+        (void*)offsetof(WaterVertex, uv)
+    );
+
+    glEnableVertexAttribArray(2); // fade
+    glVertexAttribPointer(
+        2, 1, GL_FLOAT, GL_FALSE,
+        sizeof(WaterVertex),
+        (void*)offsetof(WaterVertex, fade)
+    );
 
     glBindVertexArray(0);
 }
 
-void Scene::DrawWater(const glm::mat4& view, const glm::mat4& proj)
+void Scene::DrawWater(const glm::mat4& view,
+                      const glm::mat4& proj,
+                      const glm::vec3& viewPos)
 {
     if (!waterShader || !waterVAO) return;
     if (!reflectionColorTex || !refractionColorTex || !refractionDepthTex) return;
@@ -189,46 +233,67 @@ void Scene::DrawWater(const glm::mat4& view, const glm::mat4& proj)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     waterShader->Use();
+
     waterShader->SetMat4("model", glm::mat4(1.0f));
     waterShader->SetMat4("view", view);
     waterShader->SetMat4("projection", proj);
     waterShader->SetFloat("time", (float)glfwGetTime());
+    waterShader->SetVec3("uViewPos", viewPos);
 
-    // old textures (your existing water shader can still use these if you want)
-    if (waterTex)   waterTex->Bind(0);
-    if (noiseTex)   noiseTex->Bind(1);
-    if (overlayTex) overlayTex->Bind(2);
+    // world-space noise
+    waterShader->SetFloat("uNoiseWorldScale", 0.015f);
+    waterShader->SetFloat("uNoiseSpeed",      0.020f);
 
-    // new RT textures
-    glActiveTexture(GL_TEXTURE3); glBindTexture(GL_TEXTURE_2D, reflectionColorTex);
-    glActiveTexture(GL_TEXTURE4); glBindTexture(GL_TEXTURE_2D, refractionColorTex);
-    glActiveTexture(GL_TEXTURE5); glBindTexture(GL_TEXTURE_2D, refractionDepthTex);
+    // vertex waves
+    waterShader->SetFloat("uVertexWaveAmp",   0.10f);
+    waterShader->SetFloat("uVertexWaveFreq",  0.05f);
+    waterShader->SetFloat("uVertexWaveSpeed", 0.50f);
 
-    // foam noise (optional)
-    if (foamTex) { foamTex->Bind(6); }
-    else { glActiveTexture(GL_TEXTURE6); glBindTexture(GL_TEXTURE_2D, 0); }
+    // textures
+    waterTex->Bind(0);
+    noiseTex->Bind(1);
+    overlayTex->Bind(2);
 
     waterShader->SetInt("textureSampler", 0);
     waterShader->SetInt("noiseSampler",   1);
     waterShader->SetInt("overlaySampler", 2);
 
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, reflectionColorTex);
+    glActiveTexture(GL_TEXTURE4);
+    glBindTexture(GL_TEXTURE_2D, refractionColorTex);
+    glActiveTexture(GL_TEXTURE5);
+    glBindTexture(GL_TEXTURE_2D, refractionDepthTex);
+
     waterShader->SetInt("uReflection",      3);
     waterShader->SetInt("uRefraction",      4);
     waterShader->SetInt("uRefractionDepth", 5);
-    waterShader->SetInt("uFoamNoise",       6);
 
-    // depth linearization params (match your projection near/far)
+    if (foamTex) foamTex->Bind(6);
+    else {
+        glActiveTexture(GL_TEXTURE6);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    waterShader->SetInt("uFoamNoise", 6);
+
     waterShader->SetFloat("uNear", 0.1f);
-    waterShader->SetFloat("uFar",  3000.0f);
+    waterShader->SetFloat("uFar", 3000.0f);
     waterShader->SetFloat("uWaterY", oceanY);
-    waterShader->SetVec2("uScreenSize", glm::vec2((float)waterRTWidth, (float)waterRTHeight));
+    waterShader->SetFloat("uWaveStrength", 0.06f);
+    waterShader->SetFloat("uFoamStrength", 1.0f);
+    waterShader->SetFloat("uBaseAlpha", 0.85f);
 
     glBindVertexArray(waterVAO);
-    glDrawElements(GL_TRIANGLES, (GLsizei)waterIndexCount, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES,
+                   (GLsizei)waterIndexCount,
+                   GL_UNSIGNED_INT,
+                   0);
     glBindVertexArray(0);
 
     glDisable(GL_BLEND);
 }
+
+
 
 // ------------------------------------------------------------
 // LAKE WATER MESH
@@ -236,7 +301,7 @@ void Scene::DrawWater(const glm::mat4& view, const glm::mat4& proj)
 void Scene::generateLakeWater()
 {
     const float lakeX = 0.0f;
-    const float lakeZ = kLakeCenterZ;
+    const float lakeZ = SceneConst::kLakeCenterZ;
 
     const float lakeOuterR = 90.0f;
     const float lakeInnerR = 55.0f;
@@ -247,7 +312,7 @@ void Scene::generateLakeWater()
     lakeWaterVerts.clear();
     lakeWaterIndices.clear();
 
-    lakeWaterVerts.push_back({ glm::vec3(lakeX, waterY, lakeZ), glm::vec2(0.5f, 0.5f) });
+    lakeWaterVerts.push_back({ glm::vec3(lakeX, waterY, lakeZ), glm::vec2(0.5f, 0.5f), 1.0f });
 
     for (int i = 0; i <= segments; ++i)
     {
@@ -268,7 +333,8 @@ void Scene::generateLakeWater()
         lakeWaterVerts.push_back({
             glm::vec3(x, waterY, z),
             glm::vec2((std::cos(a) + 1.0f) * 0.5f,
-                      (std::sin(a) + 1.0f) * 0.5f)
+                      (std::sin(a) + 1.0f) * 0.5f), 
+                      1.0f
         });
     }
 
@@ -306,13 +372,13 @@ void Scene::uploadLakeWaterMesh()
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(WaterVertex), (void*)offsetof(WaterVertex, uv));
 
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2,1,GL_FLOAT,GL_FALSE,sizeof(WaterVertex),(void*)offsetof(WaterVertex, fade));
     glBindVertexArray(0);
 }
 
-void Scene::DrawLakeWater(const glm::mat4& view, const glm::mat4& proj)
+void Scene::DrawLakeWater(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& viewPos)
 {
-    // For now: reuse DrawWater pipeline (same shader + same RTs)
-    // If you want separate distortion per lake, we can add it later.
     if (!waterShader || !lakeVAO) return;
 
     glEnable(GL_BLEND);
@@ -323,7 +389,26 @@ void Scene::DrawLakeWater(const glm::mat4& view, const glm::mat4& proj)
     waterShader->SetMat4("view", view);
     waterShader->SetMat4("projection", proj);
     waterShader->SetFloat("time", (float)glfwGetTime());
+    waterShader->SetVec3("uViewPos", viewPos);
 
+    waterShader->SetFloat("uNoiseWorldScale", 0.020f);
+    waterShader->SetFloat("uNoiseSpeed",      0.015f);
+
+    waterShader->SetFloat("uVertexWaveAmp",   0.05f);
+    waterShader->SetFloat("uVertexWaveFreq",  0.06f);
+    waterShader->SetFloat("uVertexWaveSpeed", 0.40f);
+
+
+    // -------- LEGACY TEXTURES (MISSING BEFORE) --------
+    waterTex->Bind(0);
+    noiseTex->Bind(1);
+    overlayTex->Bind(2);
+
+    waterShader->SetInt("textureSampler", 0);
+    waterShader->SetInt("noiseSampler",   1);
+    waterShader->SetInt("overlaySampler", 2);
+
+    // -------- FBO TEXTURES --------
     glActiveTexture(GL_TEXTURE3); glBindTexture(GL_TEXTURE_2D, reflectionColorTex);
     glActiveTexture(GL_TEXTURE4); glBindTexture(GL_TEXTURE_2D, refractionColorTex);
     glActiveTexture(GL_TEXTURE5); glBindTexture(GL_TEXTURE_2D, refractionDepthTex);
@@ -332,29 +417,45 @@ void Scene::DrawLakeWater(const glm::mat4& view, const glm::mat4& proj)
     waterShader->SetInt("uRefraction",      4);
     waterShader->SetInt("uRefractionDepth", 5);
 
+    // -------- FOAM --------
+    if (foamTex) foamTex->Bind(6);
+    else {
+        glActiveTexture(GL_TEXTURE6);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    waterShader->SetInt("uFoamNoise", 6);
+
     waterShader->SetFloat("uNear", 0.1f);
-    waterShader->SetFloat("uFar",  3000.0f);
+    waterShader->SetFloat("uFar", 3000.0f);
     waterShader->SetFloat("uWaterY", lakeY);
+    waterShader->SetFloat("uWaveStrength", 0.03f);
+    waterShader->SetFloat("uFoamStrength", 0.65f);
+    waterShader->SetFloat("uBaseAlpha", 0.80f);
+
 
     glBindVertexArray(lakeVAO);
-    glDrawElements(GL_TRIANGLES, (GLsizei)lakeWaterIndices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES,
+                   (GLsizei)lakeWaterIndices.size(),
+                   GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     glDisable(GL_BLEND);
 }
+
 
 // ------------------------------------------------------------
 // RIVER WATER MESH
 // ------------------------------------------------------------
 void Scene::generateRiverWater()
 {
-    const float lakeZ       = kLakeCenterZ;
+    const float lakeZ       = SceneConst::kLakeCenterZ;
     const float riverStartZ = lakeZ + 12.0f;
     const float riverEndZ   = 260.0f;
     const float visualEndZ  = 180.0f;
 
     const float waterY = riverY;
     const float step   = 3.0f;
+    
 
     riverWaterVerts.clear();
     riverWaterIndices.clear();
@@ -391,17 +492,24 @@ void Scene::generateRiverWater()
         bool okR = evalSlice(z, +15.0f, +1.0f, rLeft, rRight);
 
         if (!okL && !okR) continue;
-
-        WaterVertex v0 { glm::vec3(lLeft,  waterY, z), glm::vec2(0.0f, 0.0f) };
-        WaterVertex v1 { glm::vec3(lRight, waterY, z), glm::vec2(1.0f, 0.0f) };
-        WaterVertex v2 { glm::vec3(rLeft,  waterY, z), glm::vec2(0.0f, 1.0f) };
-        WaterVertex v3 { glm::vec3(rRight, waterY, z), glm::vec2(1.0f, 1.0f) };
-
+        float fadeStartZ = visualEndZ - 25.0f; // fade length in world units
+        float fade = 1.0f;
+        if (z > fadeStartZ)
+        {
+            fade = 1.0f - (z - fadeStartZ) / (visualEndZ - fadeStartZ);
+            fade = glm::clamp(fade, 0.0f, 1.0f);
+        }
+        WaterVertex v0 { glm::vec3(lLeft,  waterY, z), glm::vec2(0.0f, 0.0f), fade };
+        WaterVertex v1 { glm::vec3(lRight, waterY, z), glm::vec2(1.0f, 0.0f), fade };
+        WaterVertex v2 { glm::vec3(rLeft,  waterY, z), glm::vec2(0.0f, 1.0f), fade };
+        WaterVertex v3 { glm::vec3(rRight, waterY, z), glm::vec2(1.0f, 1.0f), fade };
         riverWaterVerts.push_back(v0);
         riverWaterVerts.push_back(v1);
         riverWaterVerts.push_back(v2);
         riverWaterVerts.push_back(v3);
+
     }
+    
 
     int count = (int)riverWaterVerts.size();
     for (int i = 0; i < count - 4; i += 4)
@@ -439,11 +547,13 @@ void Scene::uploadRiverWaterMesh()
 
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(WaterVertex), (void*)offsetof(WaterVertex, uv));
-
+    glEnableVertexAttribArray(2); // fade
+    glVertexAttribPointer(2,1,GL_FLOAT,GL_FALSE,sizeof(WaterVertex),(void*)offsetof(WaterVertex, fade)
+);
     glBindVertexArray(0);
 }
 
-void Scene::DrawRiverWater(const glm::mat4& view, const glm::mat4& proj)
+void Scene::DrawRiverWater(const glm::mat4& view, const glm::mat4& proj, const glm::vec3& viewPos)
 {
     if (!waterShader || !riverVAO) return;
 
@@ -455,7 +565,27 @@ void Scene::DrawRiverWater(const glm::mat4& view, const glm::mat4& proj)
     waterShader->SetMat4("view", view);
     waterShader->SetMat4("projection", proj);
     waterShader->SetFloat("time", (float)glfwGetTime());
+    waterShader->SetVec3("uViewPos", viewPos); // camera world position
 
+    // IMPORTANT: river needs higher world scale to avoid banding
+    waterShader->SetFloat("uNoiseWorldScale", 0.030f);
+    waterShader->SetFloat("uNoiseSpeed",      0.010f);
+
+    waterShader->SetFloat("uVertexWaveAmp",   0.02f);
+    waterShader->SetFloat("uVertexWaveFreq",  0.10f);
+    waterShader->SetFloat("uVertexWaveSpeed", 0.25f);
+
+
+    // -------- LEGACY TEXTURES (MISSING BEFORE) --------
+    waterTex->Bind(0);
+    noiseTex->Bind(1);
+    overlayTex->Bind(2);
+
+    waterShader->SetInt("textureSampler", 0);
+    waterShader->SetInt("noiseSampler",   1);
+    waterShader->SetInt("overlaySampler", 2);
+
+    // -------- FBO TEXTURES --------
     glActiveTexture(GL_TEXTURE3); glBindTexture(GL_TEXTURE_2D, reflectionColorTex);
     glActiveTexture(GL_TEXTURE4); glBindTexture(GL_TEXTURE_2D, refractionColorTex);
     glActiveTexture(GL_TEXTURE5); glBindTexture(GL_TEXTURE_2D, refractionDepthTex);
@@ -464,12 +594,26 @@ void Scene::DrawRiverWater(const glm::mat4& view, const glm::mat4& proj)
     waterShader->SetInt("uRefraction",      4);
     waterShader->SetInt("uRefractionDepth", 5);
 
+    // -------- FOAM --------
+    if (foamTex) foamTex->Bind(6);
+    else {
+        glActiveTexture(GL_TEXTURE6);
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
+    waterShader->SetInt("uFoamNoise", 6);
+
     waterShader->SetFloat("uNear", 0.1f);
-    waterShader->SetFloat("uFar",  3000.0f);
+    waterShader->SetFloat("uFar", 3000.0f);
     waterShader->SetFloat("uWaterY", riverY);
+    waterShader->SetFloat("uWaveStrength", 0.02f);
+    waterShader->SetFloat("uFoamStrength", 0.80f);
+    waterShader->SetFloat("uBaseAlpha", 0.75f);
+
 
     glBindVertexArray(riverVAO);
-    glDrawElements(GL_TRIANGLES, (GLsizei)riverWaterIndices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES,
+                   (GLsizei)riverWaterIndices.size(),
+                   GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
     glDisable(GL_BLEND);
