@@ -1,46 +1,64 @@
 #version 330 core
-
-in vec2 UV;
-in vec3 WorldPos;
-out vec4 color;
+in vec2 vUV;
+out vec4 FragColor;
 
 uniform float time;
-uniform sampler2D textureSampler;  // Water texture
-uniform sampler2D noiseSampler;    // Distortion
-uniform sampler2D overlaySampler;  // Foam/Sparkle
+
+// legacy water textures
+uniform sampler2D textureSampler;
+uniform sampler2D noiseSampler;
+uniform sampler2D overlaySampler;
+
+// reflection/refraction pipeline (your FBOs)
+uniform sampler2D uReflection;
+uniform sampler2D uRefraction;
+uniform sampler2D uRefractionDepth;
+uniform sampler2D uFoamNoise;
+
+uniform float uNear;
+uniform float uFar;
+uniform float uWaterY;
+uniform vec2  uScreenSize;
+
+float LinearizeDepth(float d)
+{
+    float z = d * 2.0 - 1.0;
+    return (2.0 * uNear * uFar) / (uFar + uNear - z * (uFar - uNear));
+}
 
 void main()
 {
-    // 1. Slow, organic distortion
-    // Sample noise at two different slow speeds
-    vec2 flow1 = vec2(time * 0.005, time * 0.008); 
-    vec2 flow2 = vec2(-time * 0.008, 0.0);
+    // distortion from noise
+    float n = texture(noiseSampler, vUV * 1.5 + vec2(time * 0.005, time * 0.008)).r;
+    vec2 distortion = (n - 0.5) * 0.05;
 
-    vec2 noiseUV = UV * 1.5 + flow1;
-    float noise = texture(noiseSampler, noiseUV).r;
-    
-    // 2. Base Color & Texture
-    // Gentle distortion of the main texture
-    vec2 distort = (vec2(noise) - 0.5) * 0.05;
-    vec4 texColor = texture(textureSampler, UV + distort);
+    // base “lake-ish” tint mixed with your water texture
+    vec3 texRGB = texture(textureSampler, vUV + distortion).rgb;
+    vec3 deepWater    = vec3(0.05, 0.15, 0.35);
+    vec3 shallowWater = vec3(0.10, 0.30, 0.40);
+    vec3 waterTint = mix(deepWater, shallowWater, n);
+    vec3 colorRGB  = mix(texRGB, waterTint, 0.5);
 
-    // 3. Color Grading (Freshwater / Lake look)
-    // Darker, greener blue for lakes/rivers usually looks more natural than tropical cyan
-    vec3 deepWater = vec3(0.05, 0.15, 0.35);
-    vec3 shallowWater = vec3(0.1, 0.3, 0.4);
-    
-    vec3 waterTone = mix(deepWater, shallowWater, noise);
-    
-    // Mix texture with procedural color
-    vec3 finalRGB = mix(texColor.rgb, waterTone, 0.5);
+    // sparkle
+    float sparkle = texture(overlaySampler, vUV * 4.0 + distortion + vec2(-time * 0.008, 0.0)).r;
+    float highlight = pow(sparkle, 8.0) * 0.4;
+    colorRGB += highlight;
 
-    // 4. Specular Highlight (Fake Sun reflection)
-    // Makes the water look wet/shiny without complex lighting math
-    float sparkle = texture(overlaySampler, UV * 4.0 + distort + flow2).r;
-    float highlight = pow(sparkle, 8.0) * 0.4; // Sharp highlights
-    finalRGB += vec3(highlight);
+    // foam from refraction depth
+    float depth01 = texture(uRefractionDepth, vUV).r;
+    float sceneDepth = LinearizeDepth(depth01);
+    float foamMask = clamp(1.0 - (sceneDepth - 5.0) / 12.0, 0.0, 1.0);
 
-    // 5. Transparency
-    // Keep it somewhat transparent to see the river bed slightly
-    color = vec4(finalRGB, 0.82); 
+    float fn = texture(uFoamNoise, vUV * 6.0 + vec2(time * 0.03, time * 0.02)).r;
+    foamMask *= smoothstep(0.35, 0.75, fn);
+
+    // reflection/refraction blend
+    vec3 refl = texture(uReflection, vUV).rgb;
+    vec3 refr = texture(uRefraction, vUV).rgb;
+    vec3 rr   = mix(refr, refl, 0.35);
+
+    rr = mix(rr, vec3(1.0), foamMask);   // foam to white
+    rr = mix(rr, colorRGB, 0.6);         // mix in tinted base
+
+    FragColor = vec4(rr, 0.82);
 }

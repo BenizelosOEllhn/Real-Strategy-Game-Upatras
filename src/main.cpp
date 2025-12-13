@@ -4,9 +4,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "Scene.h"
-#include "Camera.h"
-#include "../common/Shader.h"
+#include "core/Scene.h"
+#include "core/Camera.h"
+#include "../common/Shader.h"   
 
 #ifndef ASSET_PATH
 #define ASSET_PATH "assets/"
@@ -16,6 +16,9 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 
 Camera camera(glm::vec3(0.0f, 150.0f, 220.0f),
               glm::vec3(0.0f, 1.0f, 0.0f),
@@ -30,6 +33,7 @@ const unsigned int SHADOW_WIDTH = 2048;
 const unsigned int SHADOW_HEIGHT = 2048;
 unsigned int depthMapFBO = 0;
 unsigned int depthMap    = 0;
+Scene* gScene = nullptr;
 
 void initShadowMap()
 {
@@ -78,6 +82,9 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
+    glfwSetCursorPosCallback(window, cursor_position_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
+
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK) return -1;
 
@@ -89,6 +96,7 @@ int main()
 
     // 2. Create Game Scene
     Scene gameScene;
+    gScene = &gameScene;   
     gameScene.Init();
 
     // 3. Load Shaders
@@ -113,6 +121,7 @@ int main()
 
         // Input
         processInput(window);
+        gameScene.Update(deltaTime);
 
         // --- Compute light-space matrix for directional light ---
         float orthoSize = 350.0f;  //// FIX #3 — cover entire terrain
@@ -206,4 +215,22 @@ void scroll_callback(GLFWwindow* /*window*/, double /*xoffset*/, double yoffset)
 void framebuffer_size_callback(GLFWwindow* /*window*/, int width, int height)
 {
     glViewport(0, 0, width, height);
+}
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    if (gScene)
+        gScene->onMouseMove(xpos, ypos);
+}
+
+// ⭐ NEW: Pass clicks to Scene (for UI clicks & Building Placement)
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (!gScene) return;
+
+    // Only forward valid presses
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        // You might need to adjust this depending on Scene.h signature
+        // Assuming onMouseButton(button, action, mods) or onMouseClick(button)
+        gScene->onMouseButton(button, action, mods); 
+    }
 }

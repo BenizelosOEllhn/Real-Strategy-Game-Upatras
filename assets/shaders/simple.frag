@@ -6,6 +6,7 @@ in vec3 FragPos;
 in vec3 Normal;
 in vec2 TexCoords;
 in vec4 FragPosLightSpace;
+in float vClipDist;
 
 uniform sampler2D texture_diffuse1;
 uniform sampler2D shadowMap;
@@ -43,6 +44,7 @@ float computeShadow(vec4 fragPosLightSpace)
 
 void main()
 {
+    if (vClipDist < 0.0) discard;
     vec3 albedo = texture(texture_diffuse1, TexCoords).rgb;
 
     vec3 norm     = normalize(Normal);

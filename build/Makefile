@@ -333,245 +333,509 @@ external/glew-1.13.0/src/glew.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.s
 .PHONY : external/glew-1.13.0/src/glew.c.s
 
-src/Camera.o: src/Camera.cpp.o
-.PHONY : src/Camera.o
+src/core/Camera.o: src/core/Camera.cpp.o
+.PHONY : src/core/Camera.o
 
 # target to build an object file
-src/Camera.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/Camera.cpp.o
-.PHONY : src/Camera.cpp.o
+src/core/Camera.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Camera.cpp.o
+.PHONY : src/core/Camera.cpp.o
 
-src/Camera.i: src/Camera.cpp.i
-.PHONY : src/Camera.i
+src/core/Camera.i: src/core/Camera.cpp.i
+.PHONY : src/core/Camera.i
 
 # target to preprocess a source file
-src/Camera.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/Camera.cpp.i
-.PHONY : src/Camera.cpp.i
+src/core/Camera.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Camera.cpp.i
+.PHONY : src/core/Camera.cpp.i
 
-src/Camera.s: src/Camera.cpp.s
-.PHONY : src/Camera.s
+src/core/Camera.s: src/core/Camera.cpp.s
+.PHONY : src/core/Camera.s
 
 # target to generate assembly for a file
-src/Camera.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/Camera.cpp.s
-.PHONY : src/Camera.cpp.s
+src/core/Camera.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Camera.cpp.s
+.PHONY : src/core/Camera.cpp.s
 
-src/Scene.o: src/Scene.cpp.o
-.PHONY : src/Scene.o
+src/core/Scene_Depth.o: src/core/Scene_Depth.cpp.o
+.PHONY : src/core/Scene_Depth.o
 
 # target to build an object file
-src/Scene.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/Scene.cpp.o
-.PHONY : src/Scene.cpp.o
+src/core/Scene_Depth.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Depth.cpp.o
+.PHONY : src/core/Scene_Depth.cpp.o
 
-src/Scene.i: src/Scene.cpp.i
-.PHONY : src/Scene.i
+src/core/Scene_Depth.i: src/core/Scene_Depth.cpp.i
+.PHONY : src/core/Scene_Depth.i
 
 # target to preprocess a source file
-src/Scene.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/Scene.cpp.i
-.PHONY : src/Scene.cpp.i
+src/core/Scene_Depth.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Depth.cpp.i
+.PHONY : src/core/Scene_Depth.cpp.i
 
-src/Scene.s: src/Scene.cpp.s
-.PHONY : src/Scene.s
+src/core/Scene_Depth.s: src/core/Scene_Depth.cpp.s
+.PHONY : src/core/Scene_Depth.s
 
 # target to generate assembly for a file
-src/Scene.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/Scene.cpp.s
-.PHONY : src/Scene.cpp.s
+src/core/Scene_Depth.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Depth.cpp.s
+.PHONY : src/core/Scene_Depth.cpp.s
 
-src/Terrain.o: src/Terrain.cpp.o
-.PHONY : src/Terrain.o
+src/core/Scene_Events.o: src/core/Scene_Events.cpp.o
+.PHONY : src/core/Scene_Events.o
 
 # target to build an object file
-src/Terrain.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/Terrain.cpp.o
-.PHONY : src/Terrain.cpp.o
+src/core/Scene_Events.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Events.cpp.o
+.PHONY : src/core/Scene_Events.cpp.o
 
-src/Terrain.i: src/Terrain.cpp.i
-.PHONY : src/Terrain.i
+src/core/Scene_Events.i: src/core/Scene_Events.cpp.i
+.PHONY : src/core/Scene_Events.i
 
 # target to preprocess a source file
-src/Terrain.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/Terrain.cpp.i
-.PHONY : src/Terrain.cpp.i
+src/core/Scene_Events.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Events.cpp.i
+.PHONY : src/core/Scene_Events.cpp.i
 
-src/Terrain.s: src/Terrain.cpp.s
-.PHONY : src/Terrain.s
+src/core/Scene_Events.s: src/core/Scene_Events.cpp.s
+.PHONY : src/core/Scene_Events.s
 
 # target to generate assembly for a file
-src/Terrain.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/Terrain.cpp.s
-.PHONY : src/Terrain.cpp.s
+src/core/Scene_Events.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Events.cpp.s
+.PHONY : src/core/Scene_Events.cpp.s
 
-src/game/Archer.o: src/game/Archer.cpp.o
-.PHONY : src/game/Archer.o
+src/core/Scene_Init.o: src/core/Scene_Init.cpp.o
+.PHONY : src/core/Scene_Init.o
 
 # target to build an object file
-src/game/Archer.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Archer.cpp.o
-.PHONY : src/game/Archer.cpp.o
+src/core/Scene_Init.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Init.cpp.o
+.PHONY : src/core/Scene_Init.cpp.o
 
-src/game/Archer.i: src/game/Archer.cpp.i
-.PHONY : src/game/Archer.i
+src/core/Scene_Init.i: src/core/Scene_Init.cpp.i
+.PHONY : src/core/Scene_Init.i
 
 # target to preprocess a source file
-src/game/Archer.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Archer.cpp.i
-.PHONY : src/game/Archer.cpp.i
+src/core/Scene_Init.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Init.cpp.i
+.PHONY : src/core/Scene_Init.cpp.i
 
-src/game/Archer.s: src/game/Archer.cpp.s
-.PHONY : src/game/Archer.s
+src/core/Scene_Init.s: src/core/Scene_Init.cpp.s
+.PHONY : src/core/Scene_Init.s
 
 # target to generate assembly for a file
-src/game/Archer.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Archer.cpp.s
-.PHONY : src/game/Archer.cpp.s
+src/core/Scene_Init.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Init.cpp.s
+.PHONY : src/core/Scene_Init.cpp.s
 
-src/game/Barracks.o: src/game/Barracks.cpp.o
-.PHONY : src/game/Barracks.o
+src/core/Scene_Procedural.o: src/core/Scene_Procedural.cpp.o
+.PHONY : src/core/Scene_Procedural.o
 
 # target to build an object file
-src/game/Barracks.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Barracks.cpp.o
-.PHONY : src/game/Barracks.cpp.o
+src/core/Scene_Procedural.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Procedural.cpp.o
+.PHONY : src/core/Scene_Procedural.cpp.o
 
-src/game/Barracks.i: src/game/Barracks.cpp.i
-.PHONY : src/game/Barracks.i
+src/core/Scene_Procedural.i: src/core/Scene_Procedural.cpp.i
+.PHONY : src/core/Scene_Procedural.i
 
 # target to preprocess a source file
-src/game/Barracks.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Barracks.cpp.i
-.PHONY : src/game/Barracks.cpp.i
+src/core/Scene_Procedural.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Procedural.cpp.i
+.PHONY : src/core/Scene_Procedural.cpp.i
 
-src/game/Barracks.s: src/game/Barracks.cpp.s
-.PHONY : src/game/Barracks.s
+src/core/Scene_Procedural.s: src/core/Scene_Procedural.cpp.s
+.PHONY : src/core/Scene_Procedural.s
 
 # target to generate assembly for a file
-src/game/Barracks.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Barracks.cpp.s
-.PHONY : src/game/Barracks.cpp.s
+src/core/Scene_Procedural.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Procedural.cpp.s
+.PHONY : src/core/Scene_Procedural.cpp.s
 
-src/game/GameEntity.o: src/game/GameEntity.cpp.o
-.PHONY : src/game/GameEntity.o
+src/core/Scene_Renderer.o: src/core/Scene_Renderer.cpp.o
+.PHONY : src/core/Scene_Renderer.o
 
 # target to build an object file
-src/game/GameEntity.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/GameEntity.cpp.o
-.PHONY : src/game/GameEntity.cpp.o
+src/core/Scene_Renderer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Renderer.cpp.o
+.PHONY : src/core/Scene_Renderer.cpp.o
 
-src/game/GameEntity.i: src/game/GameEntity.cpp.i
-.PHONY : src/game/GameEntity.i
+src/core/Scene_Renderer.i: src/core/Scene_Renderer.cpp.i
+.PHONY : src/core/Scene_Renderer.i
 
 # target to preprocess a source file
-src/game/GameEntity.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/GameEntity.cpp.i
-.PHONY : src/game/GameEntity.cpp.i
+src/core/Scene_Renderer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Renderer.cpp.i
+.PHONY : src/core/Scene_Renderer.cpp.i
 
-src/game/GameEntity.s: src/game/GameEntity.cpp.s
-.PHONY : src/game/GameEntity.s
+src/core/Scene_Renderer.s: src/core/Scene_Renderer.cpp.s
+.PHONY : src/core/Scene_Renderer.s
 
 # target to generate assembly for a file
-src/game/GameEntity.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/GameEntity.cpp.s
-.PHONY : src/game/GameEntity.cpp.s
+src/core/Scene_Renderer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Renderer.cpp.s
+.PHONY : src/core/Scene_Renderer.cpp.s
 
-src/game/Knight.o: src/game/Knight.cpp.o
-.PHONY : src/game/Knight.o
+src/core/Scene_Water.o: src/core/Scene_Water.cpp.o
+.PHONY : src/core/Scene_Water.o
 
 # target to build an object file
-src/game/Knight.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Knight.cpp.o
-.PHONY : src/game/Knight.cpp.o
+src/core/Scene_Water.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Water.cpp.o
+.PHONY : src/core/Scene_Water.cpp.o
 
-src/game/Knight.i: src/game/Knight.cpp.i
-.PHONY : src/game/Knight.i
+src/core/Scene_Water.i: src/core/Scene_Water.cpp.i
+.PHONY : src/core/Scene_Water.i
 
 # target to preprocess a source file
-src/game/Knight.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Knight.cpp.i
-.PHONY : src/game/Knight.cpp.i
+src/core/Scene_Water.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Water.cpp.i
+.PHONY : src/core/Scene_Water.cpp.i
 
-src/game/Knight.s: src/game/Knight.cpp.s
-.PHONY : src/game/Knight.s
+src/core/Scene_Water.s: src/core/Scene_Water.cpp.s
+.PHONY : src/core/Scene_Water.s
 
 # target to generate assembly for a file
-src/game/Knight.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Knight.cpp.s
-.PHONY : src/game/Knight.cpp.s
+src/core/Scene_Water.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Water.cpp.s
+.PHONY : src/core/Scene_Water.cpp.s
 
-src/game/TownCenter.o: src/game/TownCenter.cpp.o
-.PHONY : src/game/TownCenter.o
+src/game/buildings/Barracks.o: src/game/buildings/Barracks.cpp.o
+.PHONY : src/game/buildings/Barracks.o
 
 # target to build an object file
-src/game/TownCenter.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/TownCenter.cpp.o
-.PHONY : src/game/TownCenter.cpp.o
+src/game/buildings/Barracks.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/Barracks.cpp.o
+.PHONY : src/game/buildings/Barracks.cpp.o
 
-src/game/TownCenter.i: src/game/TownCenter.cpp.i
-.PHONY : src/game/TownCenter.i
+src/game/buildings/Barracks.i: src/game/buildings/Barracks.cpp.i
+.PHONY : src/game/buildings/Barracks.i
 
 # target to preprocess a source file
-src/game/TownCenter.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/TownCenter.cpp.i
-.PHONY : src/game/TownCenter.cpp.i
+src/game/buildings/Barracks.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/Barracks.cpp.i
+.PHONY : src/game/buildings/Barracks.cpp.i
 
-src/game/TownCenter.s: src/game/TownCenter.cpp.s
-.PHONY : src/game/TownCenter.s
+src/game/buildings/Barracks.s: src/game/buildings/Barracks.cpp.s
+.PHONY : src/game/buildings/Barracks.s
 
 # target to generate assembly for a file
-src/game/TownCenter.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/TownCenter.cpp.s
-.PHONY : src/game/TownCenter.cpp.s
+src/game/buildings/Barracks.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/Barracks.cpp.s
+.PHONY : src/game/buildings/Barracks.cpp.s
 
-src/game/Unit.o: src/game/Unit.cpp.o
-.PHONY : src/game/Unit.o
+src/game/buildings/Farm.o: src/game/buildings/Farm.cpp.o
+.PHONY : src/game/buildings/Farm.o
 
 # target to build an object file
-src/game/Unit.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Unit.cpp.o
-.PHONY : src/game/Unit.cpp.o
+src/game/buildings/Farm.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/Farm.cpp.o
+.PHONY : src/game/buildings/Farm.cpp.o
 
-src/game/Unit.i: src/game/Unit.cpp.i
-.PHONY : src/game/Unit.i
+src/game/buildings/Farm.i: src/game/buildings/Farm.cpp.i
+.PHONY : src/game/buildings/Farm.i
 
 # target to preprocess a source file
-src/game/Unit.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Unit.cpp.i
-.PHONY : src/game/Unit.cpp.i
+src/game/buildings/Farm.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/Farm.cpp.i
+.PHONY : src/game/buildings/Farm.cpp.i
 
-src/game/Unit.s: src/game/Unit.cpp.s
-.PHONY : src/game/Unit.s
+src/game/buildings/Farm.s: src/game/buildings/Farm.cpp.s
+.PHONY : src/game/buildings/Farm.s
 
 # target to generate assembly for a file
-src/game/Unit.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Unit.cpp.s
-.PHONY : src/game/Unit.cpp.s
+src/game/buildings/Farm.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/Farm.cpp.s
+.PHONY : src/game/buildings/Farm.cpp.s
 
-src/game/Worker.o: src/game/Worker.cpp.o
-.PHONY : src/game/Worker.o
+src/game/buildings/House.o: src/game/buildings/House.cpp.o
+.PHONY : src/game/buildings/House.o
 
 # target to build an object file
-src/game/Worker.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Worker.cpp.o
-.PHONY : src/game/Worker.cpp.o
+src/game/buildings/House.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/House.cpp.o
+.PHONY : src/game/buildings/House.cpp.o
 
-src/game/Worker.i: src/game/Worker.cpp.i
-.PHONY : src/game/Worker.i
+src/game/buildings/House.i: src/game/buildings/House.cpp.i
+.PHONY : src/game/buildings/House.i
 
 # target to preprocess a source file
-src/game/Worker.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Worker.cpp.i
-.PHONY : src/game/Worker.cpp.i
+src/game/buildings/House.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/House.cpp.i
+.PHONY : src/game/buildings/House.cpp.i
 
-src/game/Worker.s: src/game/Worker.cpp.s
-.PHONY : src/game/Worker.s
+src/game/buildings/House.s: src/game/buildings/House.cpp.s
+.PHONY : src/game/buildings/House.s
 
 # target to generate assembly for a file
-src/game/Worker.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/Worker.cpp.s
-.PHONY : src/game/Worker.cpp.s
+src/game/buildings/House.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/House.cpp.s
+.PHONY : src/game/buildings/House.cpp.s
+
+src/game/buildings/Market.o: src/game/buildings/Market.cpp.o
+.PHONY : src/game/buildings/Market.o
+
+# target to build an object file
+src/game/buildings/Market.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/Market.cpp.o
+.PHONY : src/game/buildings/Market.cpp.o
+
+src/game/buildings/Market.i: src/game/buildings/Market.cpp.i
+.PHONY : src/game/buildings/Market.i
+
+# target to preprocess a source file
+src/game/buildings/Market.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/Market.cpp.i
+.PHONY : src/game/buildings/Market.cpp.i
+
+src/game/buildings/Market.s: src/game/buildings/Market.cpp.s
+.PHONY : src/game/buildings/Market.s
+
+# target to generate assembly for a file
+src/game/buildings/Market.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/Market.cpp.s
+.PHONY : src/game/buildings/Market.cpp.s
+
+src/game/buildings/Storage.o: src/game/buildings/Storage.cpp.o
+.PHONY : src/game/buildings/Storage.o
+
+# target to build an object file
+src/game/buildings/Storage.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.o
+.PHONY : src/game/buildings/Storage.cpp.o
+
+src/game/buildings/Storage.i: src/game/buildings/Storage.cpp.i
+.PHONY : src/game/buildings/Storage.i
+
+# target to preprocess a source file
+src/game/buildings/Storage.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.i
+.PHONY : src/game/buildings/Storage.cpp.i
+
+src/game/buildings/Storage.s: src/game/buildings/Storage.cpp.s
+.PHONY : src/game/buildings/Storage.s
+
+# target to generate assembly for a file
+src/game/buildings/Storage.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.s
+.PHONY : src/game/buildings/Storage.cpp.s
+
+src/game/buildings/TownCenter.o: src/game/buildings/TownCenter.cpp.o
+.PHONY : src/game/buildings/TownCenter.o
+
+# target to build an object file
+src/game/buildings/TownCenter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.o
+.PHONY : src/game/buildings/TownCenter.cpp.o
+
+src/game/buildings/TownCenter.i: src/game/buildings/TownCenter.cpp.i
+.PHONY : src/game/buildings/TownCenter.i
+
+# target to preprocess a source file
+src/game/buildings/TownCenter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.i
+.PHONY : src/game/buildings/TownCenter.cpp.i
+
+src/game/buildings/TownCenter.s: src/game/buildings/TownCenter.cpp.s
+.PHONY : src/game/buildings/TownCenter.s
+
+# target to generate assembly for a file
+src/game/buildings/TownCenter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.s
+.PHONY : src/game/buildings/TownCenter.cpp.s
+
+src/game/entities/GameEntity.o: src/game/entities/GameEntity.cpp.o
+.PHONY : src/game/entities/GameEntity.o
+
+# target to build an object file
+src/game/entities/GameEntity.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/entities/GameEntity.cpp.o
+.PHONY : src/game/entities/GameEntity.cpp.o
+
+src/game/entities/GameEntity.i: src/game/entities/GameEntity.cpp.i
+.PHONY : src/game/entities/GameEntity.i
+
+# target to preprocess a source file
+src/game/entities/GameEntity.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/entities/GameEntity.cpp.i
+.PHONY : src/game/entities/GameEntity.cpp.i
+
+src/game/entities/GameEntity.s: src/game/entities/GameEntity.cpp.s
+.PHONY : src/game/entities/GameEntity.s
+
+# target to generate assembly for a file
+src/game/entities/GameEntity.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/entities/GameEntity.cpp.s
+.PHONY : src/game/entities/GameEntity.cpp.s
+
+src/game/entities/Unit.o: src/game/entities/Unit.cpp.o
+.PHONY : src/game/entities/Unit.o
+
+# target to build an object file
+src/game/entities/Unit.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/entities/Unit.cpp.o
+.PHONY : src/game/entities/Unit.cpp.o
+
+src/game/entities/Unit.i: src/game/entities/Unit.cpp.i
+.PHONY : src/game/entities/Unit.i
+
+# target to preprocess a source file
+src/game/entities/Unit.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/entities/Unit.cpp.i
+.PHONY : src/game/entities/Unit.cpp.i
+
+src/game/entities/Unit.s: src/game/entities/Unit.cpp.s
+.PHONY : src/game/entities/Unit.s
+
+# target to generate assembly for a file
+src/game/entities/Unit.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/entities/Unit.cpp.s
+.PHONY : src/game/entities/Unit.cpp.s
+
+src/game/managers/BuildingManager.o: src/game/managers/BuildingManager.cpp.o
+.PHONY : src/game/managers/BuildingManager.o
+
+# target to build an object file
+src/game/managers/BuildingManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.o
+.PHONY : src/game/managers/BuildingManager.cpp.o
+
+src/game/managers/BuildingManager.i: src/game/managers/BuildingManager.cpp.i
+.PHONY : src/game/managers/BuildingManager.i
+
+# target to preprocess a source file
+src/game/managers/BuildingManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.i
+.PHONY : src/game/managers/BuildingManager.cpp.i
+
+src/game/managers/BuildingManager.s: src/game/managers/BuildingManager.cpp.s
+.PHONY : src/game/managers/BuildingManager.s
+
+# target to generate assembly for a file
+src/game/managers/BuildingManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.s
+.PHONY : src/game/managers/BuildingManager.cpp.s
+
+src/game/units/Archer.o: src/game/units/Archer.cpp.o
+.PHONY : src/game/units/Archer.o
+
+# target to build an object file
+src/game/units/Archer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/units/Archer.cpp.o
+.PHONY : src/game/units/Archer.cpp.o
+
+src/game/units/Archer.i: src/game/units/Archer.cpp.i
+.PHONY : src/game/units/Archer.i
+
+# target to preprocess a source file
+src/game/units/Archer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/units/Archer.cpp.i
+.PHONY : src/game/units/Archer.cpp.i
+
+src/game/units/Archer.s: src/game/units/Archer.cpp.s
+.PHONY : src/game/units/Archer.s
+
+# target to generate assembly for a file
+src/game/units/Archer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/units/Archer.cpp.s
+.PHONY : src/game/units/Archer.cpp.s
+
+src/game/units/Knight.o: src/game/units/Knight.cpp.o
+.PHONY : src/game/units/Knight.o
+
+# target to build an object file
+src/game/units/Knight.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/units/Knight.cpp.o
+.PHONY : src/game/units/Knight.cpp.o
+
+src/game/units/Knight.i: src/game/units/Knight.cpp.i
+.PHONY : src/game/units/Knight.i
+
+# target to preprocess a source file
+src/game/units/Knight.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/units/Knight.cpp.i
+.PHONY : src/game/units/Knight.cpp.i
+
+src/game/units/Knight.s: src/game/units/Knight.cpp.s
+.PHONY : src/game/units/Knight.s
+
+# target to generate assembly for a file
+src/game/units/Knight.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/units/Knight.cpp.s
+.PHONY : src/game/units/Knight.cpp.s
+
+src/game/units/Worker.o: src/game/units/Worker.cpp.o
+.PHONY : src/game/units/Worker.o
+
+# target to build an object file
+src/game/units/Worker.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/units/Worker.cpp.o
+.PHONY : src/game/units/Worker.cpp.o
+
+src/game/units/Worker.i: src/game/units/Worker.cpp.i
+.PHONY : src/game/units/Worker.i
+
+# target to preprocess a source file
+src/game/units/Worker.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/units/Worker.cpp.i
+.PHONY : src/game/units/Worker.cpp.i
+
+src/game/units/Worker.s: src/game/units/Worker.cpp.s
+.PHONY : src/game/units/Worker.s
+
+# target to generate assembly for a file
+src/game/units/Worker.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/units/Worker.cpp.s
+.PHONY : src/game/units/Worker.cpp.s
+
+src/gui/UIButton.o: src/gui/UIButton.cpp.o
+.PHONY : src/gui/UIButton.o
+
+# target to build an object file
+src/gui/UIButton.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/gui/UIButton.cpp.o
+.PHONY : src/gui/UIButton.cpp.o
+
+src/gui/UIButton.i: src/gui/UIButton.cpp.i
+.PHONY : src/gui/UIButton.i
+
+# target to preprocess a source file
+src/gui/UIButton.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/gui/UIButton.cpp.i
+.PHONY : src/gui/UIButton.cpp.i
+
+src/gui/UIButton.s: src/gui/UIButton.cpp.s
+.PHONY : src/gui/UIButton.s
+
+# target to generate assembly for a file
+src/gui/UIButton.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/gui/UIButton.cpp.s
+.PHONY : src/gui/UIButton.cpp.s
+
+src/gui/UIManager.o: src/gui/UIManager.cpp.o
+.PHONY : src/gui/UIManager.o
+
+# target to build an object file
+src/gui/UIManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/gui/UIManager.cpp.o
+.PHONY : src/gui/UIManager.cpp.o
+
+src/gui/UIManager.i: src/gui/UIManager.cpp.i
+.PHONY : src/gui/UIManager.i
+
+# target to preprocess a source file
+src/gui/UIManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/gui/UIManager.cpp.i
+.PHONY : src/gui/UIManager.cpp.i
+
+src/gui/UIManager.s: src/gui/UIManager.cpp.s
+.PHONY : src/gui/UIManager.s
+
+# target to generate assembly for a file
+src/gui/UIManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/gui/UIManager.cpp.s
+.PHONY : src/gui/UIManager.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -596,6 +860,54 @@ src/main.s: src/main.cpp.s
 src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
+
+src/raycast/Raycaster.o: src/raycast/Raycaster.cpp.o
+.PHONY : src/raycast/Raycaster.o
+
+# target to build an object file
+src/raycast/Raycaster.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/raycast/Raycaster.cpp.o
+.PHONY : src/raycast/Raycaster.cpp.o
+
+src/raycast/Raycaster.i: src/raycast/Raycaster.cpp.i
+.PHONY : src/raycast/Raycaster.i
+
+# target to preprocess a source file
+src/raycast/Raycaster.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/raycast/Raycaster.cpp.i
+.PHONY : src/raycast/Raycaster.cpp.i
+
+src/raycast/Raycaster.s: src/raycast/Raycaster.cpp.s
+.PHONY : src/raycast/Raycaster.s
+
+# target to generate assembly for a file
+src/raycast/Raycaster.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/raycast/Raycaster.cpp.s
+.PHONY : src/raycast/Raycaster.cpp.s
+
+src/rendering/terrain/Terrain.o: src/rendering/terrain/Terrain.cpp.o
+.PHONY : src/rendering/terrain/Terrain.o
+
+# target to build an object file
+src/rendering/terrain/Terrain.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/rendering/terrain/Terrain.cpp.o
+.PHONY : src/rendering/terrain/Terrain.cpp.o
+
+src/rendering/terrain/Terrain.i: src/rendering/terrain/Terrain.cpp.i
+.PHONY : src/rendering/terrain/Terrain.i
+
+# target to preprocess a source file
+src/rendering/terrain/Terrain.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/rendering/terrain/Terrain.cpp.i
+.PHONY : src/rendering/terrain/Terrain.cpp.i
+
+src/rendering/terrain/Terrain.s: src/rendering/terrain/Terrain.cpp.s
+.PHONY : src/rendering/terrain/Terrain.s
+
+# target to generate assembly for a file
+src/rendering/terrain/Terrain.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/rendering/terrain/Terrain.cpp.s
+.PHONY : src/rendering/terrain/Terrain.cpp.s
 
 # Help Target
 help:
@@ -628,39 +940,78 @@ help:
 	@echo "... external/glew-1.13.0/src/glew.o"
 	@echo "... external/glew-1.13.0/src/glew.i"
 	@echo "... external/glew-1.13.0/src/glew.s"
-	@echo "... src/Camera.o"
-	@echo "... src/Camera.i"
-	@echo "... src/Camera.s"
-	@echo "... src/Scene.o"
-	@echo "... src/Scene.i"
-	@echo "... src/Scene.s"
-	@echo "... src/Terrain.o"
-	@echo "... src/Terrain.i"
-	@echo "... src/Terrain.s"
-	@echo "... src/game/Archer.o"
-	@echo "... src/game/Archer.i"
-	@echo "... src/game/Archer.s"
-	@echo "... src/game/Barracks.o"
-	@echo "... src/game/Barracks.i"
-	@echo "... src/game/Barracks.s"
-	@echo "... src/game/GameEntity.o"
-	@echo "... src/game/GameEntity.i"
-	@echo "... src/game/GameEntity.s"
-	@echo "... src/game/Knight.o"
-	@echo "... src/game/Knight.i"
-	@echo "... src/game/Knight.s"
-	@echo "... src/game/TownCenter.o"
-	@echo "... src/game/TownCenter.i"
-	@echo "... src/game/TownCenter.s"
-	@echo "... src/game/Unit.o"
-	@echo "... src/game/Unit.i"
-	@echo "... src/game/Unit.s"
-	@echo "... src/game/Worker.o"
-	@echo "... src/game/Worker.i"
-	@echo "... src/game/Worker.s"
+	@echo "... src/core/Camera.o"
+	@echo "... src/core/Camera.i"
+	@echo "... src/core/Camera.s"
+	@echo "... src/core/Scene_Depth.o"
+	@echo "... src/core/Scene_Depth.i"
+	@echo "... src/core/Scene_Depth.s"
+	@echo "... src/core/Scene_Events.o"
+	@echo "... src/core/Scene_Events.i"
+	@echo "... src/core/Scene_Events.s"
+	@echo "... src/core/Scene_Init.o"
+	@echo "... src/core/Scene_Init.i"
+	@echo "... src/core/Scene_Init.s"
+	@echo "... src/core/Scene_Procedural.o"
+	@echo "... src/core/Scene_Procedural.i"
+	@echo "... src/core/Scene_Procedural.s"
+	@echo "... src/core/Scene_Renderer.o"
+	@echo "... src/core/Scene_Renderer.i"
+	@echo "... src/core/Scene_Renderer.s"
+	@echo "... src/core/Scene_Water.o"
+	@echo "... src/core/Scene_Water.i"
+	@echo "... src/core/Scene_Water.s"
+	@echo "... src/game/buildings/Barracks.o"
+	@echo "... src/game/buildings/Barracks.i"
+	@echo "... src/game/buildings/Barracks.s"
+	@echo "... src/game/buildings/Farm.o"
+	@echo "... src/game/buildings/Farm.i"
+	@echo "... src/game/buildings/Farm.s"
+	@echo "... src/game/buildings/House.o"
+	@echo "... src/game/buildings/House.i"
+	@echo "... src/game/buildings/House.s"
+	@echo "... src/game/buildings/Market.o"
+	@echo "... src/game/buildings/Market.i"
+	@echo "... src/game/buildings/Market.s"
+	@echo "... src/game/buildings/Storage.o"
+	@echo "... src/game/buildings/Storage.i"
+	@echo "... src/game/buildings/Storage.s"
+	@echo "... src/game/buildings/TownCenter.o"
+	@echo "... src/game/buildings/TownCenter.i"
+	@echo "... src/game/buildings/TownCenter.s"
+	@echo "... src/game/entities/GameEntity.o"
+	@echo "... src/game/entities/GameEntity.i"
+	@echo "... src/game/entities/GameEntity.s"
+	@echo "... src/game/entities/Unit.o"
+	@echo "... src/game/entities/Unit.i"
+	@echo "... src/game/entities/Unit.s"
+	@echo "... src/game/managers/BuildingManager.o"
+	@echo "... src/game/managers/BuildingManager.i"
+	@echo "... src/game/managers/BuildingManager.s"
+	@echo "... src/game/units/Archer.o"
+	@echo "... src/game/units/Archer.i"
+	@echo "... src/game/units/Archer.s"
+	@echo "... src/game/units/Knight.o"
+	@echo "... src/game/units/Knight.i"
+	@echo "... src/game/units/Knight.s"
+	@echo "... src/game/units/Worker.o"
+	@echo "... src/game/units/Worker.i"
+	@echo "... src/game/units/Worker.s"
+	@echo "... src/gui/UIButton.o"
+	@echo "... src/gui/UIButton.i"
+	@echo "... src/gui/UIButton.s"
+	@echo "... src/gui/UIManager.o"
+	@echo "... src/gui/UIManager.i"
+	@echo "... src/gui/UIManager.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/raycast/Raycaster.o"
+	@echo "... src/raycast/Raycaster.i"
+	@echo "... src/raycast/Raycaster.s"
+	@echo "... src/rendering/terrain/Terrain.o"
+	@echo "... src/rendering/terrain/Terrain.i"
+	@echo "... src/rendering/terrain/Terrain.s"
 .PHONY : help
 
 

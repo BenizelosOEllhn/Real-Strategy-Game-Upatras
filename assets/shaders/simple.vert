@@ -14,10 +14,16 @@ uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 lightSpaceMatrix;
 
+uniform vec4 uClipPlane;
+out float vClipDist;
+
 void main() {
     // Use instance matrix instead of uniform 'model'
     vec4 worldPos = aInstanceMatrix * vec4(aPos, 1.0);
     
+    vec4 worldPos = model * vec4(aPos, 1.0);
+    vClipDist = dot(worldPos, uClipPlane);
+
     FragPos = vec3(worldPos);
     Normal = mat3(transpose(inverse(aInstanceMatrix))) * aNormal;
     TexCoords = aTexCoords;

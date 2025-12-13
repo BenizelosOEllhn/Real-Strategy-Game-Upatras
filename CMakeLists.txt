@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
-project(cin)  
+project(cin)
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ---------------------------------------------------------
@@ -18,19 +19,16 @@ find_package(OpenGL REQUIRED)
 # ---------------------------------------------------------
 # 2. Directories
 # ---------------------------------------------------------
-set(EXT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external")
-set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(EXT_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/external")
+set(SRC_DIR  "${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(CORE_DIR "${SRC_DIR}/core")
 set(GAME_DIR "${SRC_DIR}/game")
-
-include_directories(
-    "${EXT_DIR}/glm-0.9.7.1"
-    "${EXT_DIR}/tinyobjloader"
-    "${EXT_DIR}/tinyobjloader/include"
-    "${EXT_DIR}/tinyxml2"
-    "${CMAKE_CURRENT_SOURCE_DIR}/common"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/game"
-)
+set(GUI_DIR  "${SRC_DIR}/gui")
+set(RENDER_DIR "${SRC_DIR}/rendering")
+set(TERRAIN_DIR "${RENDER_DIR}/terrain")
+set(RAYCAST_DIR "${SRC_DIR}/raycast")
+set(COMMON_DIR "${CMAKE_CURRENT_SOURCE_DIR}/common")
+set(TINYOBJ_DIR "${EXT_DIR}/tinyobjloader/include")
 
 # ---------------------------------------------------------
 # 3. Dependencies
@@ -42,10 +40,10 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory("${EXT_DIR}/glfw-3.4")
 
-# GLM
+# GLM (header-only)
 include_directories("${EXT_DIR}/glm-0.9.7.1")
 
-# GLEW 1.13.0
+# GLEW (static)
 set(GLEW_INCLUDE_DIR "${EXT_DIR}/glew-1.13.0/include")
 
 if(EXISTS "${EXT_DIR}/glew-1.13.0/src/glew.c")
@@ -57,56 +55,101 @@ endif()
 add_definitions(-DGLEW_STATIC)
 
 # ---------------------------------------------------------
-# 4. Entity system source files
+# 4. Game source files
 # ---------------------------------------------------------
 set(GAME_SOURCES
-    ${GAME_DIR}/GameEntity.cpp
-    ${GAME_DIR}/TownCenter.cpp
-    ${GAME_DIR}/Barracks.cpp
-    ${GAME_DIR}/Worker.cpp
-    ${GAME_DIR}/Archer.cpp
-    ${GAME_DIR}/Knight.cpp
-    ${GAME_DIR}/Unit.cpp
+    # ---- entities ----
+    ${GAME_DIR}/entities/GameEntity.cpp
+    ${GAME_DIR}/entities/Unit.cpp
+
+    # ---- units ----
+    ${GAME_DIR}/units/Worker.cpp
+    ${GAME_DIR}/units/Archer.cpp
+    ${GAME_DIR}/units/Knight.cpp
+
+    # ---- buildings ----
+    ${GAME_DIR}/buildings/TownCenter.cpp
+    ${GAME_DIR}/buildings/Barracks.cpp
+    ${GAME_DIR}/buildings/Farm.cpp
+    ${GAME_DIR}/buildings/House.cpp
+    ${GAME_DIR}/buildings/Market.cpp
+    ${GAME_DIR}/buildings/Storage.cpp
+
+    # ---- managers ----
+    ${GAME_DIR}/managers/BuildingManager.cpp
+
 )
 
 # ---------------------------------------------------------
-# 5. Executable
+# 5. Core + Engine sources
 # ---------------------------------------------------------
-add_executable(cin  
+set(CORE_SOURCES
     ${SRC_DIR}/main.cpp
-    ${SRC_DIR}/Terrain.cpp
-    ${SRC_DIR}/Camera.cpp
-    ${SRC_DIR}/Scene.cpp
 
-    ${GAME_SOURCES}
+    # core
+    ${CORE_DIR}/Scene_Depth.cpp
+    ${CORE_DIR}/Scene_Events.cpp
+    ${CORE_DIR}/Scene_Renderer.cpp
+    ${CORE_DIR}/Scene_Init.cpp
+    ${CORE_DIR}/Scene_Water.cpp
+    ${CORE_DIR}/Scene_Procedural.cpp
+    ${CORE_DIR}/Camera.cpp
 
-    common/Shader.cpp
-    common/Texture.cpp
-    common/Model.cpp
+    # gui
+    ${GUI_DIR}/UIManager.cpp
+    ${GUI_DIR}/UIButton.cpp
 
-    common/FastNoiseLite.cpp
-    common/FastNoiseLite.h
-    common/Noise.h
+    # rendering
+    ${TERRAIN_DIR}/Terrain.cpp
 
+    # raycast
+    ${RAYCAST_DIR}/Raycaster.cpp
+
+    # common
+    ${COMMON_DIR}/Shader.cpp
+    ${COMMON_DIR}/Texture.cpp
+    ${COMMON_DIR}/Model.cpp
+    ${COMMON_DIR}/FastNoiseLite.cpp
+
+    # glew
     ${GLEW_SOURCE}
 )
 
 # ---------------------------------------------------------
-# 6. Includes
+# 6. Executable
+# ---------------------------------------------------------
+add_executable(cin
+    ${CORE_SOURCES}
+    ${GAME_SOURCES}
+)
+
+# ---------------------------------------------------------
+# 7. Includes
 # ---------------------------------------------------------
 target_include_directories(cin PUBLIC
     ${GLEW_INCLUDE_DIR}
     "${EXT_DIR}/glfw-3.4/include"
     "${EXT_DIR}/glm-0.9.7.1"
-    "${EXT_DIR}/tinyobjloader"
-    "${EXT_DIR}/tinyobjloader/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/common"
+
     ${SRC_DIR}
+    ${CORE_DIR}
     ${GAME_DIR}
+    ${GAME_DIR}/entities
+    ${GAME_DIR}/units
+    ${GAME_DIR}/buildings
+    ${GAME_DIR}/managers
+    ${GAME_DIR}/data
+
+    ${GUI_DIR}
+    ${RENDER_DIR}
+    ${TERRAIN_DIR}
+    ${RAYCAST_DIR}
+    ${COMMON_DIR}
+    ${TINYOBJ_DIR}
 )
 
 # ---------------------------------------------------------
-# 7. Linking
+# 8. Linking
 # ---------------------------------------------------------
 target_link_libraries(cin
     OpenGL::GL
@@ -114,8 +157,8 @@ target_link_libraries(cin
 )
 
 # ---------------------------------------------------------
-# 8. Asset Path Definition
+# 9. Asset Path Definition
 # ---------------------------------------------------------
-target_compile_definitions(cin PRIVATE 
+target_compile_definitions(cin PRIVATE
     ASSET_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/"
 )

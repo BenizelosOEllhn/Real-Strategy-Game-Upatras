@@ -6,6 +6,8 @@ in vec3 FragPos;
 in vec3 Normal;
 in vec2 TexCoords;
 in vec4 FragPosLightSpace;
+in float vClipDist;
+
 
 // --- Grass Variations ---
 uniform sampler2D grass1;
@@ -64,6 +66,7 @@ float ShadowCalculation(vec4 fragPosLightSpace)
 // ----------------------------------------------------------
 void main()
 {
+    if (vClipDist < 0.0) discard;
     // ======================================================
     // 1. GRASS MIXING
     // ======================================================
