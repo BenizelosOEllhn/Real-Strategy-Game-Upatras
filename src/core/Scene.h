@@ -98,6 +98,7 @@ private:
     Model* storageModel    = nullptr;
     Model* townCenterModel = nullptr;
     Model* barracksModel   = nullptr;
+    Model* foundationModel = nullptr;
 
     // ========================================================
     // Textures
@@ -191,7 +192,7 @@ void DrawLakeWater(const glm::mat4& view,
     float oceanY = -1.2f;
     float lakeY  = 4.5f;
     float riverY = 1.5f;
-
+    
     // Helpers
     void initWaterRenderTargets(int w, int h);
     void destroyWaterRenderTargets();

@@ -127,15 +127,15 @@ void Scene::Init() {
                 << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
 
 // In Scene.cpp inside your callback or update loop
-
+    foundationModel = townCenterModel;
     if (type == BuildType::TownCenter)
-    {
-        GameEntity* tc = new TownCenter(pos, townCenterModel, 1);
+    {   foundationModel = townCenterModel;
+       GameEntity* tc = new TownCenter(pos, foundationModel,townCenterModel, 1);
         entities_.push_back(tc);
     }
     else if (type == BuildType::Barracks)
-    {
-        GameEntity* b = new Barracks(pos, barracksModel, 1);
+    {   foundationModel = barracksModel;
+        GameEntity* b = new Barracks(pos, foundationModel, barracksModel, 1);
         entities_.push_back(b);
     }
     else if (type == BuildType::Farm)

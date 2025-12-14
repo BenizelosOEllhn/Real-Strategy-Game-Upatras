@@ -26,6 +26,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/Market.cpp" "CMakeFiles/cin.dir/src/game/buildings/Market.cpp.o" "gcc" "CMakeFiles/cin.dir/src/game/buildings/Market.cpp.o.d"
   "/Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/Storage.cpp" "CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.o" "gcc" "CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.o.d"
   "/Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/TownCenter.cpp" "CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.o" "gcc" "CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.o.d"
+  "/Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/Building.cpp" "CMakeFiles/cin.dir/src/game/entities/Building.cpp.o" "gcc" "CMakeFiles/cin.dir/src/game/entities/Building.cpp.o.d"
   "/Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/GameEntity.cpp" "CMakeFiles/cin.dir/src/game/entities/GameEntity.cpp.o" "gcc" "CMakeFiles/cin.dir/src/game/entities/GameEntity.cpp.o.d"
   "/Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/Unit.cpp" "CMakeFiles/cin.dir/src/game/entities/Unit.cpp.o" "gcc" "CMakeFiles/cin.dir/src/game/entities/Unit.cpp.o.d"
   "/Users/konstantinoskanellopoulos/Desktop/rts/src/game/managers/BuildingManager.cpp" "CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.o" "gcc" "CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.o.d"

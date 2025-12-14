@@ -124,14 +124,16 @@ void Scene::Draw(
         objectShader.SetBool("useTexture", false); // buildings use uMaterialColor
         objectShader.SetInt("texture_diffuse1", 0);
 
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         for (GameEntity* e : entities_)
         {
             if (!e) continue;
-
-            // IMPORTANT: do NOT set model twice.
-            // If GameEntity::Draw sets "model", don't set it here.
-            e->Draw(objectShader);
+            e->Draw(objectShader);   // Building::Draw sets uAlpha
         }
+
+        glDisable(GL_BLEND);
     }
 
     // ============================================================
@@ -166,9 +168,13 @@ void Scene::Draw(
         m = glm::scale(m, glm::vec3(20.0f));
         previewShader->SetMat4("model", m);
 
+        // Pulse alpha for fade in/out effect
+        float time = (float)glfwGetTime();
+        float alpha = 0.4f + 0.2f * sin(time * 4.0f); // Oscillates between ~0.2 and 0.6
+
         glm::vec4 tint = buildingManager_.isValidPlacement()
-            ? glm::vec4(0.1f, 1.0f, 0.1f, 0.5f)
-            : glm::vec4(1.0f, 0.1f, 0.1f, 0.5f);
+            ? glm::vec4(0.1f, 1.0f, 0.1f, alpha)
+            : glm::vec4(1.0f, 0.1f, 0.1f, alpha);
 
         // Your preview.frag uses "uTint" or "tint"? Make it match.
         previewShader->SetVec4("uTint", tint);

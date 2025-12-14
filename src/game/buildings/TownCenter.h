@@ -4,10 +4,17 @@
 
 class TownCenter : public Building {
 public:
-    TownCenter(glm::vec3 pos, Model* m, int owner)
-        : Building(pos, EntityType::TownCenter, m, owner) {}
-
-    void Update(float dt) override {}
+    TownCenter(glm::vec3 pos,
+               Model* foundation,
+               Model* finalModel,
+               int owner)
+        : Building(
+              pos,
+              EntityType::TownCenter,
+              foundation,     // foundation mesh
+              finalModel,     // final building mesh
+              owner)
+    {}
 
     void SpawnUnit(std::vector<GameEntity*>& list) override;
 };

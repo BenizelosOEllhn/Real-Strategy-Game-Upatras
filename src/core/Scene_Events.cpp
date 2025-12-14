@@ -9,8 +9,13 @@ void Scene::Update(float dt, const Camera& cam)
     
     // Pass the camera AND dimensions
     buildingManager_.update(mouseX_, mouseY_, fbW, fbH, cam); 
-}
 
+    for (GameEntity* e : entities_)
+    {
+        if (e)
+            e->Update(dt);
+    }
+}
 
 void Scene::setupBuildingBar()
 {

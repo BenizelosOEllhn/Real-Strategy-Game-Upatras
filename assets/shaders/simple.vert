@@ -31,21 +31,17 @@ void main()
     mat4 finalModel;
 
     if (isInstanced) {
-        // Mode A: Instancing (Trees/Rocks)
         finalModel = mat4(iRow0, iRow1, iRow2, iRow3);
     } else {
-        // Mode B: Single Object (Buildings)
         finalModel = model;
     }
 
     vec4 worldPos = finalModel * vec4(aPos, 1.0);
-
     vClipDist = dot(worldPos, uClipPlane);
 
     FragPos = worldPos.xyz;
     Normal  = mat3(transpose(inverse(finalModel))) * aNormal;
     TexCoords = aTexCoords;
-
     FragPosLightSpace = lightSpaceMatrix * worldPos;
 
     gl_Position = projection * view * worldPos;

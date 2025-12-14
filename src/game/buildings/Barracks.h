@@ -5,10 +5,17 @@
 
 class Barracks : public Building {
 public:
-    Barracks(glm::vec3 pos, Model* m, int owner)
-        : Building(pos, EntityType::Barracks, m, owner) {}
-
-    void Update(float dt) override {}
+    Barracks(glm::vec3 pos,
+             Model* foundation,
+             Model* finalModel,
+             int owner)
+        : Building(
+              pos,
+              EntityType::Barracks,
+              foundation,
+              finalModel,
+              owner)
+    {}
 
     void SpawnUnit(std::vector<GameEntity*>& list) override;
 };

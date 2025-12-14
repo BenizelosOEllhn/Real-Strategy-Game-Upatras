@@ -61,6 +61,7 @@ set(GAME_SOURCES
     # ---- entities ----
     ${GAME_DIR}/entities/GameEntity.cpp
     ${GAME_DIR}/entities/Unit.cpp
+    ${GAME_DIR}/entities/Building.cpp
 
     # ---- units ----
     ${GAME_DIR}/units/Worker.cpp

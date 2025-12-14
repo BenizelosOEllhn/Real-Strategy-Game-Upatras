@@ -96,4 +96,3 @@ void BuildingManager::confirmPlacement(double mouseX, double mouseY)
     currentType_ = BuildType::None;
     previewModel_ = nullptr;
 }
-

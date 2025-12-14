@@ -5,6 +5,7 @@
 #include "Terrain.h"
 #include "Camera.h"
 #include "../common/Model.h"
+#include "Building.h"
 
 
 class Terrain;

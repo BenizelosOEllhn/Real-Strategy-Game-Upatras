@@ -1,8 +1,6 @@
 #version 410 core
-
 layout (location = 0) in vec3 aPos;
 
-// Instance attributes
 layout (location = 3) in vec4 iRow0;
 layout (location = 4) in vec4 iRow1;
 layout (location = 5) in vec4 iRow2;
@@ -14,12 +12,7 @@ uniform bool isInstanced;
 
 void main()
 {
-    mat4 M;
-
-    if (isInstanced)
-        M = mat4(iRow0, iRow1, iRow2, iRow3);
-    else
-        M = model;
-
+    mat4 M = isInstanced ? mat4(iRow0, iRow1, iRow2, iRow3) : model;
     gl_Position = lightSpaceMatrix * M * vec4(aPos, 1.0);
 }
+

@@ -12,6 +12,7 @@ uniform sampler2D texture_diffuse1;
 uniform sampler2D shadowMap;
 uniform vec3 uMaterialColor;
 uniform bool useTexture; // Pass 'false' for buildings, 'true' for trees
+uniform float uAlpha;
 
 uniform vec3 lightPos;
 uniform vec3 viewPos;
@@ -45,6 +46,7 @@ float computeShadow(vec4 fragPosLightSpace)
 }
 
 void main()
+
 {
     if (vClipDist < 0.0) discard;
     vec3 albedo;
@@ -72,5 +74,5 @@ void main()
     vec3 lighting = ambient + (1.0 - shadow) * (diffuse + specular);
 
     vec3 result = lighting * albedo;
-    FragColor = vec4(result, 1.0);
+    FragColor = vec4(result, uAlpha);
 }

@@ -35,6 +35,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.o.d"
   "CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.o"
   "CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.o.d"
+  "CMakeFiles/cin.dir/src/game/entities/Building.cpp.o"
+  "CMakeFiles/cin.dir/src/game/entities/Building.cpp.o.d"
   "CMakeFiles/cin.dir/src/game/entities/GameEntity.cpp.o"
   "CMakeFiles/cin.dir/src/game/entities/GameEntity.cpp.o.d"
   "CMakeFiles/cin.dir/src/game/entities/Unit.cpp.o"

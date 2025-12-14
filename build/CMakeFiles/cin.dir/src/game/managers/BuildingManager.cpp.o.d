@@ -1048,4 +1048,8 @@ CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../trigonometric.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../matrix.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/../common/Model.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/../../common/Shader.h
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/../../common/Shader.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/Building.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/GameEntity.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/../../common/Model.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/data/EntityType.h

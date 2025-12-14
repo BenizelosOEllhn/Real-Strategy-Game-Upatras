@@ -10,29 +10,24 @@ public:
     glm::vec3 position;
     int ownerID;
     EntityType type;
-    Model* model; 
+    Model* model;
 
-    // 1. Initialize immediately in the definition
-    glm::mat4 transform = glm::mat4(1.0f); 
+    glm::mat4 transform;
 
     GameEntity(glm::vec3 pos, EntityType t, Model* m, int owner)
-        : position(pos), type(t), model(m), ownerID(owner)
+        : position(pos), type(t), model(m), ownerID(owner),
+          transform(glm::mat4(1.0f))
     {
-        // 2. Reset to Identity to be safe
-        transform = glm::mat4(1.0f); 
-
-        // 3. Translate to the click position
         transform = glm::translate(transform, position);
-
-        // 4. SCALE IS CRITICAL
-        // If this is missing, the building is too small to see (Invisible Barracks)
-        transform = glm::scale(transform, glm::vec3(20.0f)); 
+        transform = glm::scale(transform, glm::vec3(20.0f)); // your scale
     }
 
-    virtual ~GameEntity() {}
+    virtual ~GameEntity() = default;
+
     virtual void Update(float dt) = 0;
 
-    virtual void Draw(Shader& shader) {
+    virtual void Draw(Shader& shader)
+    {
         if (!model) return;
         shader.Use();
         shader.SetMat4("model", transform);

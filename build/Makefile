@@ -645,6 +645,30 @@ src/game/buildings/TownCenter.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.s
 .PHONY : src/game/buildings/TownCenter.cpp.s
 
+src/game/entities/Building.o: src/game/entities/Building.cpp.o
+.PHONY : src/game/entities/Building.o
+
+# target to build an object file
+src/game/entities/Building.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/entities/Building.cpp.o
+.PHONY : src/game/entities/Building.cpp.o
+
+src/game/entities/Building.i: src/game/entities/Building.cpp.i
+.PHONY : src/game/entities/Building.i
+
+# target to preprocess a source file
+src/game/entities/Building.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/entities/Building.cpp.i
+.PHONY : src/game/entities/Building.cpp.i
+
+src/game/entities/Building.s: src/game/entities/Building.cpp.s
+.PHONY : src/game/entities/Building.s
+
+# target to generate assembly for a file
+src/game/entities/Building.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/entities/Building.cpp.s
+.PHONY : src/game/entities/Building.cpp.s
+
 src/game/entities/GameEntity.o: src/game/entities/GameEntity.cpp.o
 .PHONY : src/game/entities/GameEntity.o
 
@@ -979,6 +1003,9 @@ help:
 	@echo "... src/game/buildings/TownCenter.o"
 	@echo "... src/game/buildings/TownCenter.i"
 	@echo "... src/game/buildings/TownCenter.s"
+	@echo "... src/game/entities/Building.o"
+	@echo "... src/game/entities/Building.i"
+	@echo "... src/game/entities/Building.s"
 	@echo "... src/game/entities/GameEntity.o"
 	@echo "... src/game/entities/GameEntity.i"
 	@echo "... src/game/entities/GameEntity.s"

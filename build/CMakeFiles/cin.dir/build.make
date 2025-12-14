@@ -338,10 +338,24 @@ CMakeFiles/cin.dir/src/game/entities/Unit.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cin.dir/src/game/entities/Unit.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/Unit.cpp -o CMakeFiles/cin.dir/src/game/entities/Unit.cpp.s
 
+CMakeFiles/cin.dir/src/game/entities/Building.cpp.o: CMakeFiles/cin.dir/flags.make
+CMakeFiles/cin.dir/src/game/entities/Building.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/Building.cpp
+CMakeFiles/cin.dir/src/game/entities/Building.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/cin.dir/src/game/entities/Building.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/entities/Building.cpp.o -MF CMakeFiles/cin.dir/src/game/entities/Building.cpp.o.d -o CMakeFiles/cin.dir/src/game/entities/Building.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/Building.cpp
+
+CMakeFiles/cin.dir/src/game/entities/Building.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/cin.dir/src/game/entities/Building.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/Building.cpp > CMakeFiles/cin.dir/src/game/entities/Building.cpp.i
+
+CMakeFiles/cin.dir/src/game/entities/Building.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/cin.dir/src/game/entities/Building.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/Building.cpp -o CMakeFiles/cin.dir/src/game/entities/Building.cpp.s
+
 CMakeFiles/cin.dir/src/game/units/Worker.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/src/game/units/Worker.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/units/Worker.cpp
 CMakeFiles/cin.dir/src/game/units/Worker.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/cin.dir/src/game/units/Worker.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/cin.dir/src/game/units/Worker.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/units/Worker.cpp.o -MF CMakeFiles/cin.dir/src/game/units/Worker.cpp.o.d -o CMakeFiles/cin.dir/src/game/units/Worker.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/units/Worker.cpp
 
 CMakeFiles/cin.dir/src/game/units/Worker.cpp.i: cmake_force
@@ -355,7 +369,7 @@ CMakeFiles/cin.dir/src/game/units/Worker.cpp.s: cmake_force
 CMakeFiles/cin.dir/src/game/units/Archer.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/src/game/units/Archer.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/units/Archer.cpp
 CMakeFiles/cin.dir/src/game/units/Archer.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/cin.dir/src/game/units/Archer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/cin.dir/src/game/units/Archer.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/units/Archer.cpp.o -MF CMakeFiles/cin.dir/src/game/units/Archer.cpp.o.d -o CMakeFiles/cin.dir/src/game/units/Archer.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/units/Archer.cpp
 
 CMakeFiles/cin.dir/src/game/units/Archer.cpp.i: cmake_force
@@ -369,7 +383,7 @@ CMakeFiles/cin.dir/src/game/units/Archer.cpp.s: cmake_force
 CMakeFiles/cin.dir/src/game/units/Knight.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/src/game/units/Knight.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/units/Knight.cpp
 CMakeFiles/cin.dir/src/game/units/Knight.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/cin.dir/src/game/units/Knight.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/cin.dir/src/game/units/Knight.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/units/Knight.cpp.o -MF CMakeFiles/cin.dir/src/game/units/Knight.cpp.o.d -o CMakeFiles/cin.dir/src/game/units/Knight.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/units/Knight.cpp
 
 CMakeFiles/cin.dir/src/game/units/Knight.cpp.i: cmake_force
@@ -383,7 +397,7 @@ CMakeFiles/cin.dir/src/game/units/Knight.cpp.s: cmake_force
 CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/TownCenter.cpp
 CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.o -MF CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.o.d -o CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/TownCenter.cpp
 
 CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.i: cmake_force
@@ -397,7 +411,7 @@ CMakeFiles/cin.dir/src/game/buildings/TownCenter.cpp.s: cmake_force
 CMakeFiles/cin.dir/src/game/buildings/Barracks.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/src/game/buildings/Barracks.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/Barracks.cpp
 CMakeFiles/cin.dir/src/game/buildings/Barracks.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/cin.dir/src/game/buildings/Barracks.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/cin.dir/src/game/buildings/Barracks.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/buildings/Barracks.cpp.o -MF CMakeFiles/cin.dir/src/game/buildings/Barracks.cpp.o.d -o CMakeFiles/cin.dir/src/game/buildings/Barracks.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/Barracks.cpp
 
 CMakeFiles/cin.dir/src/game/buildings/Barracks.cpp.i: cmake_force
@@ -411,7 +425,7 @@ CMakeFiles/cin.dir/src/game/buildings/Barracks.cpp.s: cmake_force
 CMakeFiles/cin.dir/src/game/buildings/Farm.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/src/game/buildings/Farm.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/Farm.cpp
 CMakeFiles/cin.dir/src/game/buildings/Farm.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/cin.dir/src/game/buildings/Farm.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/cin.dir/src/game/buildings/Farm.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/buildings/Farm.cpp.o -MF CMakeFiles/cin.dir/src/game/buildings/Farm.cpp.o.d -o CMakeFiles/cin.dir/src/game/buildings/Farm.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/Farm.cpp
 
 CMakeFiles/cin.dir/src/game/buildings/Farm.cpp.i: cmake_force
@@ -425,7 +439,7 @@ CMakeFiles/cin.dir/src/game/buildings/Farm.cpp.s: cmake_force
 CMakeFiles/cin.dir/src/game/buildings/House.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/src/game/buildings/House.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/House.cpp
 CMakeFiles/cin.dir/src/game/buildings/House.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/cin.dir/src/game/buildings/House.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/cin.dir/src/game/buildings/House.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/buildings/House.cpp.o -MF CMakeFiles/cin.dir/src/game/buildings/House.cpp.o.d -o CMakeFiles/cin.dir/src/game/buildings/House.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/House.cpp
 
 CMakeFiles/cin.dir/src/game/buildings/House.cpp.i: cmake_force
@@ -439,7 +453,7 @@ CMakeFiles/cin.dir/src/game/buildings/House.cpp.s: cmake_force
 CMakeFiles/cin.dir/src/game/buildings/Market.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/src/game/buildings/Market.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/Market.cpp
 CMakeFiles/cin.dir/src/game/buildings/Market.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/cin.dir/src/game/buildings/Market.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/cin.dir/src/game/buildings/Market.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/buildings/Market.cpp.o -MF CMakeFiles/cin.dir/src/game/buildings/Market.cpp.o.d -o CMakeFiles/cin.dir/src/game/buildings/Market.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/Market.cpp
 
 CMakeFiles/cin.dir/src/game/buildings/Market.cpp.i: cmake_force
@@ -453,7 +467,7 @@ CMakeFiles/cin.dir/src/game/buildings/Market.cpp.s: cmake_force
 CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/Storage.cpp
 CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.o -MF CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.o.d -o CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/Storage.cpp
 
 CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.i: cmake_force
@@ -467,7 +481,7 @@ CMakeFiles/cin.dir/src/game/buildings/Storage.cpp.s: cmake_force
 CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.o: CMakeFiles/cin.dir/flags.make
 CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.o: /Users/konstantinoskanellopoulos/Desktop/rts/src/game/managers/BuildingManager.cpp
 CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.o: CMakeFiles/cin.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.o -MF CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.o.d -o CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.o -c /Users/konstantinoskanellopoulos/Desktop/rts/src/game/managers/BuildingManager.cpp
 
 CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.i: cmake_force
@@ -499,6 +513,7 @@ cin_OBJECTS = \
 "CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.o" \
 "CMakeFiles/cin.dir/src/game/entities/GameEntity.cpp.o" \
 "CMakeFiles/cin.dir/src/game/entities/Unit.cpp.o" \
+"CMakeFiles/cin.dir/src/game/entities/Building.cpp.o" \
 "CMakeFiles/cin.dir/src/game/units/Worker.cpp.o" \
 "CMakeFiles/cin.dir/src/game/units/Archer.cpp.o" \
 "CMakeFiles/cin.dir/src/game/units/Knight.cpp.o" \
@@ -532,6 +547,7 @@ cin: CMakeFiles/cin.dir/common/FastNoiseLite.cpp.o
 cin: CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.o
 cin: CMakeFiles/cin.dir/src/game/entities/GameEntity.cpp.o
 cin: CMakeFiles/cin.dir/src/game/entities/Unit.cpp.o
+cin: CMakeFiles/cin.dir/src/game/entities/Building.cpp.o
 cin: CMakeFiles/cin.dir/src/game/units/Worker.cpp.o
 cin: CMakeFiles/cin.dir/src/game/units/Archer.cpp.o
 cin: CMakeFiles/cin.dir/src/game/units/Knight.cpp.o
@@ -546,7 +562,7 @@ cin: CMakeFiles/cin.dir/build.make
 cin: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework
 cin: external/glfw-3.4/src/libglfw3.a
 cin: CMakeFiles/cin.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Linking CXX executable cin"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Linking CXX executable cin"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/cin.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
