@@ -35,6 +35,8 @@ Scene::~Scene()
     delete rockTex; delete sandTex; delete boulderTex;
     delete treeTex; delete peakTex; delete waterTex;
     delete noiseTex; delete overlayTex;
+    delete cornIconTex; delete woodIconTex; delete goldIconTex;
+    delete oreIconTex; delete populationIconTex;
 
     delete waterShader;
     delete previewShader;
@@ -116,6 +118,7 @@ void Scene::Init() {
     generateLakeWater();     // local lake mesh
     generateRiverWater();    // local river mesh
     setupBuildingBar();
+    setupResourceBar();
 
     previewShader = new Shader(
     std::string(ASSET_PATH) + "shaders/preview.vert",

@@ -5,6 +5,7 @@
 #include <vector>
 #include <functional>
 #include <string>
+#include <cstddef>
 
 #include "Shader.h"
 #include "UIButton.h"   
@@ -26,8 +27,9 @@ public:
                         float charW = 8.0f, float charH = 12.0f);
 
     void addButton(const UIButton& btn);
-    void addLabel(const std::string& text, const glm::vec2& pos,
-                  float scale = 1.0f);
+    size_t addLabel(const std::string& text, const glm::vec2& pos,
+                    float scale = 1.0f);
+    void setLabelText(size_t index, const std::string& text);
 
     void update(float mouseX, float mouseY);
     bool handleClick(float mouseX, float mouseY);

@@ -13,6 +13,7 @@
 #include <random>
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 
 // ============================================================
 // Engine / Rendering
@@ -74,8 +75,10 @@ public:
 
     // Input / UI
     void setupBuildingBar();
+    void setupResourceBar();
     void onMouseMove(double x, double y);
     void onMouseButton(int button, int action, int mods);
+    void updateResourceTexts();
 
 private:
     // ========================================================
@@ -114,6 +117,11 @@ private:
     Texture* waterTex   = nullptr;
     Texture* noiseTex   = nullptr;
     Texture* overlayTex = nullptr;
+    Texture* cornIconTex = nullptr;
+    Texture* woodIconTex = nullptr;
+    Texture* goldIconTex = nullptr;
+    Texture* oreIconTex  = nullptr;
+    Texture* populationIconTex = nullptr;
 
     // ========================================================
     // Foliage
@@ -219,6 +227,11 @@ void DrawLakeWater(const glm::mat4& view,
     double mouseY_ = 0.0;
 
     Shader* previewShader = nullptr;
+    size_t foodLabelIndex_ = SIZE_MAX;
+    size_t woodLabelIndex_ = SIZE_MAX;
+    size_t goldLabelIndex_ = SIZE_MAX;
+    size_t oreLabelIndex_ = SIZE_MAX;
+    size_t populationLabelIndex_ = SIZE_MAX;
 
     // ========================================================
     // GAME STATE

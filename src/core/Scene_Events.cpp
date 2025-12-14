@@ -10,6 +10,8 @@ void Scene::Update(float dt, const Camera& cam)
     // Pass the camera AND dimensions
     buildingManager_.update(mouseX_, mouseY_, fbW, fbH, cam); 
 
+    updateResourceTexts();
+
     for (GameEntity* e : entities_)
     {
         if (e)
@@ -79,6 +81,72 @@ void Scene::setupBuildingBar()
     addButton("Storage_FirstAge_Level1.png",    "Storage",     BuildType::Storage);
 }
 
+void Scene::setupResourceBar()
+{
+    const float barHeight = 80.0f;
+    const float marginTop = 10.0f;
+    const float paddingX = 20.0f;
+    const float iconSize = 48.0f;
+    const float labelScale = 1.6f;
+    float baseY = fbHeight - barHeight - marginTop;
+
+    UIButton bar;
+    bar.pos  = glm::vec2(0.0f, baseY);
+    bar.size = glm::vec2(fbWidth, barHeight);
+    bar.texture = 0;
+    bar.onClick = nullptr;
+    bar.clickable = false;
+    uiManager_.addButton(bar);
+
+    float cursorX = paddingX;
+    float iconY = baseY + (barHeight - iconSize) * 0.5f;
+
+    auto addEntry = [&](Texture*& texPtr, const std::string& fileName, size_t& labelIndex)
+    {
+        if (!texPtr)
+        {
+            texPtr = new Texture((std::string(ASSET_PATH) + "resources/" + fileName).c_str());
+        }
+
+        UIButton icon;
+        icon.pos = glm::vec2(cursorX, iconY);
+        icon.size = glm::vec2(iconSize, iconSize);
+        icon.texture = texPtr->ID;
+        icon.clickable = false;
+        icon.onClick = nullptr;
+        uiManager_.addButton(icon);
+
+        float textX = icon.pos.x + icon.size.x + 10.0f;
+        float textY = icon.pos.y + icon.size.y * 0.5f - 8.0f;
+        labelIndex = uiManager_.addLabel("0", glm::vec2(textX, textY), labelScale);
+
+        cursorX = textX + 90.0f;
+    };
+
+    addEntry(cornIconTex, "corn.png", foodLabelIndex_);
+    addEntry(woodIconTex, "log.png", woodLabelIndex_);
+    addEntry(goldIconTex, "gold-bar.png", goldLabelIndex_);
+    addEntry(oreIconTex,  "ore.png", oreLabelIndex_);
+    addEntry(populationIconTex, "village.png", populationLabelIndex_);
+
+    updateResourceTexts();
+}
+
+void Scene::updateResourceTexts()
+{
+    auto setVal = [&](size_t idx, int value)
+    {
+        if (idx == SIZE_MAX) return;
+        uiManager_.setLabelText(idx, std::to_string(value));
+    };
+
+    setVal(foodLabelIndex_, player1.food);
+    setVal(woodLabelIndex_, player1.wood);
+    setVal(goldLabelIndex_, player1.gold);
+    setVal(oreLabelIndex_, player1.stone);
+    setVal(populationLabelIndex_, player1.maxPopulation);
+}
+
 
 void Scene::onMouseMove(double x, double y)
 {
@@ -145,4 +213,3 @@ glm::vec3 Scene::GetMouseWorldPos(double mouseX, double mouseY,
     return camPos + rayWorld * t;
 
 }
-

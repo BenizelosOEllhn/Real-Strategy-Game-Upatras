@@ -43,14 +43,26 @@ void UIManager::addButton(const UIButton& btn)
     buttons_.push_back(btn);
 }
 
-void UIManager::addLabel(const std::string& text, const glm::vec2& pos, float scale)
+size_t UIManager::addLabel(const std::string& text, const glm::vec2& pos, float scale)
 {
     labels_.push_back({ pos, text, scale });
+    return labels_.size() - 1;
+}
+
+void UIManager::setLabelText(size_t index, const std::string& text)
+{
+    if (index >= labels_.size())
+        return;
+    labels_[index].text = text;
 }
 
 void UIManager::update(float mouseX, float mouseY)
 {
     for (auto& b : buttons_) {
+        if (!b.clickable) {
+            b.hovered = false;
+            continue;
+        }
         bool inside =
             mouseX >= b.pos.x &&
             mouseX <= b.pos.x + b.size.x &&
@@ -258,4 +270,3 @@ void UIManager::drawText(const std::string& text, float x, float y, float scale)
         cursorX += cw;
     }
 }
-
