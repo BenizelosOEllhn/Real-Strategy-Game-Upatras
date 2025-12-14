@@ -26,7 +26,7 @@ public:
 
         // 4. SCALE IS CRITICAL
         // If this is missing, the building is too small to see (Invisible Barracks)
-        transform = glm::scale(transform, glm::vec3(5.0f)); 
+        transform = glm::scale(transform, glm::vec3(20.0f)); 
     }
 
     virtual ~GameEntity() {}

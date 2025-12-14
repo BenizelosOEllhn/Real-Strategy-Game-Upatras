@@ -1,6 +1,7 @@
 #include "Model.h"
 #include <iostream>
 #include <map>
+#include <filesystem>
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h" 
@@ -10,13 +11,37 @@ Model::Model(const char* path) : instanceVBO(0) {
     std::vector<tinyobj::shape_t> shapes;
     std::vector<tinyobj::material_t> materials;
     std::string err;
-    std::string baseDir = ""; // Add logic to extract directory if needed
+    std::string baseDir;
+    try {
+        baseDir = std::filesystem::path(path).parent_path().string();
+        if (!baseDir.empty() && baseDir.back() != '/')
+            baseDir += "/";
+    } catch (...) {
+        baseDir = "";
+    }
 
-    // Load OBJ and MTL
-    if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &err, path, baseDir.c_str())) {
-        std::cerr << "Failed load: " << path << " " << err << std::endl;
+    std::cout << "OBJ path: " << path << std::endl;
+    std::cout << "MTL baseDir: " << baseDir << std::endl;
+
+
+    bool ok = tinyobj::LoadObj(
+        &attrib,
+        &shapes,
+        &materials,
+        &err,
+        path,
+        baseDir.c_str(),
+        true
+    );
+
+    if (!err.empty())
+        std::cout << "[OBJ] " << err << std::endl;
+
+    if (!ok) {
+        std::cerr << "Failed load: " << path << std::endl;
         return;
     }
+
     std::cout << "Materials loaded: " << materials.size() << std::endl;
 
     // 1. Store Material Colors from MTL

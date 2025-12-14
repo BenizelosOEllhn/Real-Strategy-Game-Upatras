@@ -163,7 +163,7 @@ void Scene::Draw(
         previewShader->SetMat4("projection", projection);
 
         glm::mat4 m = glm::translate(glm::mat4(1.0f), buildingManager_.getPreviewPos());
-        m = glm::scale(m, glm::vec3(5.0f));
+        m = glm::scale(m, glm::vec3(20.0f));
         previewShader->SetMat4("model", m);
 
         glm::vec4 tint = buildingManager_.isValidPlacement()
