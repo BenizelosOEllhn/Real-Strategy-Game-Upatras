@@ -22,6 +22,7 @@
 #include "../../common/Texture.h"
 #include "../../common/Shader.h"
 #include "Camera.h"
+#include "Scene.h"
 
 // ============================================================
 // RTS Systems
@@ -57,7 +58,7 @@ public:
     ~Scene();
 
     void Init();
-    void Update(float dt);
+    void Update(float dt, const Camera& cam);
 
     void Draw(Shader& terrainShader,
               Shader& objectShader,
@@ -83,8 +84,8 @@ private:
     Terrain* terrain = nullptr;
     Camera*  camera  = nullptr;
 
-    float fbWidth  = 800.0f;
-    float fbHeight = 800.0f;
+    int fbWidth  = 0;
+    int fbHeight = 0;
 
     // ========================================================
     // Models
@@ -164,11 +165,11 @@ void DrawLakeWater(const glm::mat4& view,
     void generateRiverWater();
     void uploadRiverWaterMesh();
 
-void DrawRiverWater(const glm::mat4& view,
+    void DrawRiverWater(const glm::mat4& view,
                     const glm::mat4& proj,
                     const glm::vec3& viewPos);
 
-    bool nearRiver(float x, float z);
+    bool nearRiver(float x, float z) const;
     void Resize(int fbW, int fbH);
 
     // --- Reflection / Refraction FBOs ---
@@ -198,6 +199,7 @@ void DrawRiverWater(const glm::mat4& view,
     void beginReflectionPass(int w, int h);
     void beginRefractionPass(int w, int h);
     void endWaterPass(int w, int h);
+    bool isWaterAt(float x, float z, float y) const;
     
     //MousePlacement
     glm::vec3 GetMouseWorldPos(double mouseX, double mouseY,

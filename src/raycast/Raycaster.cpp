@@ -1,6 +1,7 @@
 #include "Raycaster.h"
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <iostream>
 #include "Camera.h"  // adjust include path
 #include "Terrain.h" // adjust include path
 
@@ -17,7 +18,7 @@ Ray Raycaster::screenPointToRay(
     // FIX: Calculate Projection Matrix here using window dims and camera Zoom
     float aspect = (float)windowWidth / (float)windowHeight;
     // Ensure near/far planes match your main render loop (e.g., 0.1f, 1000.0f)
-    glm::mat4 proj = glm::perspective(glm::radians(camera.Zoom), aspect, 0.1f, 1000.0f);
+    glm::mat4 proj = glm::perspective(glm::radians(camera.Zoom), aspect, 0.1f, 3000.0f);
 
     glm::mat4 view = camera.GetViewMatrix();
     glm::mat4 invVP = glm::inverse(proj * view);

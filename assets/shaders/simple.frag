@@ -10,6 +10,8 @@ in float vClipDist;
 
 uniform sampler2D texture_diffuse1;
 uniform sampler2D shadowMap;
+uniform vec3 uMaterialColor;
+uniform bool useTexture; // Pass 'false' for buildings, 'true' for trees
 
 uniform vec3 lightPos;
 uniform vec3 viewPos;
@@ -45,8 +47,12 @@ float computeShadow(vec4 fragPosLightSpace)
 void main()
 {
     if (vClipDist < 0.0) discard;
-    vec3 albedo = texture(texture_diffuse1, TexCoords).rgb;
-
+    vec3 albedo;
+    if (useTexture) {
+            albedo = texture(texture_diffuse1, TexCoords).rgb;
+        } else {
+            albedo = uMaterialColor; // Use the color from MTL
+        }
     vec3 norm     = normalize(Normal);
     vec3 lightDir = normalize(lightPos - FragPos);
 

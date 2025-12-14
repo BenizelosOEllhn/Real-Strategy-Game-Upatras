@@ -49,8 +49,8 @@ void Scene::Init() {
     initWaterRenderTargets(w, h);
 
     // 2. Assign to your float variables
-    fbWidth = static_cast<float>(w);
-    fbHeight = static_cast<float>(h);
+    fbWidth = (w);
+    fbHeight = (h);
 
     std::cout << "Framebuffer: " << fbWidth << " x " << fbHeight << std::endl;
     // 1. Generate Terrain Mesh
@@ -121,7 +121,6 @@ void Scene::Init() {
     std::string(ASSET_PATH) + "shaders/preview.vert",
     std::string(ASSET_PATH) + "shaders/preview.frag"
     );
-
     buildingManager_.onPlaceBuilding = [this](BuildType type, glm::vec3 pos)
     {
         std::cout << "Placing building at " 

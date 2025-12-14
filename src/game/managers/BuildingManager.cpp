@@ -36,7 +36,7 @@ void BuildingManager::startPlacing(BuildType type)
     }
 }
 
-void BuildingManager::update(double mouseX, double mouseY)
+void BuildingManager::update(double mouseX, double mouseY, int currentScreenW, int currentScreenH, const Camera& cam)
 {
     if (!isPlacing_ || !camera_ || !terrain_)
         return;
@@ -48,38 +48,52 @@ void BuildingManager::update(double mouseX, double mouseY)
     Ray ray = Raycaster::screenPointToRay(
         (float)mouseX,
         (float)mouseY,
-        screenW_,
-        screenH_,
-        *camera_
+        currentScreenW,
+        currentScreenH,
+        cam
     );
 
     // Raycast to terrain
-    glm::vec3 hit;
+glm::vec3 hit;
     if (Raycaster::raycastTerrain(ray, *terrain_, hit))
     {
         previewPos_ = hit;
         hasPreview_ = true;
-        validHit_   = true;
+
+        // ------------------------
+        // VALIDITY CHECK
+        // ------------------------
+        float waterLevel = std::max({ -1.2, 4.5, 1.5 });
+
+        if (hit.y > waterLevel + 0.1f)
+        {
+            validPlacement_ = true;
+        }
+        else
+        {
+            validPlacement_ = false;
+        }
     }
     else
     {
         hasPreview_ = false;
-        validHit_   = false;
+        validPlacement_ = false;
     }
 }
 
 void BuildingManager::confirmPlacement(double mouseX, double mouseY)
 {
-    if (!isPlacing_ || !validHit_ || !hasPreview_)
+    if (!isPlacing_ || !hasPreview_ || !validPlacement_)
         return;
 
     if (onPlaceBuilding)
         onPlaceBuilding(currentType_, previewPos_);
 
-    // Reset placement mode
-    isPlacing_   = false;
-    hasPreview_  = false;
-    validHit_    = false;
+    // reset
+    isPlacing_ = false;
+    hasPreview_ = false;
+    validPlacement_ = false;
     currentType_ = BuildType::None;
     previewModel_ = nullptr;
 }
+

@@ -121,7 +121,7 @@ int main()
 
         // Input
         processInput(window);
-        gameScene.Update(deltaTime);
+        gameScene.Update(deltaTime, camera);
 
         // --- Compute light-space matrix for directional light ---
         float orthoSize = 350.0f;  //// FIX #3 — cover entire terrain

@@ -26,6 +26,66 @@ static void makeDepthTexture(GLuint& tex, int w, int h)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
+bool Scene::nearRiver(float x, float z) const
+{
+    // Use SceneConst:: prefix if these are in a namespace, 
+    // otherwise ensure the constants are visible here.
+    const float lakeZ       = SceneConst::kLakeCenterZ; 
+    const float riverStartZ = lakeZ + 12.0f;
+    const float riverEndZ   = 260.0f;
+
+    if (z < riverStartZ || z > riverEndZ)
+        return false;
+
+    // Define the lambda locally or use a helper
+    auto evalPath = [&](float startX, float dir) -> std::pair<float, float>
+    {
+        float t = (z - riverStartZ) / (riverEndZ - riverStartZ);
+
+        float endX  = dir * 180.0f;
+        float pathX = glm::mix(startX, endX, t);
+
+        pathX += dir * (30.0f * std::sin(z * 0.035f));
+        pathX +=        (12.0f * std::cos(z * 0.02f));
+
+        float halfWidth = glm::mix(28.0f, 18.0f, t);
+        float fade = glm::clamp((z - 150.0f) / 30.0f, 0.0f, 1.0f);
+        halfWidth *= (1.0f - fade);
+
+        halfWidth += 4.0f; 
+
+        return { pathX - halfWidth, pathX + halfWidth };
+    };
+
+    auto [lMin, lMax] = evalPath(-15.0f, -1.0f);
+    auto [rMin, rMax] = evalPath(+15.0f, +1.0f);
+
+    return (x >= lMin && x <= lMax) || (x >= rMin && x <= rMax);
+}
+
+bool Scene::isWaterAt(float x, float z, float y) const
+{
+    // Ocean
+    if (y < oceanY + 0.05f)
+        return true;
+
+    // Lake (circle check)
+    float dx = x;
+    float dz = z - SceneConst::kLakeCenterZ;
+    float distSq = dx*dx + dz*dz;
+
+    if (distSq < SceneConst::kLakeRadius * SceneConst::kLakeRadius &&
+        y < lakeY + 0.05f)
+        return true;
+
+    // River (distance-to-path check)
+    if (nearRiver(x, z) && y < riverY + 0.05f)
+        return true;
+
+    return false;
+}
+
+
 // ------------------------------------------------------------
 // Render targets init / destroy
 // ------------------------------------------------------------

@@ -48,7 +48,7 @@ void Scene::generateTrees() {
         if (distToLake < SceneConst::kLakeRadius + 6.0f) continue;
 
         // Avoid rivers (approx)
-        if (SceneConst::nearRiver(x, z)) continue;
+        if (Scene::nearRiver(x, z)) continue;
 
         if (z > SceneConst::kCornerPlainZ && std::abs(x) > SceneConst::kCornerPlainX) continue;
 
@@ -98,7 +98,7 @@ void Scene::generateRocks() {
         float distToLake = std::sqrt(x*x + std::pow(z - SceneConst::kLakeCenterZ, 2));
         if (distToLake < SceneConst::kLakeRadius + 8.0f) continue;
 
-        if (SceneConst::nearRiver(x, z)) continue;
+        if (Scene::nearRiver(x, z)) continue;
         if (height < 1.0f) continue;
 
         glm::vec3 normal = terrain->getNormal(x, z);

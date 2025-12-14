@@ -1,9 +1,14 @@
 #include "Scene.h"
 
-void Scene::Update(float dt)
-{
+void Scene::Update(float dt, const Camera& cam)
+{   
+    int fbW, fbH;
+    glfwGetFramebufferSize(glfwGetCurrentContext(), &fbW, &fbH);
+    
     uiManager_.update(mouseX_, mouseY_);
-    buildingManager_.update(mouseX_, mouseY_);
+    
+    // Pass the camera AND dimensions
+    buildingManager_.update(mouseX_, mouseY_, fbW, fbH, cam); 
 }
 
 
@@ -96,8 +101,6 @@ void Scene::onMouseButton(int button, int action, int mods)
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
     {
         bool uiConsumed = uiManager_.handleClick(mouseX_, mouseY_);
-std::cout << "[Scene] UI consumed: " << uiConsumed << std::endl;
-
         if (!uiConsumed)
         {
             buildingManager_.confirmPlacement(mouseX_, mouseY_);

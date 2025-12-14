@@ -32,9 +32,11 @@ public:
 
     // UI tells us which building we are placing
     void startPlacing(BuildType type);
+    bool isValidPlacement() const { return validPlacement_; }
+
 
     // Called every frame from Scene::Update
-    void update(double mouseX, double mouseY);
+    void update(double mouseX, double mouseY, int screenW, int screenH, const Camera& cam);
 
     // Called when the user left-clicks
     void confirmPlacement(double mouseX, double mouseY);
@@ -44,6 +46,7 @@ public:
     bool hasPreview() const { return hasPreview_; }
     glm::vec3 getPreviewPos() const { return previewPos_; }
     Model* getPreviewModel() const { return previewModel_; }
+    
 
     // Scene registers this callback so it can spawn a real building
     std::function<void(BuildType, glm::vec3)> onPlaceBuilding;
@@ -66,8 +69,10 @@ private:
     bool validHit_   = false;
 
     BuildType currentType_ = BuildType::None;
+    bool validPlacement_ = false;
 
     glm::vec3 previewPos_ = glm::vec3(0);
+    glm::vec3 finalPos = glm::vec3(0);
 
     Model* previewModel_ = nullptr;
 

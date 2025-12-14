@@ -4,7 +4,7 @@ layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
 
-// Instance matrix rows (matches your C++ attrib pointers 3..6)
+// Instance attributes (Used only for Trees/Rocks)
 layout (location = 3) in vec4 iRow0;
 layout (location = 4) in vec4 iRow1;
 layout (location = 5) in vec4 iRow2;
@@ -19,19 +19,31 @@ uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 lightSpaceMatrix;
 
+// --- NEW UNIFORMS ---
+uniform mat4 model;         // For single buildings
+uniform bool isInstanced;   // Switch: True=Trees, False=Buildings
 uniform vec4 uClipPlane;
+
 out float vClipDist;
 
 void main()
 {
-    mat4 instanceModel = mat4(iRow0, iRow1, iRow2, iRow3);
+    mat4 finalModel;
 
-    vec4 worldPos = instanceModel * vec4(aPos, 1.0);
+    if (isInstanced) {
+        // Mode A: Instancing (Trees/Rocks)
+        finalModel = mat4(iRow0, iRow1, iRow2, iRow3);
+    } else {
+        // Mode B: Single Object (Buildings)
+        finalModel = model;
+    }
+
+    vec4 worldPos = finalModel * vec4(aPos, 1.0);
 
     vClipDist = dot(worldPos, uClipPlane);
 
     FragPos = worldPos.xyz;
-    Normal  = mat3(transpose(inverse(instanceModel))) * aNormal;
+    Normal  = mat3(transpose(inverse(finalModel))) * aNormal;
     TexCoords = aTexCoords;
 
     FragPosLightSpace = lightSpaceMatrix * worldPos;

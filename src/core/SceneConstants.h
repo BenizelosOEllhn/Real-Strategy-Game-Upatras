@@ -32,39 +32,4 @@ inline constexpr float kRockZoneMinZ     = kMountainStart - 80.0f;
 inline constexpr float kRockZoneMaxZ     = -45.0f;
 inline constexpr float kRockMinHeight    = 5.0f;
 
-// Same path & width as Terrain::carveRiver(), but a bit wider for safety.
-inline bool nearRiver(float x, float z)
-{
-    constexpr float lakeZ       = kLakeCenterZ;
-    constexpr float riverStartZ = lakeZ + 12.0f;  // -188
-    constexpr float riverEndZ   = 260.0f;
-
-    if (z < riverStartZ || z > riverEndZ)
-        return false;
-
-    auto evalPath = [&](float startX, float dir) -> std::pair<float, float>
-    {
-        float t = (z - riverStartZ) / (riverEndZ - riverStartZ);
-
-        float endX  = dir * 180.0f;
-        float pathX = glm::mix(startX, endX, t);
-
-        pathX += dir * (30.0f * std::sin(z * 0.035f));
-        pathX +=        (12.0f * std::cos(z * 0.02f));
-
-        float halfWidth = glm::mix(28.0f, 18.0f, t);
-        float fade = glm::clamp((z - 150.0f) / 30.0f, 0.0f, 1.0f);
-        halfWidth *= (1.0f - fade);
-
-        halfWidth += 4.0f; // padding for foliage rejection
-
-        return { pathX - halfWidth, pathX + halfWidth };
-    };
-
-    auto [lMin, lMax] = evalPath(-15.0f, -1.0f);
-    auto [rMin, rMax] = evalPath(+15.0f, +1.0f);
-
-    return (x >= lMin && x <= lMax) || (x >= rMin && x <= rMax);
-}
-
 } 

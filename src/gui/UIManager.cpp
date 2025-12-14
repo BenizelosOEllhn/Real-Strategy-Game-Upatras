@@ -63,17 +63,12 @@ void UIManager::update(float mouseX, float mouseY)
 
 bool UIManager::handleClick(float mx, float my)
 {
-    std::cout << "[UI] Click test at: " << mx << ", " << my << std::endl;
 
     for (UIButton& b : buttons_)
     {
-        std::cout << "  Button @ "
-                  << b.pos.x << "," << b.pos.y
-                  << " size " << b.size.x << "x" << b.size.y << std::endl;
 
         if (b.contains(mx, my))
         {
-            std::cout << "  -> HIT BUTTON\n";
         if (b.contains(mx, my))
         {
             if (b.onClick) {
@@ -87,7 +82,6 @@ bool UIManager::handleClick(float mx, float my)
     }
     return false;
 }
-
 
 
 void UIManager::render()
