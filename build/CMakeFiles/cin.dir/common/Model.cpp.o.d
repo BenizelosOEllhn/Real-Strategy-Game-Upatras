@@ -903,6 +903,11 @@ CMakeFiles/cin.dir/common/Model.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/cstdarg \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/temp_value.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__split_buffer \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/unordered_map \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/is_transparent.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__hash_table \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/ranges_iterator_traits.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__node_handle \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/glm.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/detail/_fixes.hpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/cfloat \
@@ -1002,12 +1007,30 @@ CMakeFiles/cin.dir/common/Model.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/integer.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/detail/func_integer.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/detail/func_integer.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/quaternion.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../mat3x3.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../mat4x4.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../vec3.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../vec4.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../gtc/constants.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../gtc/../detail/setup.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../gtc/constants.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/quaternion.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../trigonometric.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../geometric.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../exponential.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glew-1.13.0/include/GL/glew.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/glu.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/OpenGLAvailability.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/os/availability.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/gl.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/../../common/Shader.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/../../common/Texture.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/matrix4x4.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/vector3.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/defs.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/build/external/assimp-6.0.2/code/../include/assimp/config.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/quaternion.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/iostream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/istream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/ostream \
@@ -1032,11 +1055,6 @@ CMakeFiles/cin.dir/common/Model.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/binder1st.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/binder2nd.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/boyer_moore_searcher.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/unordered_map \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/is_transparent.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__hash_table \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/ranges_iterator_traits.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__node_handle \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/compose.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/default_searcher.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/function.h \
@@ -1085,4 +1103,43 @@ CMakeFiles/cin.dir/common/Model.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__filesystem/u8path.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/tinyobjloader/include/tiny_obj_loader.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/fstream \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/Importer.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/types.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/vector2.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/color4.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/matrix3x3.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/vector2.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/vector3.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/color4.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/matrix3x3.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/matrix4x4.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/MathFunctions.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/quaternion.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/scene.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/texture.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/./Compiler/pushpack1.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/./Compiler/poppack1.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/mesh.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/aabb.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/unordered_set \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/light.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/camera.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/material.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/material.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/anim.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/metadata.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/postprocess.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/matrix_transform.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../vec2.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/matrix_transform.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../matrix.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/quaternion.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../glm.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../gtc/constants.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../gtc/quaternion.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../gtx/norm.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../gtx/../glm.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../gtx/../gtx/quaternion.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../gtx/norm.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/quaternion.inl

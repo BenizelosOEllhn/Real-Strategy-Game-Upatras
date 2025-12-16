@@ -15,6 +15,7 @@ struct UILabel
     glm::vec2 pos;
     std::string text;
     float scale = 1.0f;
+    bool visible = true;
 };
 
 class UIManager
@@ -25,11 +26,15 @@ public:
     void init(Shader* shader, int screenW, int screenH);
     void setFontTexture(GLuint tex, int cols = 16, int rows = 16,
                         float charW = 8.0f, float charH = 12.0f);
+    void setTextScale(float scale);
 
-    void addButton(const UIButton& btn);
+    size_t addButton(const UIButton& btn);
     size_t addLabel(const std::string& text, const glm::vec2& pos,
                     float scale = 1.0f);
     void setLabelText(size_t index, const std::string& text);
+    void setButtonVisibility(size_t index, bool visible);
+    void setLabelVisibility(size_t index, bool visible);
+    void setButtonTexture(size_t index, GLuint texture);
 
     void update(float mouseX, float mouseY);
     bool handleClick(float mouseX, float mouseY);
@@ -55,4 +60,5 @@ private:
     int fontRows_ = 16;
     float fontCharW_ = 8.0f;
     float fontCharH_ = 12.0f;
+    float textScale_ = 1.0f;
 };

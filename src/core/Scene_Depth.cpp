@@ -14,6 +14,8 @@ void Scene::DrawDepth(Shader& depthShader,
     depthShader.SetBool("isInstanced", false);
     depthShader.SetBool("uUnderConstruction", false);
     depthShader.SetFloat("uBuildProgress", 1.0f);
+    depthShader.SetBool("uUseSkinning", false);
+    depthShader.BindBoneTexture(0, 0);
 
     depthShader.SetMat4("model", glm::mat4(1.0f));
     terrain->Draw(depthShader.ID);
@@ -26,6 +28,8 @@ void Scene::DrawDepth(Shader& depthShader,
         depthShader.SetBool("isInstanced", true);
         depthShader.SetBool("uUnderConstruction", false);
         depthShader.SetFloat("uBuildProgress", 1.0f);
+        depthShader.SetBool("uUseSkinning", false);
+        depthShader.BindBoneTexture(0, 0);
 
         treeModel->DrawInstanced(depthShader, treeTransforms);
     }
@@ -38,6 +42,8 @@ void Scene::DrawDepth(Shader& depthShader,
         depthShader.SetBool("isInstanced", true);
         depthShader.SetBool("uUnderConstruction", false);
         depthShader.SetFloat("uBuildProgress", 1.0f);
+        depthShader.SetBool("uUseSkinning", false);
+        depthShader.BindBoneTexture(0, 0);
 
         rockModel->DrawInstanced(depthShader, rockTransforms);
     }
@@ -55,15 +61,35 @@ void Scene::DrawDepth(Shader& depthShader,
 
         depthShader.SetMat4("model", e->transform);
 
-        if (Building* b = dynamic_cast<Building*>(e))
+        if (Unit* unit = dynamic_cast<Unit*>(e))
         {
+            bool useSkin = unit->UsesSkinning();
+            depthShader.SetBool("uUseSkinning", useSkin);
+            if (useSkin)
+                depthShader.BindBoneTexture(unit->GetBoneTexture(), unit->GetBoneCount());
+            else
+                depthShader.BindBoneTexture(0, 0);
+            if (unit->model)
+                unit->model->Draw(depthShader);
+        }
+        else if (Building* b = dynamic_cast<Building*>(e))
+        {
+            depthShader.BindBoneTexture(0, 0);
             if (b->isUnderConstruction && b->foundationModel)
+            {
+                depthShader.SetBool("uUseSkinning", false);
                 b->foundationModel->Draw(depthShader);
+            }
             else if (b->finalModel)
+            {
+                depthShader.SetBool("uUseSkinning", false);
                 b->finalModel->Draw(depthShader);
+            }
         }
         else
         {
+            depthShader.SetBool("uUseSkinning", false);
+            depthShader.BindBoneTexture(0, 0);
             if (e->model) e->model->Draw(depthShader);
         }
     }

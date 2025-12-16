@@ -1125,7 +1125,17 @@ CMakeFiles/cin.dir/src/core/Scene_Procedural.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__random/weibull_distribution.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../rendering/terrain/Terrain.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../../common/Model.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/quaternion.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../mat3x3.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/quaternion.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../exponential.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/../../common/Shader.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/../../common/Texture.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/matrix4x4.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/vector3.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/defs.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/build/external/assimp-6.0.2/code/../include/assimp/config.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/quaternion.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../../common/Texture.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../../common/Shader.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/Camera.h \
@@ -1140,9 +1150,48 @@ CMakeFiles/cin.dir/src/core/Scene_Procedural.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/GameEntity.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/../../common/Model.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/data/EntityType.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/euler_angles.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../glm.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/euler_angles.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/compatibility.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../gtc/quaternion.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/compatibility.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/managers/UnitManager.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../network/NetworkSession.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/thread \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/formatter.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/jthread.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/stop_source.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/intrusive_shared_ptr.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/stop_state.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/atomic_unique_lock.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/intrusive_list_view.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/stop_token.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/thread.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/this_thread.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/chrono \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/calendar.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/convert_to_tm.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/concepts.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/hh_mm_ss.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/day.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/file_clock.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/month.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/month_weekday.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/weekday.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/monthday.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/year.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/year_month.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/year_month_day.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/year_month_weekday.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/literals.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/forward_list \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/data/Resources.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../audio/SoundManager.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/data/EntityType.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/entities/GameEntity.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/entities/Unit.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/buildings/TownCenter.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/units/Worker.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/Unit.h \

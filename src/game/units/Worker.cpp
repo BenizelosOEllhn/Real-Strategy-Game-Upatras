@@ -3,5 +3,5 @@
 
 void Worker::Update(float dt)
 {
-    // Later: gathering behavior
+    Unit::Update(dt);
 }

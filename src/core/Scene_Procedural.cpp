@@ -6,6 +6,7 @@
 // ------------------------------------------------------------
 void Scene::generateTrees() {
     treeTransforms.clear();
+    treePositions_.clear();
     if (!terrain) return;
 
     std::mt19937 rng(1337);
@@ -63,6 +64,7 @@ void Scene::generateTrees() {
         model = glm::scale(model, glm::vec3(scale));
 
         treeTransforms.push_back(model);
+        treePositions_.push_back(glm::vec3(x, height, z));
     }
     std::cout << "Generated " << treeTransforms.size() << " trees." << std::endl;
 }
@@ -72,6 +74,7 @@ void Scene::generateTrees() {
 // ------------------------------------------------------------
 void Scene::generateRocks() {
     rockTransforms.clear();
+    rockPositions_.clear();
     if (!terrain) return;
 
     std::mt19937 rng(42);
@@ -116,6 +119,7 @@ void Scene::generateRocks() {
         model = glm::scale(model, nonUniform);
 
         rockTransforms.push_back(model);
+        rockPositions_.push_back(glm::vec3(x, height + 5.0f, z));
     }
 
     // Debug rock in center
@@ -126,6 +130,7 @@ void Scene::generateRocks() {
         glm::mat4 m = glm::translate(glm::mat4(1.0f), glm::vec3(x, h + 1.0f, z));
         m = glm::scale(m, glm::vec3(8.0f));
         rockTransforms.push_back(m);
+        rockPositions_.push_back(glm::vec3(x, h + 1.0f, z));
     }
 
     std::cout << "Generated " << rockTransforms.size() << " rocks." << std::endl;

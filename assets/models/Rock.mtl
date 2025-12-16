@@ -9,8 +9,8 @@ Ks 0.007937 0.007937 0.007937
 Ni 1.000000
 d 1.000000
 illum 2
-map_Disp Rock-Texture-Surface.jpg
-map_Kd Rock-Texture-Surface.jpg
+map_Disp ../textures/smallRockTexture.jpg
+map_Kd ../textures/smallRockTexture.jpg
 
 newmtl Material.001
 Ns 96.078431

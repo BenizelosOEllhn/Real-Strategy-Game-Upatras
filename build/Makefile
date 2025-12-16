@@ -213,6 +213,32 @@ update_mappings/fast:
 	$(MAKE) $(MAKESILENT) -f external/glfw-3.4/src/CMakeFiles/update_mappings.dir/build.make external/glfw-3.4/src/CMakeFiles/update_mappings.dir/build
 .PHONY : update_mappings/fast
 
+#=============================================================================
+# Target rules for targets named zlibstatic
+
+# Build rule for target.
+zlibstatic: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 zlibstatic
+.PHONY : zlibstatic
+
+# fast build rule for target.
+zlibstatic/fast:
+	$(MAKE) $(MAKESILENT) -f external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/build.make external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/build
+.PHONY : zlibstatic/fast
+
+#=============================================================================
+# Target rules for targets named assimp
+
+# Build rule for target.
+assimp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 assimp
+.PHONY : assimp
+
+# fast build rule for target.
+assimp/fast:
+	$(MAKE) $(MAKESILENT) -f external/assimp-6.0.2/code/CMakeFiles/assimp.dir/build.make external/assimp-6.0.2/code/CMakeFiles/assimp.dir/build
+.PHONY : assimp/fast
+
 common/FastNoiseLite.o: common/FastNoiseLite.cpp.o
 .PHONY : common/FastNoiseLite.o
 
@@ -333,6 +359,30 @@ external/glew-1.13.0/src/glew.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/external/glew-1.13.0/src/glew.c.s
 .PHONY : external/glew-1.13.0/src/glew.c.s
 
+src/audio/SoundManager.o: src/audio/SoundManager.cpp.o
+.PHONY : src/audio/SoundManager.o
+
+# target to build an object file
+src/audio/SoundManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/audio/SoundManager.cpp.o
+.PHONY : src/audio/SoundManager.cpp.o
+
+src/audio/SoundManager.i: src/audio/SoundManager.cpp.i
+.PHONY : src/audio/SoundManager.i
+
+# target to preprocess a source file
+src/audio/SoundManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/audio/SoundManager.cpp.i
+.PHONY : src/audio/SoundManager.cpp.i
+
+src/audio/SoundManager.s: src/audio/SoundManager.cpp.s
+.PHONY : src/audio/SoundManager.s
+
+# target to generate assembly for a file
+src/audio/SoundManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/audio/SoundManager.cpp.s
+.PHONY : src/audio/SoundManager.cpp.s
+
 src/core/Camera.o: src/core/Camera.cpp.o
 .PHONY : src/core/Camera.o
 
@@ -429,6 +479,30 @@ src/core/Scene_Init.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Init.cpp.s
 .PHONY : src/core/Scene_Init.cpp.s
 
+src/core/Scene_Pathfinding.o: src/core/Scene_Pathfinding.cpp.o
+.PHONY : src/core/Scene_Pathfinding.o
+
+# target to build an object file
+src/core/Scene_Pathfinding.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Pathfinding.cpp.o
+.PHONY : src/core/Scene_Pathfinding.cpp.o
+
+src/core/Scene_Pathfinding.i: src/core/Scene_Pathfinding.cpp.i
+.PHONY : src/core/Scene_Pathfinding.i
+
+# target to preprocess a source file
+src/core/Scene_Pathfinding.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Pathfinding.cpp.i
+.PHONY : src/core/Scene_Pathfinding.cpp.i
+
+src/core/Scene_Pathfinding.s: src/core/Scene_Pathfinding.cpp.s
+.PHONY : src/core/Scene_Pathfinding.s
+
+# target to generate assembly for a file
+src/core/Scene_Pathfinding.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Pathfinding.cpp.s
+.PHONY : src/core/Scene_Pathfinding.cpp.s
+
 src/core/Scene_Procedural.o: src/core/Scene_Procedural.cpp.o
 .PHONY : src/core/Scene_Procedural.o
 
@@ -476,6 +550,30 @@ src/core/Scene_Renderer.s: src/core/Scene_Renderer.cpp.s
 src/core/Scene_Renderer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_Renderer.cpp.s
 .PHONY : src/core/Scene_Renderer.cpp.s
+
+src/core/Scene_UI.o: src/core/Scene_UI.cpp.o
+.PHONY : src/core/Scene_UI.o
+
+# target to build an object file
+src/core/Scene_UI.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_UI.cpp.o
+.PHONY : src/core/Scene_UI.cpp.o
+
+src/core/Scene_UI.i: src/core/Scene_UI.cpp.i
+.PHONY : src/core/Scene_UI.i
+
+# target to preprocess a source file
+src/core/Scene_UI.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_UI.cpp.i
+.PHONY : src/core/Scene_UI.cpp.i
+
+src/core/Scene_UI.s: src/core/Scene_UI.cpp.s
+.PHONY : src/core/Scene_UI.s
+
+# target to generate assembly for a file
+src/core/Scene_UI.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/core/Scene_UI.cpp.s
+.PHONY : src/core/Scene_UI.cpp.s
 
 src/core/Scene_Water.o: src/core/Scene_Water.cpp.o
 .PHONY : src/core/Scene_Water.o
@@ -741,6 +839,30 @@ src/game/managers/BuildingManager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.s
 .PHONY : src/game/managers/BuildingManager.cpp.s
 
+src/game/managers/UnitManager.o: src/game/managers/UnitManager.cpp.o
+.PHONY : src/game/managers/UnitManager.o
+
+# target to build an object file
+src/game/managers/UnitManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/managers/UnitManager.cpp.o
+.PHONY : src/game/managers/UnitManager.cpp.o
+
+src/game/managers/UnitManager.i: src/game/managers/UnitManager.cpp.i
+.PHONY : src/game/managers/UnitManager.i
+
+# target to preprocess a source file
+src/game/managers/UnitManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/managers/UnitManager.cpp.i
+.PHONY : src/game/managers/UnitManager.cpp.i
+
+src/game/managers/UnitManager.s: src/game/managers/UnitManager.cpp.s
+.PHONY : src/game/managers/UnitManager.s
+
+# target to generate assembly for a file
+src/game/managers/UnitManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/game/managers/UnitManager.cpp.s
+.PHONY : src/game/managers/UnitManager.cpp.s
+
 src/game/units/Archer.o: src/game/units/Archer.cpp.o
 .PHONY : src/game/units/Archer.o
 
@@ -885,6 +1007,30 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/network/NetworkSession.o: src/network/NetworkSession.cpp.o
+.PHONY : src/network/NetworkSession.o
+
+# target to build an object file
+src/network/NetworkSession.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/network/NetworkSession.cpp.o
+.PHONY : src/network/NetworkSession.cpp.o
+
+src/network/NetworkSession.i: src/network/NetworkSession.cpp.i
+.PHONY : src/network/NetworkSession.i
+
+# target to preprocess a source file
+src/network/NetworkSession.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/network/NetworkSession.cpp.i
+.PHONY : src/network/NetworkSession.cpp.i
+
+src/network/NetworkSession.s: src/network/NetworkSession.cpp.s
+.PHONY : src/network/NetworkSession.s
+
+# target to generate assembly for a file
+src/network/NetworkSession.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/src/network/NetworkSession.cpp.s
+.PHONY : src/network/NetworkSession.cpp.s
+
 src/raycast/Raycaster.o: src/raycast/Raycaster.cpp.o
 .PHONY : src/raycast/Raycaster.o
 
@@ -947,8 +1093,10 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... uninstall"
 	@echo "... update_mappings"
+	@echo "... assimp"
 	@echo "... cin"
 	@echo "... glfw"
+	@echo "... zlibstatic"
 	@echo "... common/FastNoiseLite.o"
 	@echo "... common/FastNoiseLite.i"
 	@echo "... common/FastNoiseLite.s"
@@ -964,6 +1112,9 @@ help:
 	@echo "... external/glew-1.13.0/src/glew.o"
 	@echo "... external/glew-1.13.0/src/glew.i"
 	@echo "... external/glew-1.13.0/src/glew.s"
+	@echo "... src/audio/SoundManager.o"
+	@echo "... src/audio/SoundManager.i"
+	@echo "... src/audio/SoundManager.s"
 	@echo "... src/core/Camera.o"
 	@echo "... src/core/Camera.i"
 	@echo "... src/core/Camera.s"
@@ -976,12 +1127,18 @@ help:
 	@echo "... src/core/Scene_Init.o"
 	@echo "... src/core/Scene_Init.i"
 	@echo "... src/core/Scene_Init.s"
+	@echo "... src/core/Scene_Pathfinding.o"
+	@echo "... src/core/Scene_Pathfinding.i"
+	@echo "... src/core/Scene_Pathfinding.s"
 	@echo "... src/core/Scene_Procedural.o"
 	@echo "... src/core/Scene_Procedural.i"
 	@echo "... src/core/Scene_Procedural.s"
 	@echo "... src/core/Scene_Renderer.o"
 	@echo "... src/core/Scene_Renderer.i"
 	@echo "... src/core/Scene_Renderer.s"
+	@echo "... src/core/Scene_UI.o"
+	@echo "... src/core/Scene_UI.i"
+	@echo "... src/core/Scene_UI.s"
 	@echo "... src/core/Scene_Water.o"
 	@echo "... src/core/Scene_Water.i"
 	@echo "... src/core/Scene_Water.s"
@@ -1015,6 +1172,9 @@ help:
 	@echo "... src/game/managers/BuildingManager.o"
 	@echo "... src/game/managers/BuildingManager.i"
 	@echo "... src/game/managers/BuildingManager.s"
+	@echo "... src/game/managers/UnitManager.o"
+	@echo "... src/game/managers/UnitManager.i"
+	@echo "... src/game/managers/UnitManager.s"
 	@echo "... src/game/units/Archer.o"
 	@echo "... src/game/units/Archer.i"
 	@echo "... src/game/units/Archer.s"
@@ -1033,6 +1193,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/network/NetworkSession.o"
+	@echo "... src/network/NetworkSession.i"
+	@echo "... src/network/NetworkSession.s"
 	@echo "... src/raycast/Raycaster.o"
 	@echo "... src/raycast/Raycaster.i"
 	@echo "... src/raycast/Raycaster.s"

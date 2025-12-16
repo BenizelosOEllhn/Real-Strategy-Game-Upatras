@@ -97,7 +97,7 @@ int main()
     // 2. Create Game Scene
     Scene gameScene;
     gScene = &gameScene;   
-    gameScene.Init();
+    gameScene.Init(&camera);
 
     // 3. Load Shaders
     Shader terrainShader(std::string(ASSET_PATH) + "shaders/terrain.vert",
@@ -184,27 +184,75 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    bool isMoving = false;
+    bool unitCamActive = gScene && gScene->IsUnitCameraActive();
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        camera.ProcessKeyboard(FORWARD, deltaTime);
-        isMoving = true;
+    if (!unitCamActive)
+    {
+        bool isMoving = false;
+
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+            camera.ProcessKeyboard(FORWARD, deltaTime);
+            isMoving = true;
+        }
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+            camera.ProcessKeyboard(BACKWARD, deltaTime);
+            isMoving = true;
+        }
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+            camera.ProcessKeyboard(LEFT, deltaTime);
+            isMoving = true;
+        }
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+            camera.ProcessKeyboard(RIGHT, deltaTime);
+            isMoving = true;
+        }
+
+        if (!isMoving)
+            camera.ResetSpeed();
     }
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
-        isMoving = true;
-    }
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        camera.ProcessKeyboard(LEFT, deltaTime);
-        isMoving = true;
-    }
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        camera.ProcessKeyboard(RIGHT, deltaTime);
-        isMoving = true;
+    else if (gScene)
+    {
+        const float rotSpeed = 60.0f; // degrees per second
+        float yawDelta = 0.0f;
+        float pitchDelta = 0.0f;
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+            yawDelta -= rotSpeed * deltaTime;
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+            yawDelta += rotSpeed * deltaTime;
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+            pitchDelta += rotSpeed * deltaTime;
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+            pitchDelta -= rotSpeed * deltaTime;
+        if (yawDelta != 0.0f || pitchDelta != 0.0f)
+            gScene->RotateUnitCamera(yawDelta, pitchDelta);
     }
 
-    if (!isMoving)
-        camera.ResetSpeed();
+    static bool backspaceDown = false;
+    int backspaceState = glfwGetKey(window, GLFW_KEY_BACKSPACE);
+    bool backspacePressed = (backspaceState == GLFW_PRESS);
+    if (backspacePressed && !backspaceDown && gScene)
+    {
+        gScene->cancelCurrentAction();
+    }
+    backspaceDown = backspacePressed;
+
+    static bool cDown = false;
+    int cState = glfwGetKey(window, GLFW_KEY_C);
+    bool cPressed = (cState == GLFW_PRESS);
+    if (cPressed && !cDown && gScene)
+    {
+        gScene->toggleUnitCamera();
+    }
+    cDown = cPressed;
+
+    static bool tabDown = false;
+    int tabState = glfwGetKey(window, GLFW_KEY_TAB);
+    bool tabPressed = (tabState == GLFW_PRESS);
+    if (tabPressed && !tabDown && gScene)
+    {
+        gScene->switchActivePlayer();
+    }
+    tabDown = tabPressed;
 }
 
 void scroll_callback(GLFWwindow* /*window*/, double /*xoffset*/, double yoffset)
@@ -226,11 +274,5 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
     if (!gScene) return;
-
-    // Only forward valid presses
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        // You might need to adjust this depending on Scene.h signature
-        // Assuming onMouseButton(button, action, mods) or onMouseClick(button)
-        gScene->onMouseButton(button, action, mods); 
-    }
+    gScene->onMouseButton(button, action, mods);
 }

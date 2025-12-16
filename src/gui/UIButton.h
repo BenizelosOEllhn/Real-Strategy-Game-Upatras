@@ -16,7 +16,8 @@ struct UIButton
     GLuint texture = 0;
 
     bool hovered = false;
-    bool clickable = true; 
+    bool clickable = true;
+    bool visible = true;
     
     // Callback when clicked
     std::function<void()> onClick;

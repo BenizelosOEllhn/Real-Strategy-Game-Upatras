@@ -79,7 +79,69 @@ preinstall: external/glfw-3.4/preinstall
 # The main recursive "clean" target.
 clean: CMakeFiles/cin.dir/clean
 clean: external/glfw-3.4/clean
+clean: external/assimp-6.0.2/clean
 .PHONY : clean
+
+#=============================================================================
+# Directory level rules for directory external/assimp-6.0.2
+
+# Recursive "all" directory target.
+external/assimp-6.0.2/all: external/assimp-6.0.2/contrib/zlib/all
+external/assimp-6.0.2/all: external/assimp-6.0.2/code/all
+.PHONY : external/assimp-6.0.2/all
+
+# Recursive "codegen" directory target.
+external/assimp-6.0.2/codegen: external/assimp-6.0.2/contrib/zlib/codegen
+external/assimp-6.0.2/codegen: external/assimp-6.0.2/code/codegen
+.PHONY : external/assimp-6.0.2/codegen
+
+# Recursive "preinstall" directory target.
+external/assimp-6.0.2/preinstall: external/assimp-6.0.2/contrib/zlib/preinstall
+external/assimp-6.0.2/preinstall: external/assimp-6.0.2/code/preinstall
+.PHONY : external/assimp-6.0.2/preinstall
+
+# Recursive "clean" directory target.
+external/assimp-6.0.2/clean: external/assimp-6.0.2/contrib/zlib/clean
+external/assimp-6.0.2/clean: external/assimp-6.0.2/code/clean
+.PHONY : external/assimp-6.0.2/clean
+
+#=============================================================================
+# Directory level rules for directory external/assimp-6.0.2/code
+
+# Recursive "all" directory target.
+external/assimp-6.0.2/code/all: external/assimp-6.0.2/code/CMakeFiles/assimp.dir/all
+.PHONY : external/assimp-6.0.2/code/all
+
+# Recursive "codegen" directory target.
+external/assimp-6.0.2/code/codegen: external/assimp-6.0.2/code/CMakeFiles/assimp.dir/codegen
+.PHONY : external/assimp-6.0.2/code/codegen
+
+# Recursive "preinstall" directory target.
+external/assimp-6.0.2/code/preinstall:
+.PHONY : external/assimp-6.0.2/code/preinstall
+
+# Recursive "clean" directory target.
+external/assimp-6.0.2/code/clean: external/assimp-6.0.2/code/CMakeFiles/assimp.dir/clean
+.PHONY : external/assimp-6.0.2/code/clean
+
+#=============================================================================
+# Directory level rules for directory external/assimp-6.0.2/contrib/zlib
+
+# Recursive "all" directory target.
+external/assimp-6.0.2/contrib/zlib/all: external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/all
+.PHONY : external/assimp-6.0.2/contrib/zlib/all
+
+# Recursive "codegen" directory target.
+external/assimp-6.0.2/contrib/zlib/codegen: external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/codegen
+.PHONY : external/assimp-6.0.2/contrib/zlib/codegen
+
+# Recursive "preinstall" directory target.
+external/assimp-6.0.2/contrib/zlib/preinstall:
+.PHONY : external/assimp-6.0.2/contrib/zlib/preinstall
+
+# Recursive "clean" directory target.
+external/assimp-6.0.2/contrib/zlib/clean: external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/clean
+.PHONY : external/assimp-6.0.2/contrib/zlib/clean
 
 #=============================================================================
 # Directory level rules for directory external/glfw-3.4
@@ -126,14 +188,16 @@ external/glfw-3.4/src/clean: external/glfw-3.4/src/CMakeFiles/update_mappings.di
 
 # All Build rule for target.
 CMakeFiles/cin.dir/all: external/glfw-3.4/src/CMakeFiles/glfw.dir/all
+CMakeFiles/cin.dir/all: external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/all
+CMakeFiles/cin.dir/all: external/assimp-6.0.2/code/CMakeFiles/assimp.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31 "Built target cin"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=76,77,78,79,80,81,82,83,84,85,86,87 "Built target cin"
 .PHONY : CMakeFiles/cin.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/cin.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles 53
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles 100
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/cin.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles 0
 .PHONY : CMakeFiles/cin.dir/rule
@@ -145,7 +209,7 @@ cin: CMakeFiles/cin.dir/rule
 # codegen rule for target.
 CMakeFiles/cin.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/cin.dir/build.make CMakeFiles/cin.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31 "Finished codegen for target cin"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=76,77,78,79,80,81,82,83,84,85,86,87 "Finished codegen for target cin"
 .PHONY : CMakeFiles/cin.dir/codegen
 
 # clean rule for target.
@@ -192,12 +256,12 @@ external/glfw-3.4/CMakeFiles/uninstall.dir/clean:
 external/glfw-3.4/src/CMakeFiles/glfw.dir/all:
 	$(MAKE) $(MAKESILENT) -f external/glfw-3.4/src/CMakeFiles/glfw.dir/build.make external/glfw-3.4/src/CMakeFiles/glfw.dir/depend
 	$(MAKE) $(MAKESILENT) -f external/glfw-3.4/src/CMakeFiles/glfw.dir/build.make external/glfw-3.4/src/CMakeFiles/glfw.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53 "Built target glfw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=88,89,90,91,92,93,94 "Built target glfw"
 .PHONY : external/glfw-3.4/src/CMakeFiles/glfw.dir/all
 
 # Build rule for subdir invocation for target.
 external/glfw-3.4/src/CMakeFiles/glfw.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles 22
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles 7
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 external/glfw-3.4/src/CMakeFiles/glfw.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles 0
 .PHONY : external/glfw-3.4/src/CMakeFiles/glfw.dir/rule
@@ -209,7 +273,7 @@ glfw: external/glfw-3.4/src/CMakeFiles/glfw.dir/rule
 # codegen rule for target.
 external/glfw-3.4/src/CMakeFiles/glfw.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f external/glfw-3.4/src/CMakeFiles/glfw.dir/build.make external/glfw-3.4/src/CMakeFiles/glfw.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53 "Finished codegen for target glfw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=88,89,90,91,92,93,94 "Finished codegen for target glfw"
 .PHONY : external/glfw-3.4/src/CMakeFiles/glfw.dir/codegen
 
 # clean rule for target.
@@ -224,12 +288,12 @@ external/glfw-3.4/src/CMakeFiles/glfw.dir/clean:
 external/glfw-3.4/src/CMakeFiles/update_mappings.dir/all:
 	$(MAKE) $(MAKESILENT) -f external/glfw-3.4/src/CMakeFiles/update_mappings.dir/build.make external/glfw-3.4/src/CMakeFiles/update_mappings.dir/depend
 	$(MAKE) $(MAKESILENT) -f external/glfw-3.4/src/CMakeFiles/update_mappings.dir/build.make external/glfw-3.4/src/CMakeFiles/update_mappings.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=54 "Built target update_mappings"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num= "Built target update_mappings"
 .PHONY : external/glfw-3.4/src/CMakeFiles/update_mappings.dir/all
 
 # Build rule for subdir invocation for target.
 external/glfw-3.4/src/CMakeFiles/update_mappings.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 external/glfw-3.4/src/CMakeFiles/update_mappings.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles 0
 .PHONY : external/glfw-3.4/src/CMakeFiles/update_mappings.dir/rule
@@ -241,13 +305,77 @@ update_mappings: external/glfw-3.4/src/CMakeFiles/update_mappings.dir/rule
 # codegen rule for target.
 external/glfw-3.4/src/CMakeFiles/update_mappings.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f external/glfw-3.4/src/CMakeFiles/update_mappings.dir/build.make external/glfw-3.4/src/CMakeFiles/update_mappings.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=54 "Finished codegen for target update_mappings"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num= "Finished codegen for target update_mappings"
 .PHONY : external/glfw-3.4/src/CMakeFiles/update_mappings.dir/codegen
 
 # clean rule for target.
 external/glfw-3.4/src/CMakeFiles/update_mappings.dir/clean:
 	$(MAKE) $(MAKESILENT) -f external/glfw-3.4/src/CMakeFiles/update_mappings.dir/build.make external/glfw-3.4/src/CMakeFiles/update_mappings.dir/clean
 .PHONY : external/glfw-3.4/src/CMakeFiles/update_mappings.dir/clean
+
+#=============================================================================
+# Target rules for target external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir
+
+# All Build rule for target.
+external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/all:
+	$(MAKE) $(MAKESILENT) -f external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/build.make external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/depend
+	$(MAKE) $(MAKESILENT) -f external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/build.make external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=95,96,97,98,99,100 "Built target zlibstatic"
+.PHONY : external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/all
+
+# Build rule for subdir invocation for target.
+external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles 0
+.PHONY : external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/rule
+
+# Convenience name for target.
+zlibstatic: external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/rule
+.PHONY : zlibstatic
+
+# codegen rule for target.
+external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/build.make external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=95,96,97,98,99,100 "Finished codegen for target zlibstatic"
+.PHONY : external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/codegen
+
+# clean rule for target.
+external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/clean:
+	$(MAKE) $(MAKESILENT) -f external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/build.make external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/clean
+.PHONY : external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/clean
+
+#=============================================================================
+# Target rules for target external/assimp-6.0.2/code/CMakeFiles/assimp.dir
+
+# All Build rule for target.
+external/assimp-6.0.2/code/CMakeFiles/assimp.dir/all: external/assimp-6.0.2/contrib/zlib/CMakeFiles/zlibstatic.dir/all
+	$(MAKE) $(MAKESILENT) -f external/assimp-6.0.2/code/CMakeFiles/assimp.dir/build.make external/assimp-6.0.2/code/CMakeFiles/assimp.dir/depend
+	$(MAKE) $(MAKESILENT) -f external/assimp-6.0.2/code/CMakeFiles/assimp.dir/build.make external/assimp-6.0.2/code/CMakeFiles/assimp.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75 "Built target assimp"
+.PHONY : external/assimp-6.0.2/code/CMakeFiles/assimp.dir/all
+
+# Build rule for subdir invocation for target.
+external/assimp-6.0.2/code/CMakeFiles/assimp.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles 81
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 external/assimp-6.0.2/code/CMakeFiles/assimp.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles 0
+.PHONY : external/assimp-6.0.2/code/CMakeFiles/assimp.dir/rule
+
+# Convenience name for target.
+assimp: external/assimp-6.0.2/code/CMakeFiles/assimp.dir/rule
+.PHONY : assimp
+
+# codegen rule for target.
+external/assimp-6.0.2/code/CMakeFiles/assimp.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f external/assimp-6.0.2/code/CMakeFiles/assimp.dir/build.make external/assimp-6.0.2/code/CMakeFiles/assimp.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75 "Finished codegen for target assimp"
+.PHONY : external/assimp-6.0.2/code/CMakeFiles/assimp.dir/codegen
+
+# clean rule for target.
+external/assimp-6.0.2/code/CMakeFiles/assimp.dir/clean:
+	$(MAKE) $(MAKESILENT) -f external/assimp-6.0.2/code/CMakeFiles/assimp.dir/build.make external/assimp-6.0.2/code/CMakeFiles/assimp.dir/clean
+.PHONY : external/assimp-6.0.2/code/CMakeFiles/assimp.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

@@ -15,7 +15,9 @@ public:
               foundation,
               finalModel,
               owner)
-    {}
+    {
+        SetMaxHealth(900.0f);
+    }
 
     void SpawnUnit(std::vector<GameEntity*>& list) override;
 };

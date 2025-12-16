@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 #include <functional>
 #include <glm/glm.hpp>
 #include "Raycaster.h"
@@ -53,12 +54,12 @@ public:
     std::function<void(BuildType, glm::vec3)> onPlaceBuilding;
 
     // Provide real building models to use for previews
-    void setModels(Model* townCenter, Model* barracks) {
-        townCenterModel_ = townCenter;
-        barracksModel_   = barracks;
-    }
+    void setPreviewModel(BuildType type, Model* model);
 
 private:
+    static constexpr std::size_t kBuildTypeCount =
+        static_cast<std::size_t>(BuildType::Storage) + 1;
+
     Terrain* terrain_ = nullptr;
     Camera*  camera_  = nullptr;
 
@@ -76,8 +77,5 @@ private:
     glm::vec3 finalPos = glm::vec3(0);
 
     Model* previewModel_ = nullptr;
-
-    // Actual models provided by Scene
-    Model* townCenterModel_ = nullptr;
-    Model* barracksModel_   = nullptr;
+    std::array<Model*, kBuildTypeCount> previewModels_{};
 };

@@ -2,6 +2,7 @@
 
 BuildingManager::BuildingManager()
 {
+    previewModels_.fill(nullptr);
 }
 
 void BuildingManager::init(Terrain* t, Camera* c, int screenW, int screenH)
@@ -19,21 +20,11 @@ void BuildingManager::startPlacing(BuildType type)
     hasPreview_  = false;
     validHit_    = false;
 
-    // Assign preview model
-    switch (type)
-    {
-        case BuildType::TownCenter:
-            previewModel_ = townCenterModel_;
-            break;
-
-        case BuildType::Barracks:
-            previewModel_ = barracksModel_;
-            break;
-
-        default:
-            previewModel_ = nullptr;
-            break;
-    }
+    const std::size_t idx = static_cast<std::size_t>(type);
+    if (idx < previewModels_.size())
+        previewModel_ = previewModels_[idx];
+    else
+        previewModel_ = nullptr;
 }
 
 void BuildingManager::update(double mouseX, double mouseY, int currentScreenW, int currentScreenH, const Camera& cam)
@@ -95,4 +86,12 @@ void BuildingManager::confirmPlacement(double mouseX, double mouseY)
     validPlacement_ = false;
     currentType_ = BuildType::None;
     previewModel_ = nullptr;
+}
+
+void BuildingManager::setPreviewModel(BuildType type, Model* model)
+{
+    const std::size_t idx = static_cast<std::size_t>(type);
+    if (idx >= previewModels_.size())
+        return;
+    previewModels_[idx] = model;
 }

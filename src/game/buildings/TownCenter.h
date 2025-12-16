@@ -14,7 +14,9 @@ public:
               foundation,     // foundation mesh
               finalModel,     // final building mesh
               owner)
-    {}
+    {
+        SetMaxHealth(1500.0f);
+    }
 
     void SpawnUnit(std::vector<GameEntity*>& list) override;
 };

@@ -53,6 +53,7 @@ public:
 
     // 2. Add GetPosition helper (or access camera.Position directly)
     glm::vec3 GetPosition() const { return Position; }
+    void SetPose(const glm::vec3& position, float yawDeg, float pitchDeg);
 
 private:
     void updateCameraVectors();

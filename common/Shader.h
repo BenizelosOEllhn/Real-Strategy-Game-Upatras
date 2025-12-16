@@ -23,6 +23,7 @@ public:
     void SetVec4(const std::string &name, const glm::vec4 &value) const;
 
     void SetMat4 (const std::string& name, const glm::mat4& mat) const;
+    void BindBoneTexture(unsigned int textureID, int boneCount, int unit = 13) const;
 
 private:
     // Utility: read shader file to string

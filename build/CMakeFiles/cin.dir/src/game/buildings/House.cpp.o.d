@@ -1,6 +1,7 @@
 CMakeFiles/cin.dir/src/game/buildings/House.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/House.cpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/buildings/House.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/Building.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/entities/GameEntity.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/glm.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/detail/_fixes.hpp \
@@ -1017,10 +1018,31 @@ CMakeFiles/cin.dir/src/game/buildings/House.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/cstdarg \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/temp_value.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__split_buffer \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/unordered_map \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/is_transparent.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__hash_table \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/ranges_iterator_traits.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__node_handle \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/quaternion.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../mat3x3.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/quaternion.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../exponential.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glew-1.13.0/include/GL/glew.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/glu.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/OpenGLAvailability.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/os/availability.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Headers/gl.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/../../common/Texture.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/matrix4x4.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/vector3.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/defs.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/build/external/assimp-6.0.2/code/../include/assimp/config.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/include/assimp/quaternion.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/data/EntityType.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/euler_angles.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../glm.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/euler_angles.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/compatibility.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../gtc/quaternion.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/compatibility.inl \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/game/data/Resources.h

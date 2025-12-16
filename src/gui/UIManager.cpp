@@ -1,6 +1,7 @@
 #include "UIManager.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
+#include <algorithm>
 
 
 void UIManager::init(Shader* shader, int screenW, int screenH)
@@ -38,9 +39,15 @@ void UIManager::setFontTexture(GLuint tex, int cols, int rows, float charW, floa
     fontCharH_  = charH;
 }
 
-void UIManager::addButton(const UIButton& btn)
+void UIManager::setTextScale(float scale)
+{
+    textScale_ = std::max(0.1f, scale);
+}
+
+size_t UIManager::addButton(const UIButton& btn)
 {
     buttons_.push_back(btn);
+    return buttons_.size() - 1;
 }
 
 size_t UIManager::addLabel(const std::string& text, const glm::vec2& pos, float scale)
@@ -56,10 +63,28 @@ void UIManager::setLabelText(size_t index, const std::string& text)
     labels_[index].text = text;
 }
 
+void UIManager::setButtonVisibility(size_t index, bool visible)
+{
+    if (index >= buttons_.size()) return;
+    buttons_[index].visible = visible;
+}
+
+void UIManager::setLabelVisibility(size_t index, bool visible)
+{
+    if (index >= labels_.size()) return;
+    labels_[index].visible = visible;
+}
+
+void UIManager::setButtonTexture(size_t index, GLuint texture)
+{
+    if (index >= buttons_.size()) return;
+    buttons_[index].texture = texture;
+}
+
 void UIManager::update(float mouseX, float mouseY)
 {
     for (auto& b : buttons_) {
-        if (!b.clickable) {
+        if (!b.visible || !b.clickable) {
             b.hovered = false;
             continue;
         }
@@ -78,6 +103,7 @@ bool UIManager::handleClick(float mx, float my)
 
     for (UIButton& b : buttons_)
     {
+        if (!b.visible) continue;
 
         if (b.contains(mx, my))
         {
@@ -113,6 +139,7 @@ void UIManager::render()
     // --- 1) Draw buttons (bar background + icons + hover frame) ---
     for (auto& b : buttons_)
     {
+        if (!b.visible) continue;
         float x = b.pos.x;
         float y = b.pos.y;
         float w = b.size.x;
@@ -194,6 +221,7 @@ void UIManager::render()
 
     // --- 2) Draw labels using bitmap font ---
     for (const auto& lbl : labels_) {
+        if (!lbl.visible) continue;
         drawText(lbl.text, lbl.pos.x, lbl.pos.y, lbl.scale);
     }
 
@@ -219,8 +247,9 @@ void UIManager::drawText(const std::string& text, float x, float y, float scale)
 
     float cursorX = x;
     float cursorY = y;
-    float cw = fontCharW_ * scale;
-    float ch = fontCharH_ * scale;
+    float finalScale = scale * textScale_;
+    float cw = fontCharW_ * finalScale;
+    float ch = fontCharH_ * finalScale;
 
     for (char c : text) {
         if (c == ' ') {

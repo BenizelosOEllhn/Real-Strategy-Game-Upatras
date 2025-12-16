@@ -1,5 +1,6 @@
 #pragma once
 #include "GameEntity.h"
+#include <algorithm>
 
 class Building : public GameEntity {
 public:
@@ -27,4 +28,23 @@ public:
 
     void Draw(Shader& shader) override;           
     virtual void SpawnUnit(std::vector<GameEntity*>& entities) = 0;
+
+    void SetMaxHealth(float value)
+    {
+        maxHealth_ = std::max(0.0f, value);
+        health_ = std::min(health_, maxHealth_);
+    }
+
+    float GetHealth() const { return health_; }
+    float GetMaxHealth() const { return maxHealth_; }
+    void ApplyDamage(float amount)
+    {
+        if (amount <= 0.0f) return;
+        health_ = std::max(0.0f, health_ - amount);
+    }
+    bool IsDestroyed() const { return health_ <= 0.0f; }
+
+protected:
+    float maxHealth_ = 600.0f;
+    float health_ = 600.0f;
 };

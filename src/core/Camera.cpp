@@ -88,3 +88,11 @@ void Camera::updateCameraVectors() {
 glm::mat4 Camera::GetViewMatrix() const {
     return glm::lookAt(Position, Position + Front, Up);
 }
+
+void Camera::SetPose(const glm::vec3& position, float yawDeg, float pitchDeg)
+{
+    Position = position;
+    Yaw = yawDeg;
+    Pitch = pitchDeg;
+    updateCameraVectors();
+}

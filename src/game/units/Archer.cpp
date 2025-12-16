@@ -2,5 +2,5 @@
 
 void Archer::Update(float dt)
 {
-    // Later: ranged combat logic
+    Unit::Update(dt);
 }

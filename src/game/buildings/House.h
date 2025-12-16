@@ -1,13 +1,15 @@
 #pragma once
-#include "GameEntity.h"
+#include "Building.h"
 #include "Resources.h"
 
-class House : public GameEntity {
+class House : public Building {
 public:
-    House(glm::vec3 pos, Model* model, int ownerID, Resources* resources);
+    House(glm::vec3 pos, Model* foundation, Model* finalModel, int ownerID, Resources* resources);
 
-    void Update(float dt) override {}
+    void Update(float dt) override;
+    void SpawnUnit(std::vector<GameEntity*>& entities) override;
 
 private:
     Resources* ownerResources_;
+    bool grantedPopulation_ = false;
 };

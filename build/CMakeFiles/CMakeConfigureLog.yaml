@@ -2685,3 +2685,532 @@ events:
         
       exitCode: 0
 ...
+
+---
+events:
+  -
+    kind: "find-v1"
+    backtrace:
+      - "external/assimp-6.0.2/CMakeLists.txt:88 (find_program)"
+    mode: "program"
+    variable: "CCACHE_PATH"
+    description: "Path to a program."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "ccache"
+    candidate_directories:
+      - "/opt/homebrew/opt/ruby/bin/"
+      - "/Users/konstantinoskanellopoulos/Development/flutter/bin/"
+      - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Library/Frameworks/Python.framework/Versions/3.13/bin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
+      - "/Library/Apple/usr/bin/"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/bin/"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/sbin/"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/opt/homebrew/"
+      - "/usr/local/bin/"
+      - "/usr/local/sbin/"
+      - "/usr/local/"
+      - "/usr/bin/"
+      - "/usr/sbin/"
+      - "/usr/"
+      - "/bin/"
+      - "/sbin/"
+      - "/usr/X11R6/bin/"
+      - "/usr/X11R6/sbin/"
+      - "/usr/X11R6/"
+      - "/usr/pkg/bin/"
+      - "/usr/pkg/sbin/"
+      - "/usr/pkg/"
+      - "/opt/bin/"
+      - "/opt/sbin/"
+      - "/opt/"
+      - "/sw/bin/"
+      - "/sw/sbin/"
+      - "/sw/"
+      - "/opt/local/bin/"
+      - "/opt/local/sbin/"
+      - "/opt/local/"
+      - "/Users/konstantinoskanellopoulos/Applications/"
+      - "/Applications/"
+      - "/Applications/Xcode.app/Contents/Applications/"
+      - "/Applications/Xcode.app/Contents/Developer/Applications/"
+    searched_directories:
+      - "/opt/homebrew/opt/ruby/bin/ccache"
+      - "/Users/konstantinoskanellopoulos/Development/flutter/bin/ccache"
+      - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/ccache"
+      - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/ccache"
+      - "/Library/Frameworks/Python.framework/Versions/3.13/bin/ccache"
+      - "/opt/homebrew/bin/ccache"
+      - "/opt/homebrew/sbin/ccache"
+      - "/usr/local/bin/ccache"
+      - "/System/Cryptexes/App/usr/bin/ccache"
+      - "/usr/bin/ccache"
+      - "/bin/ccache"
+      - "/usr/sbin/ccache"
+      - "/sbin/ccache"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/ccache"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/ccache"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/ccache"
+      - "/Library/Apple/usr/bin/ccache"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/bin/ccache"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/sbin/ccache"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/ccache"
+      - "/opt/homebrew/bin/ccache"
+      - "/opt/homebrew/sbin/ccache"
+      - "/opt/homebrew/ccache"
+      - "/usr/local/bin/ccache"
+      - "/usr/local/sbin/ccache"
+      - "/usr/local/ccache"
+      - "/usr/bin/ccache"
+      - "/usr/sbin/ccache"
+      - "/usr/ccache"
+      - "/bin/ccache"
+      - "/sbin/ccache"
+      - "/usr/X11R6/bin/ccache"
+      - "/usr/X11R6/sbin/ccache"
+      - "/usr/X11R6/ccache"
+      - "/usr/pkg/bin/ccache"
+      - "/usr/pkg/sbin/ccache"
+      - "/usr/pkg/ccache"
+      - "/opt/bin/ccache"
+      - "/opt/sbin/ccache"
+      - "/opt/ccache"
+      - "/sw/bin/ccache"
+      - "/sw/sbin/ccache"
+      - "/sw/ccache"
+      - "/opt/local/bin/ccache"
+      - "/opt/local/sbin/ccache"
+      - "/opt/local/ccache"
+      - "/Users/konstantinoskanellopoulos/Applications/ccache"
+      - "/Applications/ccache"
+      - "/Applications/Xcode.app/Contents/Applications/ccache"
+      - "/Applications/Xcode.app/Contents/Developer/Applications/ccache"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/ruby/bin"
+        - "/Users/konstantinoskanellopoulos/Development/flutter/bin"
+        - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Library/Frameworks/Python.framework/Versions/3.13/bin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/Library/Apple/usr/bin"
+        - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/ruby/bin"
+        - "/Users/konstantinoskanellopoulos/Development/flutter/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.13/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_APPBUNDLE_PATH:
+        - "/Users/konstantinoskanellopoulos/Applications"
+        - "/Applications"
+        - "/Applications/Xcode.app/Contents/Applications"
+        - "/Applications/Xcode.app/Contents/Developer/Applications"
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckIncludeFile.cmake:165 (try_compile)"
+      - "external/assimp-6.0.2/contrib/zlib/CMakeLists.txt:35 (check_include_file)"
+    checks:
+      - "Looking for sys/types.h"
+    directories:
+      source: "/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-7ZajqU"
+      binary: "/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-7ZajqU"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-fno-strict-aliasing "
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/cmake-modules"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_SYS_TYPES_H"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-7ZajqU'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_17c71/fast
+        /Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_17c71.dir/build.make CMakeFiles/cmTC_17c71.dir/build
+        Building C object CMakeFiles/cmTC_17c71.dir/CheckIncludeFile.c.o
+        /usr/bin/cc   -fno-strict-aliasing   -std=gnu99 -arch arm64 -fPIE -MD -MT CMakeFiles/cmTC_17c71.dir/CheckIncludeFile.c.o -MF CMakeFiles/cmTC_17c71.dir/CheckIncludeFile.c.o.d -o CMakeFiles/cmTC_17c71.dir/CheckIncludeFile.c.o -c /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-7ZajqU/CheckIncludeFile.c
+        Linking C executable cmTC_17c71
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_17c71.dir/link.txt --verbose=1
+        /usr/bin/cc -fno-strict-aliasing   -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_17c71.dir/CheckIncludeFile.c.o -o cmTC_17c71
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckIncludeFile.cmake:165 (try_compile)"
+      - "external/assimp-6.0.2/contrib/zlib/CMakeLists.txt:36 (check_include_file)"
+    checks:
+      - "Looking for stdint.h"
+    directories:
+      source: "/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-bgYLnn"
+      binary: "/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-bgYLnn"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-fno-strict-aliasing "
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/cmake-modules"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_STDINT_H"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-bgYLnn'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_e99c2/fast
+        /Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_e99c2.dir/build.make CMakeFiles/cmTC_e99c2.dir/build
+        Building C object CMakeFiles/cmTC_e99c2.dir/CheckIncludeFile.c.o
+        /usr/bin/cc   -fno-strict-aliasing   -std=gnu99 -arch arm64 -fPIE -MD -MT CMakeFiles/cmTC_e99c2.dir/CheckIncludeFile.c.o -MF CMakeFiles/cmTC_e99c2.dir/CheckIncludeFile.c.o.d -o CMakeFiles/cmTC_e99c2.dir/CheckIncludeFile.c.o -c /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-bgYLnn/CheckIncludeFile.c
+        Linking C executable cmTC_e99c2
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e99c2.dir/link.txt --verbose=1
+        /usr/bin/cc -fno-strict-aliasing   -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_e99c2.dir/CheckIncludeFile.c.o -o cmTC_e99c2
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckIncludeFile.cmake:165 (try_compile)"
+      - "external/assimp-6.0.2/contrib/zlib/CMakeLists.txt:37 (check_include_file)"
+    checks:
+      - "Looking for stddef.h"
+    directories:
+      source: "/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-ZUnBsE"
+      binary: "/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-ZUnBsE"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-fno-strict-aliasing "
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/cmake-modules"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_STDDEF_H"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-ZUnBsE'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_111eb/fast
+        /Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_111eb.dir/build.make CMakeFiles/cmTC_111eb.dir/build
+        Building C object CMakeFiles/cmTC_111eb.dir/CheckIncludeFile.c.o
+        /usr/bin/cc   -fno-strict-aliasing   -std=gnu99 -arch arm64 -fPIE -MD -MT CMakeFiles/cmTC_111eb.dir/CheckIncludeFile.c.o -MF CMakeFiles/cmTC_111eb.dir/CheckIncludeFile.c.o.d -o CMakeFiles/cmTC_111eb.dir/CheckIncludeFile.c.o -c /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-ZUnBsE/CheckIncludeFile.c
+        Linking C executable cmTC_111eb
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_111eb.dir/link.txt --verbose=1
+        /usr/bin/cc -fno-strict-aliasing   -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_111eb.dir/CheckIncludeFile.c.o -o cmTC_111eb
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckTypeSize.cmake:237 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CheckTypeSize.cmake:364 (__check_type_size_impl)"
+      - "external/assimp-6.0.2/contrib/zlib/CMakeLists.txt:55 (check_type_size)"
+    checks:
+      - "Check size of off64_t"
+    directories:
+      source: "/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v"
+      binary: "/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-fno-strict-aliasing "
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/cmake-modules"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_OFF64_T"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_d22b2/fast
+        /Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_d22b2.dir/build.make CMakeFiles/cmTC_d22b2.dir/build
+        Building C object CMakeFiles/cmTC_d22b2.dir/OFF64_T.c.o
+        /usr/bin/cc -DHAVE_STDDEF_H -DHAVE_STDINT_H -DHAVE_SYS_TYPES_H -D_LARGEFILE64_SOURCE=1  -fno-strict-aliasing   -std=gnu99 -arch arm64 -fPIE -MD -MT CMakeFiles/cmTC_d22b2.dir/OFF64_T.c.o -MF CMakeFiles/cmTC_d22b2.dir/OFF64_T.c.o.d -o CMakeFiles/cmTC_d22b2.dir/OFF64_T.c.o -c /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v/OFF64_T.c
+        /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v/OFF64_T.c:29:12: error: use of undeclared identifier 'off64_t'
+           29 |   ('0' + ((SIZE / 10000)%10)),
+              |            ^
+        /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v/OFF64_T.c:27:22: note: expanded from macro 'SIZE'
+           27 | #define SIZE (sizeof(off64_t))
+              |                      ^
+        /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v/OFF64_T.c:30:12: error: use of undeclared identifier 'off64_t'
+           30 |   ('0' + ((SIZE / 1000)%10)),
+              |            ^
+        /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v/OFF64_T.c:27:22: note: expanded from macro 'SIZE'
+           27 | #define SIZE (sizeof(off64_t))
+              |                      ^
+        /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v/OFF64_T.c:31:12: error: use of undeclared identifier 'off64_t'
+           31 |   ('0' + ((SIZE / 100)%10)),
+              |            ^
+        /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v/OFF64_T.c:27:22: note: expanded from macro 'SIZE'
+           27 | #define SIZE (sizeof(off64_t))
+              |                      ^
+        /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v/OFF64_T.c:32:12: error: use of undeclared identifier 'off64_t'
+           32 |   ('0' + ((SIZE / 10)%10)),
+              |            ^
+        /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v/OFF64_T.c:27:22: note: expanded from macro 'SIZE'
+           27 | #define SIZE (sizeof(off64_t))
+              |                      ^
+        /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v/OFF64_T.c:33:12: error: use of undeclared identifier 'off64_t'
+           33 |   ('0' +  (SIZE    % 10)),
+              |            ^
+        /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-W9BB4v/OFF64_T.c:27:22: note: expanded from macro 'SIZE'
+           27 | #define SIZE (sizeof(off64_t))
+              |                      ^
+        5 errors generated.
+        make[1]: *** [CMakeFiles/cmTC_d22b2.dir/OFF64_T.c.o] Error 1
+        make: *** [cmTC_d22b2/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckFunctionExists.cmake:167 (try_compile)"
+      - "external/assimp-6.0.2/contrib/zlib/CMakeLists.txt:64 (check_function_exists)"
+    checks:
+      - "Looking for fseeko"
+    directories:
+      source: "/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-RKQxo9"
+      binary: "/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-RKQxo9"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-fno-strict-aliasing "
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/cmake-modules"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "HAVE_FSEEKO"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-RKQxo9'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_afef3/fast
+        /Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_afef3.dir/build.make CMakeFiles/cmTC_afef3.dir/build
+        Building C object CMakeFiles/cmTC_afef3.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -fno-strict-aliasing  -DCHECK_FUNCTION_EXISTS=fseeko -std=gnu99 -arch arm64 -fPIE -MD -MT CMakeFiles/cmTC_afef3.dir/CheckFunctionExists.c.o -MF CMakeFiles/cmTC_afef3.dir/CheckFunctionExists.c.o.d -o CMakeFiles/cmTC_afef3.dir/CheckFunctionExists.c.o -c /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-RKQxo9/CheckFunctionExists.c
+        Linking C executable cmTC_afef3
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_afef3.dir/link.txt --verbose=1
+        /usr/bin/cc -fno-strict-aliasing  -DCHECK_FUNCTION_EXISTS=fseeko -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_afef3.dir/CheckFunctionExists.c.o -o cmTC_afef3
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckIncludeFile.cmake:165 (try_compile)"
+      - "external/assimp-6.0.2/contrib/zlib/CMakeLists.txt:72 (check_include_file)"
+    checks:
+      - "Looking for unistd.h"
+    directories:
+      source: "/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-CegNLP"
+      binary: "/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-CegNLP"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "-fno-strict-aliasing "
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/konstantinoskanellopoulos/Desktop/rts/external/assimp-6.0.2/cmake-modules"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: ""
+      CMAKE_POSITION_INDEPENDENT_CODE: "ON"
+    buildResult:
+      variable: "Z_HAVE_UNISTD_H"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-CegNLP'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_bbd3e/fast
+        /Applications/Xcode.app/Contents/Developer/usr/bin/make  -f CMakeFiles/cmTC_bbd3e.dir/build.make CMakeFiles/cmTC_bbd3e.dir/build
+        Building C object CMakeFiles/cmTC_bbd3e.dir/CheckIncludeFile.c.o
+        /usr/bin/cc   -fno-strict-aliasing   -std=gnu99 -arch arm64 -fPIE -MD -MT CMakeFiles/cmTC_bbd3e.dir/CheckIncludeFile.c.o -MF CMakeFiles/cmTC_bbd3e.dir/CheckIncludeFile.c.o.d -o CMakeFiles/cmTC_bbd3e.dir/CheckIncludeFile.c.o -c /Users/konstantinoskanellopoulos/Desktop/rts/build/CMakeFiles/CMakeScratch/TryCompile-CegNLP/CheckIncludeFile.c
+        Linking C executable cmTC_bbd3e
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bbd3e.dir/link.txt --verbose=1
+        /usr/bin/cc -fno-strict-aliasing   -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_bbd3e.dir/CheckIncludeFile.c.o -o cmTC_bbd3e
+        
+      exitCode: 0
+  -
+    kind: "find-v1"
+    backtrace:
+      - "external/assimp-6.0.2/cmake-modules/FindRT.cmake:14 (find_library)"
+      - "external/assimp-6.0.2/code/CMakeLists.txt:1277 (FIND_PACKAGE)"
+    mode: "library"
+    variable: "RT_LIBRARY"
+    description: "Path to a library."
+    settings:
+      SearchFramework: "FIRST"
+      SearchAppBundle: "FIRST"
+      CMAKE_FIND_USE_CMAKE_PATH: true
+      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+      CMAKE_FIND_USE_INSTALL_PREFIX: true
+    names:
+      - "rt"
+    candidate_directories:
+      - "/opt/homebrew/opt/ruby/bin/"
+      - "/Users/konstantinoskanellopoulos/Development/flutter/bin/"
+      - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Library/Frameworks/Python.framework/Versions/3.13/bin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/Library/Apple/usr/bin/"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/"
+      - "/opt/homebrew/lib/"
+      - "/opt/homebrew/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/opt/"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks/"
+      - "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/"
+      - "/Library/Frameworks/"
+      - "/System/Library/Frameworks/"
+    searched_directories:
+      - "/opt/homebrew/opt/ruby/bin/"
+      - "/Users/konstantinoskanellopoulos/Development/flutter/bin/"
+      - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand/"
+      - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli/"
+      - "/Library/Frameworks/Python.framework/Versions/3.13/bin/"
+      - "/opt/homebrew/bin/"
+      - "/opt/homebrew/sbin/"
+      - "/usr/local/bin/"
+      - "/System/Cryptexes/App/usr/bin/"
+      - "/usr/bin/"
+      - "/bin/"
+      - "/usr/sbin/"
+      - "/sbin/"
+      - "/Library/Apple/usr/bin/"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/lib/"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/"
+      - "/opt/homebrew/lib/"
+      - "/opt/homebrew/"
+      - "/usr/local/lib/"
+      - "/usr/local/"
+      - "/usr/lib/"
+      - "/usr/"
+      - "/opt/"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/"
+      - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks/"
+      - "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/"
+      - "/Library/Frameworks/"
+      - "/System/Library/Frameworks/"
+    found: false
+    search_context:
+      ENV{PATH}:
+        - "/opt/homebrew/opt/ruby/bin"
+        - "/Users/konstantinoskanellopoulos/Development/flutter/bin"
+        - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/Library/Frameworks/Python.framework/Versions/3.13/bin"
+        - "/opt/homebrew/bin"
+        - "/opt/homebrew/sbin"
+        - "/usr/local/bin"
+        - "/System/Cryptexes/App/usr/bin"
+        - "/usr/bin"
+        - "/bin"
+        - "/usr/sbin"
+        - "/sbin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
+        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        - "/Library/Apple/usr/bin"
+        - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand"
+        - "/Users/konstantinoskanellopoulos/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        - "/opt/homebrew/opt/ruby/bin"
+        - "/Users/konstantinoskanellopoulos/Development/flutter/bin"
+        - "/Library/Frameworks/Python.framework/Versions/3.13/bin"
+      CMAKE_INSTALL_PREFIX: "/usr/local"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/opt/homebrew"
+        - "/usr/local"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+        - "/sw"
+        - "/opt/local"
+      CMAKE_SYSTEM_LIBRARY_PATH:
+        - "/usr/lib/X11"
+      CMAKE_SYSTEM_FRAMEWORK_PATH:
+        - "~/Library/Frameworks"
+        - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/Library/Frameworks"
+        - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/Network/Library/Frameworks"
+        - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
+        - "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks"
+        - "/Applications/Xcode.app/Contents/Developer/Library/Frameworks"
+        - "/Library/Frameworks"
+        - "/Network/Library/Frameworks"
+        - "/System/Library/Frameworks"
+...

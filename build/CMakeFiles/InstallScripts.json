@@ -3,7 +3,10 @@
 	[
 		"/Users/konstantinoskanellopoulos/Desktop/rts/build/cmake_install.cmake",
 		"/Users/konstantinoskanellopoulos/Desktop/rts/build/external/glfw-3.4/cmake_install.cmake",
-		"/Users/konstantinoskanellopoulos/Desktop/rts/build/external/glfw-3.4/src/cmake_install.cmake"
+		"/Users/konstantinoskanellopoulos/Desktop/rts/build/external/glfw-3.4/src/cmake_install.cmake",
+		"/Users/konstantinoskanellopoulos/Desktop/rts/build/external/assimp-6.0.2/cmake_install.cmake",
+		"/Users/konstantinoskanellopoulos/Desktop/rts/build/external/assimp-6.0.2/contrib/zlib/cmake_install.cmake",
+		"/Users/konstantinoskanellopoulos/Desktop/rts/build/external/assimp-6.0.2/code/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

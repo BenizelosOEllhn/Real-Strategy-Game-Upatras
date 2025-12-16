@@ -85,6 +85,24 @@ bool Scene::isWaterAt(float x, float z, float y) const
     return false;
 }
 
+bool Scene::isWaterArea(float x, float z) const
+{
+    float terrainY = Terrain::getHeight(x, z);
+    if (terrainY < oceanY + 0.05f)
+        return true;
+
+    float dx = x;
+    float dz = z - SceneConst::kLakeCenterZ;
+    float distSq = dx * dx + dz * dz;
+    if (distSq < (SceneConst::kLakeRadius + 2.0f) * (SceneConst::kLakeRadius + 2.0f))
+        return true;
+
+    if (nearRiver(x, z))
+        return true;
+
+    return false;
+}
+
 
 // ------------------------------------------------------------
 // Render targets init / destroy

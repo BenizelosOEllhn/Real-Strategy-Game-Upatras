@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 // ------------------------------------------------------------
 // Load file into string
@@ -61,6 +62,19 @@ Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
     // Delete shaders after linking
     glDeleteShader(vertex);
     glDeleteShader(fragment);
+
+    // Initialize bone sampler defaults if present
+    Use();
+    GLint boneSamplerLoc = glGetUniformLocation(ID, "uBoneTexture");
+    if (boneSamplerLoc != -1)
+    {
+        glUniform1i(boneSamplerLoc, 13);
+    }
+    GLint boneCountLoc = glGetUniformLocation(ID, "uBoneCount");
+    if (boneCountLoc != -1)
+    {
+        glUniform1i(boneCountLoc, 0);
+    }
 }
 
 // ------------------------------------------------------------
@@ -107,6 +121,14 @@ void Shader::SetVec4(const std::string &name, const glm::vec4 &value) const
 void Shader::SetMat4(const std::string& name, const glm::mat4& mat) const
 {
     glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
+}
+
+void Shader::BindBoneTexture(unsigned int textureID, int boneCount, int unit) const
+{
+    glActiveTexture(GL_TEXTURE0 + unit);
+    glBindTexture(GL_TEXTURE_BUFFER, textureID);
+    SetInt("uBoneTexture", unit);
+    SetInt("uBoneCount", boneCount);
 }
 
 // ------------------------------------------------------------

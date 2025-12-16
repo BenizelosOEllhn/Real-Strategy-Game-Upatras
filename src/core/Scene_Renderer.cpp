@@ -16,6 +16,9 @@ void Scene::Draw(
     const glm::mat4& lightSpaceMatrix,
     unsigned int shadowMap)
 {
+    lastViewMatrix_ = view;
+    lastProjMatrix_ = projection;
+
     // ------------------------------------------------------------
     // GLOBAL STATE RESET
     // ------------------------------------------------------------
@@ -40,6 +43,7 @@ void Scene::Draw(
         terrainShader.SetMat4("model", glm::mat4(1.0f));
         terrainShader.SetMat4("lightSpaceMatrix", lightSpaceMatrix);
         terrainShader.SetVec4("uClipPlane", NoClip());
+        terrainShader.BindBoneTexture(0, 0);
 
         grass1Tex->Bind(0);
         grass2Tex->Bind(1);
@@ -83,15 +87,19 @@ void Scene::Draw(
         objectShader.SetVec3("viewPos", viewPos);
         objectShader.SetVec3("lightColor", lightColor);
         objectShader.SetVec4("uClipPlane", NoClip());
+        objectShader.SetFloat("uAlpha", 1.0f);
 
         glActiveTexture(GL_TEXTURE7);
         glBindTexture(GL_TEXTURE_2D, shadowMap);
         objectShader.SetInt("shadowMap", 7);
+        objectShader.SetInt("texture_diffuse1", 0);
 
         // IMPORTANT: set these AFTER Use()
         objectShader.SetBool("isInstanced", true);
         objectShader.SetBool("useTexture", true);
         objectShader.SetVec3("uMaterialColor", glm::vec3(0,1,0));
+        objectShader.SetBool("uUseSkinning", false);
+        objectShader.BindBoneTexture(0, 0);
     }
 
     if (hasTrees)
@@ -119,10 +127,13 @@ void Scene::Draw(
         objectShader.SetVec3("viewPos", viewPos);
         objectShader.SetVec3("lightColor", lightColor);
         objectShader.SetVec4("uClipPlane", NoClip());
+        objectShader.SetFloat("uAlpha", 1.0f);
 
         objectShader.SetBool("isInstanced", false);
         objectShader.SetBool("useTexture", false); // buildings use uMaterialColor
+        objectShader.SetBool("uUseSkinning", false);
         objectShader.SetInt("texture_diffuse1", 0);
+        objectShader.BindBoneTexture(0, 0);
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -135,6 +146,8 @@ void Scene::Draw(
 
         glDisable(GL_BLEND);
     }
+
+    drawSelectionIndicators(view, projection);
 
     // ============================================================
     // 4) WATER (DISABLE CULLING OR IT VANISHES)
@@ -163,6 +176,7 @@ void Scene::Draw(
         previewShader->Use();
         previewShader->SetMat4("view", view);
         previewShader->SetMat4("projection", projection);
+        previewShader->BindBoneTexture(0, 0);
 
         glm::mat4 m = glm::translate(glm::mat4(1.0f), buildingManager_.getPreviewPos());
         m = glm::scale(m, glm::vec3(20.0f));
@@ -170,7 +184,7 @@ void Scene::Draw(
 
         // Pulse alpha for fade in/out effect
         float time = (float)glfwGetTime();
-        float alpha = 0.4f + 0.2f * sin(time * 4.0f); // Oscillates between ~0.2 and 0.6
+        float alpha = 0.4f + 0.2f * sin(time * 2.0f); // slower pulse for longer fade
 
         glm::vec4 tint = buildingManager_.isValidPlacement()
             ? glm::vec4(0.1f, 1.0f, 0.1f, alpha)
@@ -191,4 +205,41 @@ void Scene::Draw(
     glDisable(GL_DEPTH_TEST);
     uiManager_.render();
     glEnable(GL_DEPTH_TEST);
+}
+
+void Scene::drawSelectionIndicators(const glm::mat4& view, const glm::mat4& projection)
+{
+    if (!selectionShader || !selectionRingTex || selectionCircleVAO == 0 || selectedUnits_.empty())
+        return;
+
+    glDisable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    selectionShader->Use();
+    selectionShader->SetMat4("view", view);
+    selectionShader->SetMat4("projection", projection);
+    selectionRingTex->Bind(0);
+    selectionShader->SetInt("uTexture", 0);
+    selectionShader->SetVec4("uTint", glm::vec4(1.0f));
+
+    glBindVertexArray(selectionCircleVAO);
+
+    for (Unit* unit : selectedUnits_)
+    {
+        if (!unit) continue;
+
+        glm::mat4 model = glm::mat4(1.0f);
+        glm::vec3 pos = unit->position;
+        pos.y += 0.6f;
+        model = glm::translate(model, pos);
+        model = glm::scale(model, glm::vec3(6.0f, 1.0f, 6.0f));
+
+        selectionShader->SetMat4("model", model);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
+
+    glBindVertexArray(0);
+    glDisable(GL_BLEND);
+    glEnable(GL_CULL_FACE);
 }

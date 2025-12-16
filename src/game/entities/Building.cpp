@@ -6,6 +6,8 @@ void Building::Draw(Shader& shader)
 
     shader.Use();
     shader.SetMat4("model", transform);
+    shader.SetBool("uUseSkinning", false);
+    shader.BindBoneTexture(0, 0);
 
     if (isUnderConstruction)
     {

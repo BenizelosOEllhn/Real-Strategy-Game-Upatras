@@ -43,6 +43,13 @@ add_subdirectory("${EXT_DIR}/glfw-3.4")
 # GLM (header-only)
 include_directories("${EXT_DIR}/glm-0.9.7.1")
 
+# Assimp
+set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_ZLIB ON CACHE BOOL "" FORCE)
+set(ASSIMP_INSTALL OFF CACHE BOOL "" FORCE)
+add_subdirectory("${EXT_DIR}/assimp-6.0.2" EXCLUDE_FROM_ALL)
+
 # GLEW (static)
 set(GLEW_INCLUDE_DIR "${EXT_DIR}/glew-1.13.0/include")
 
@@ -78,6 +85,7 @@ set(GAME_SOURCES
 
     # ---- managers ----
     ${GAME_DIR}/managers/BuildingManager.cpp
+    ${GAME_DIR}/managers/UnitManager.cpp
 
 )
 
@@ -92,8 +100,11 @@ set(CORE_SOURCES
     ${CORE_DIR}/Scene_Events.cpp
     ${CORE_DIR}/Scene_Renderer.cpp
     ${CORE_DIR}/Scene_Init.cpp
+    ${CORE_DIR}/Scene_UI.cpp
+    ${CORE_DIR}/Scene_Pathfinding.cpp
     ${CORE_DIR}/Scene_Water.cpp
     ${CORE_DIR}/Scene_Procedural.cpp
+    src/audio/SoundManager.cpp
     ${CORE_DIR}/Camera.cpp
 
     # gui
@@ -117,11 +128,20 @@ set(CORE_SOURCES
 )
 
 # ---------------------------------------------------------
+# Network sources
+# ---------------------------------------------------------
+set(NETWORK_DIR "${SRC_DIR}/network")
+set(NETWORK_SOURCES
+    ${NETWORK_DIR}/NetworkSession.cpp
+)
+
+# ---------------------------------------------------------
 # 6. Executable
 # ---------------------------------------------------------
 add_executable(cin
     ${CORE_SOURCES}
     ${GAME_SOURCES}
+    ${NETWORK_SOURCES}
 )
 
 # ---------------------------------------------------------
@@ -131,6 +151,7 @@ target_include_directories(cin PUBLIC
     ${GLEW_INCLUDE_DIR}
     "${EXT_DIR}/glfw-3.4/include"
     "${EXT_DIR}/glm-0.9.7.1"
+    "${EXT_DIR}/assimp-6.0.2/include"
 
     ${SRC_DIR}
     ${CORE_DIR}
@@ -147,6 +168,7 @@ target_include_directories(cin PUBLIC
     ${RAYCAST_DIR}
     ${COMMON_DIR}
     ${TINYOBJ_DIR}
+    ${NETWORK_DIR}
 )
 
 # ---------------------------------------------------------
@@ -155,6 +177,7 @@ target_include_directories(cin PUBLIC
 target_link_libraries(cin
     OpenGL::GL
     glfw
+    assimp
 )
 
 # ---------------------------------------------------------
