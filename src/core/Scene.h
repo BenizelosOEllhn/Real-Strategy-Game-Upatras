@@ -118,6 +118,11 @@ public:
     void registerBarracks(Barracks* barracks);
     void drawSelectionIndicators(const glm::mat4& view, const glm::mat4& projection);
     void initSelectionCircle();
+    void initFogOfWar();
+    void resetFogOfWar();
+    void updateFogOfWar();
+    bool updatePlayerFog(int playerId);
+    void spawnStartingTownCenters();
     void clearUnitSelection();
     void selectSingleUnit(const glm::vec2& screenPos, bool additive);
     void selectUnitsInRect(const glm::vec2& a, const glm::vec2& b, bool additive);
@@ -129,7 +134,7 @@ public:
     void selectBuildingAtScreen(const glm::vec2& screenPos);
     void handleDeleteCurrentUnit();
     void deleteUnit(Unit* unit);
-    void spawnInitialVillager(TownCenter* tc);
+    Unit* spawnInitialVillager(TownCenter* tc, int forcedNetworkId = -1);
     void startSinglePlayerGame();
     void startLanHostGame();
     void startLanJoinGame();
@@ -137,7 +142,29 @@ public:
     void updateMainMenu(float dt);
     void setMainMenuVisible(bool visible);
     std::string readLanAddress() const;
+    void processNetworkMessages();
+    void handleNetworkMessage(const std::string& message);
+    bool applyBuildCommand(int ownerId, BuildType type, const glm::vec3& pos, int buildingNetId, int initialWorkerNetId);
+    void sendBuildCommand(BuildType type, int ownerId, const glm::vec3& pos, int buildingNetId, int initialWorkerNetId);
+    Building* placeBuildingForOwner(BuildType type, const glm::vec3& pos, int ownerId, Resources* ownerRes, bool spendResources, int forcedNetworkId = -1);
+    void sendTrainCommand(EntityType type, int ownerId, const glm::vec3& pos, int unitNetId);
+    bool applyTrainCommand(int ownerId, EntityType type, const glm::vec3& pos, int unitNetId);
+    void sendMoveCommand(int networkId, int ownerId, const glm::vec3& pos);
+    bool applyMoveCommand(int ownerId, int networkId, const glm::vec3& pos);
+    Unit* spawnUnitForOwner(EntityType type, const glm::vec3& pos, int ownerId, bool adjustEconomy, int forcedNetworkId = -1);
+    UnitCost getUnitCost(EntityType type) const;
+    int findEntityIndex(const GameEntity* entity) const;
+    int allocateNetworkId();
+    int registerEntity(GameEntity* entity, int requestedId = -1);
+    void unregisterEntity(GameEntity* entity);
+    GameEntity* findEntityByNetworkId(int networkId) const;
     bool findClosestLandPoint(const glm::vec3& desired, glm::vec3& out) const;
+    bool isPositionVisibleToPlayer(const glm::vec3& pos, int playerId) const;
+    bool isPositionExploredByPlayer(const glm::vec3& pos, int playerId) const;
+    void rebuildFogMeshForPlayer(int playerId);
+    void DrawFogOfWar(const glm::mat4& view, const glm::mat4& projection);
+    float visibilityRadiusForEntity(const GameEntity* entity) const;
+    bool segmentCrossesWater(const glm::vec3& start, const glm::vec3& end) const;
     enum class ResourceNodeType { Tree, Rock };
     struct GatherTask {
         Unit* worker = nullptr;
@@ -161,6 +188,7 @@ public:
     void updateUnitCameraView();
     bool IsUnitCameraActive() const { return unitCameraActive_; }
     void RotateUnitCamera(float yawDeltaDeg, float pitchDeltaDeg);
+    void focusCameraOnTownCenter();
     void initPathfindingGrid();
     void refreshNavObstacles();
     bool commandUnitTo(Unit* unit, const glm::vec3& destination);
@@ -351,6 +379,8 @@ void DrawLakeWater(const glm::mat4& view,
     std::vector<Barracks*>   barracks_;
     std::vector<Unit*>       selectedUnits_;
     Building* selectedBuilding_ = nullptr;
+    std::unordered_map<int, GameEntity*> networkEntities_;
+    int nextNetworkId_ = 1;
 
     Resources player1;
     Resources player2;
@@ -361,6 +391,7 @@ void DrawLakeWater(const glm::mat4& view,
     bool lanModeActive_ = false;
     bool lanIsHost_ = false;
     std::string lanStatusText_;
+    bool suppressNetworkSend_ = false;
 
     // Selection helpers
     bool draggingSelection_ = false;
@@ -421,4 +452,16 @@ void DrawLakeWater(const glm::mat4& view,
     float unitCameraPitchOffset_ = 0.0f;
     SoundManager soundManager_;
     bool victoryShown_ = false;
+
+    // Fog of war
+    std::vector<uint8_t> fogStates_[2];
+    std::vector<uint8_t> fogVisibility_[2];
+    bool fogDirty_ = true;
+    GLuint fogVAO_ = 0;
+    GLuint fogVBO_ = 0;
+    size_t fogVertexCount_ = 0;
+    std::vector<float> fogVertexBuffer_;
+    Shader* fogShader = nullptr;
+    float fogPlaneY_ = 12.0f;
+    bool startingBasesSpawned_ = false;
 };

@@ -1,6 +1,7 @@
 #include "NetworkSession.h"
 
 #include <cstring>
+#include <iostream>
 
 #ifdef _WIN32
 #    include <winsock2.h>
@@ -95,8 +96,36 @@ void NetworkSession::Shutdown()
     closeSocket(peerSocket_);
     if (worker_.joinable())
         worker_.join();
+    if (recvThread_.joinable())
+        recvThread_.join();
     mode_ = Mode::None;
     updateStatus("Idle");
+}
+
+bool NetworkSession::SendMessage(const std::string& message)
+{
+    if (!IsConnected() || peerSocket_ == -1)
+        return false;
+
+    std::string payload = message;
+    payload.push_back('\n');
+    int result = ::send(peerSocket_, payload.c_str(), static_cast<int>(payload.size()), 0);
+    if (result == SOCKET_ERROR)
+    {
+        updateStatus("Failed to send message.");
+        return false;
+    }
+    return true;
+}
+
+bool NetworkSession::PollMessage(std::string& outMessage)
+{
+    std::lock_guard<std::mutex> lock(queueMutex_);
+    if (incomingMessages_.empty())
+        return false;
+    outMessage = std::move(incomingMessages_.front());
+    incomingMessages_.pop();
+    return true;
 }
 
 std::string NetworkSession::GetStatus() const
@@ -143,7 +172,7 @@ void NetworkSession::hostThread(uint16_t port)
         return;
     }
 
-    updateStatus("Waiting for LAN client ...");
+    updateStatus("Waiting for LAN client on port " + std::to_string(port) + " ...");
     while (!stop_)
     {
         sockaddr_in clientAddr;
@@ -155,10 +184,14 @@ void NetworkSession::hostThread(uint16_t port)
         }
         peerSocket_ = static_cast<int>(client);
         setConnected(true);
-        updateStatus("Client connected.");
+        char addrStr[64] = {};
+        inet_ntop(AF_INET, &clientAddr.sin_addr, addrStr, sizeof(addrStr));
+        updateStatus(std::string("Client connected from ") + addrStr + ".");
         ::send(client, kHelloMsg, static_cast<int>(std::strlen(kHelloMsg)), 0);
         char buffer[32] = {};
         ::recv(client, buffer, sizeof(buffer), 0);
+        updateStatus("LAN session ready (host).");
+        startReceiveLoop();
         break;
     }
 
@@ -201,15 +234,24 @@ void NetworkSession::clientThread(std::string host, uint16_t port)
     ::send(sock, kHelloMsg, static_cast<int>(std::strlen(kHelloMsg)), 0);
 
     setConnected(true);
-    updateStatus("Connected to host.");
+    updateStatus("LAN session ready (client).");
+    startReceiveLoop();
 
     running_ = false;
+}
+
+void NetworkSession::startReceiveLoop()
+{
+    if (recvThread_.joinable())
+        recvThread_.join();
+    recvThread_ = std::thread(&NetworkSession::receiveLoop, this);
 }
 
 void NetworkSession::updateStatus(const std::string& text)
 {
     std::lock_guard<std::mutex> lock(statusMutex_);
     statusMessage_ = text;
+    std::cout << "[Network] " << text << std::endl;
 }
 
 void NetworkSession::setConnected(bool value)
@@ -227,4 +269,35 @@ void NetworkSession::closeSocket(int& sock)
     ::close(sock);
 #endif
     sock = -1;
+}
+
+void NetworkSession::receiveLoop()
+{
+    std::string pending;
+    char buffer[512];
+    while (!stop_)
+    {
+        if (peerSocket_ == -1)
+            break;
+
+        int received = ::recv(peerSocket_, buffer, sizeof(buffer), 0);
+        if (received <= 0)
+        {
+            updateStatus("Connection closed.");
+            setConnected(false);
+            break;
+        }
+        pending.append(buffer, received);
+        size_t newlinePos = 0;
+        while ((newlinePos = pending.find('\n')) != std::string::npos)
+        {
+            std::string line = pending.substr(0, newlinePos);
+            pending.erase(0, newlinePos + 1);
+            if (!line.empty())
+            {
+                std::lock_guard<std::mutex> lock(queueMutex_);
+                incomingMessages_.push(line);
+            }
+        }
+    }
 }

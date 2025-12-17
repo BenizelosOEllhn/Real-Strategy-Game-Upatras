@@ -41,6 +41,8 @@ public:
     void SetSelected(bool selected) { isSelected_ = selected; }
     bool IsSelected() const { return isSelected_; }
     float GetYaw() const { return rotationEuler_.y; }
+    int  GetNetworkId() const { return networkId_; }
+    void SetNetworkId(int id) { networkId_ = id; }
 
 protected:
     void SetVisualOffset(const glm::vec3& offset) { visualOffset_ = offset; }
@@ -65,4 +67,5 @@ private:
     glm::vec3 visualOffset_{0.0f};
     glm::vec3 rotationEuler_{0.0f};
     bool isSelected_ = false;
+    int  networkId_ = -1;
 };

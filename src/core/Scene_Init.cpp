@@ -1,5 +1,8 @@
 #include "Scene.h"
 #include "SceneConstants.h"
+#include "../game/units/Worker.h"
+#include "../game/units/Archer.h"
+#include "../game/units/Knight.h"
 
 Scene::Scene()
     : terrain(nullptr),
@@ -95,10 +98,13 @@ Scene::~Scene()
     delete waterShader;
     delete previewShader;
     delete selectionShader;
+    delete fogShader;
 
     if (waterVAO) glDeleteVertexArrays(1, &waterVAO);
     if (lakeVAO) glDeleteVertexArrays(1, &lakeVAO);
     if (riverVAO) glDeleteVertexArrays(1, &riverVAO);
+    if (fogVAO_) glDeleteVertexArrays(1, &fogVAO_);
+    if (fogVBO_) glDeleteBuffers(1, &fogVBO_);
 }
 void Scene::Init(Camera* activeCamera) {
     camera = activeCamera;
@@ -203,6 +209,7 @@ void Scene::Init(Camera* activeCamera) {
     generateLakeWater();     // local lake mesh
     generateRiverWater();    // local river mesh
     initPathfindingGrid();
+    initFogOfWar();
     setupBuildingBar();
     setupBuildingInfoPanel();
     setupResourceBar();
@@ -225,72 +232,138 @@ void Scene::Init(Camera* activeCamera) {
     std::string(ASSET_PATH) + "shaders/selection.vert",
     std::string(ASSET_PATH) + "shaders/selection.frag"
     );
+    fogShader = new Shader(
+    std::string(ASSET_PATH) + "shaders/fog.vert",
+    std::string(ASSET_PATH) + "shaders/fog.frag"
+    );
     buildingManager_.onPlaceBuilding = [this](BuildType type, glm::vec3 pos)
     {
         std::cout << "Placing building at " 
                 << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
-        Resources* ownerRes = activePlayerPtr();
+        Resources* ownerRes = resourcesForOwner(activePlayerIndex_ + 1);
         if (!ownerRes)
             return;
 
-        UnitCost buildCost = getBuildingCost(type);
-        if (!ownerRes->Spend(buildCost))
-        {
-            std::cout << "Insufficient resources for building." << std::endl;
-            return;
-        }
-
         int ownerId = activePlayerIndex_ + 1;
+        Building* building = placeBuildingForOwner(type, pos, ownerId, ownerRes, true);
+        if (!building)
+            return;
 
-        switch (type)
+        int buildingNetId = building->GetNetworkId();
+        int initialVillagerId = -1;
+        if (type == BuildType::TownCenter)
         {
-        case BuildType::TownCenter:
-        {
-            TownCenter* tc = new TownCenter(pos, townCenterModel, townCenterModel, ownerId);
-            entities_.push_back(tc);
-            registerTownCenter(tc);
-            spawnInitialVillager(tc);
-            break;
-        }
-        case BuildType::Barracks:
-        {
-            Barracks* b = new Barracks(pos, barracksModel, barracksModel, ownerId);
-            entities_.push_back(b);
-            registerBarracks(b);
-            break;
-        }
-        case BuildType::Farm:
-        {
-            Farm* f = new Farm(pos, farmModel, farmModel, ownerId, ownerRes);
-            entities_.push_back(f);
-            break;
-        }
-        case BuildType::House:
-        {
-            House* h = new House(pos, houseModel, houseModel, ownerId, ownerRes);
-            entities_.push_back(h);
-            break;
-        }
-        case BuildType::Market:
-        {
-            Market* m = new Market(pos, marketModel, marketModel, ownerId, ownerRes);
-            entities_.push_back(m);
-            break;
-        }
-        case BuildType::Storage:
-        {
-            Storage* s = new Storage(pos, storageModel, storageModel, ownerId, ownerRes);
-            entities_.push_back(s);
-            break;
-        }
-        default:
-            break;
+            if (TownCenter* tc = dynamic_cast<TownCenter*>(building))
+            {
+                if (Unit* villager = spawnInitialVillager(tc))
+                    initialVillagerId = villager->GetNetworkId();
+            }
         }
 
-    updateResourceTexts();
-    refreshNavObstacles();
-
+        if (lanModeActive_ && !suppressNetworkSend_ && networkSession_.IsConnected())
+            sendBuildCommand(type, ownerId, pos, buildingNetId, initialVillagerId);
     };
 
     initSelectionCircle();
+}
+
+Building* Scene::placeBuildingForOwner(BuildType type, const glm::vec3& pos, int ownerId, Resources* ownerRes, bool spendResources, int forcedNetworkId)
+{
+    if (!ownerRes)
+        return nullptr;
+
+    if (spendResources)
+    {
+        UnitCost cost = getBuildingCost(type);
+        if (!ownerRes->Spend(cost))
+        {
+            std::cout << "Insufficient resources for building." << std::endl;
+            return nullptr;
+        }
+    }
+
+    Building* newBuilding = nullptr;
+    switch (type)
+    {
+    case BuildType::TownCenter:
+        newBuilding = new TownCenter(pos, townCenterModel, townCenterModel, ownerId);
+        break;
+    case BuildType::Barracks:
+        newBuilding = new Barracks(pos, barracksModel, barracksModel, ownerId);
+        break;
+    case BuildType::Farm:
+        newBuilding = new Farm(pos, farmModel, farmModel, ownerId, ownerRes);
+        break;
+    case BuildType::House:
+        newBuilding = new House(pos, houseModel, houseModel, ownerId, ownerRes);
+        break;
+    case BuildType::Market:
+        newBuilding = new Market(pos, marketModel, marketModel, ownerId, ownerRes);
+        break;
+    case BuildType::Storage:
+        newBuilding = new Storage(pos, storageModel, storageModel, ownerId, ownerRes);
+        break;
+    default:
+        break;
+    }
+
+    if (!newBuilding)
+        return nullptr;
+
+    registerEntity(newBuilding, forcedNetworkId);
+    entities_.push_back(newBuilding);
+    if (type == BuildType::TownCenter)
+    {
+        registerTownCenter(static_cast<TownCenter*>(newBuilding));
+    }
+    else if (type == BuildType::Barracks)
+    {
+        registerBarracks(static_cast<Barracks*>(newBuilding));
+    }
+
+    updateResourceTexts();
+    refreshNavObstacles();
+    return newBuilding;
+}
+
+Unit* Scene::spawnUnitForOwner(EntityType type, const glm::vec3& pos, int ownerId, bool adjustEconomy, int forcedNetworkId)
+{
+    Unit* unit = nullptr;
+    switch (type)
+    {
+    case EntityType::Worker:
+        if (farmerModel)
+            unit = new Worker(pos, farmerModel, ownerId);
+        break;
+    case EntityType::Archer:
+        if (archerUnitModel)
+            unit = new Archer(pos, archerUnitModel, ownerId);
+        break;
+    case EntityType::Knight:
+        if (knightUnitModel)
+            unit = new Knight(pos, knightUnitModel, ownerId);
+        break;
+    default:
+        break;
+    }
+
+    if (!unit)
+        return nullptr;
+
+    registerEntity(unit, forcedNetworkId);
+    entities_.push_back(unit);
+    if (adjustEconomy)
+    {
+        Resources* res = resourcesForOwner(ownerId);
+        if (res)
+        {
+            res->AddPopulation(1);
+            if (type == EntityType::Worker)
+                res->AddVillager(1);
+        }
+    }
+
+    refreshUnitListUI();
+    updateResourceTexts();
+    return unit;
 }

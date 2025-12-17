@@ -1,0 +1,26 @@
+# Build outputs
+/build/
+
+# CMake cache files
+/CMakeCache.txt
+/CMakeFiles/
+/cmake_install.cmake
+/Makefile
+
+# Generated binaries/libraries
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+
+# Editor files
+.DS_Store
+*.user
+*.suo
+*.vcxproj*
+.idea/
+.vscode/
+
+# Temporary docs
+~$*.docx

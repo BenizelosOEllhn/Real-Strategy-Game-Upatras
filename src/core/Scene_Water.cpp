@@ -28,37 +28,34 @@ static void makeDepthTexture(GLuint& tex, int w, int h)
 
 bool Scene::nearRiver(float x, float z) const
 {
-    // Use SceneConst:: prefix if these are in a namespace, 
-    // otherwise ensure the constants are visible here.
     const float lakeZ       = SceneConst::kLakeCenterZ; 
-    const float riverStartZ = lakeZ + 12.0f;
-    const float riverEndZ   = 260.0f;
+    const float riverStartZ = lakeZ - 15.0f;
+    const float riverEndZ   = 280.0f;
 
     if (z < riverStartZ || z > riverEndZ)
         return false;
 
-    // Define the lambda locally or use a helper
     auto evalPath = [&](float startX, float dir) -> std::pair<float, float>
     {
-        float t = (z - riverStartZ) / (riverEndZ - riverStartZ);
+        float t = glm::clamp((z - riverStartZ) / (riverEndZ - riverStartZ), 0.0f, 1.0f);
 
-        float endX  = dir * 180.0f;
+        float endX  = dir * 185.0f;
         float pathX = glm::mix(startX, endX, t);
 
-        pathX += dir * (30.0f * std::sin(z * 0.035f));
-        pathX +=        (12.0f * std::cos(z * 0.02f));
+        pathX += dir * (35.0f * std::sin(z * 0.028f));
+        pathX +=        (18.0f * std::cos(z * 0.017f));
 
-        float halfWidth = glm::mix(28.0f, 18.0f, t);
-        float fade = glm::clamp((z - 150.0f) / 30.0f, 0.0f, 1.0f);
-        halfWidth *= (1.0f - fade);
+        float halfWidth = glm::mix(34.0f, 22.0f, t);
+        float fade = glm::clamp((z - 160.0f) / 40.0f, 0.0f, 1.0f);
+        halfWidth *= (1.0f - 0.6f * fade);
 
-        halfWidth += 4.0f; 
+        halfWidth += 14.0f;
 
         return { pathX - halfWidth, pathX + halfWidth };
     };
 
-    auto [lMin, lMax] = evalPath(-15.0f, -1.0f);
-    auto [rMin, rMax] = evalPath(+15.0f, +1.0f);
+    auto [lMin, lMax] = evalPath(-20.0f, -1.0f);
+    auto [rMin, rMax] = evalPath(+20.0f, +1.0f);
 
     return (x >= lMin && x <= lMax) || (x >= rMin && x <= rMax);
 }

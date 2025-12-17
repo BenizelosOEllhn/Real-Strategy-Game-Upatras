@@ -253,6 +253,15 @@ void processInput(GLFWwindow *window)
         gScene->switchActivePlayer();
     }
     tabDown = tabPressed;
+
+    static bool tDown = false;
+    int tState = glfwGetKey(window, GLFW_KEY_T);
+    bool tPressed = (tState == GLFW_PRESS);
+    if (tPressed && !tDown && gScene)
+    {
+        gScene->focusCameraOnTownCenter();
+    }
+    tDown = tPressed;
 }
 
 void scroll_callback(GLFWwindow* /*window*/, double /*xoffset*/, double yoffset)

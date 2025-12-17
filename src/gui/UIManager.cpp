@@ -81,6 +81,18 @@ void UIManager::setButtonTexture(size_t index, GLuint texture)
     buttons_[index].texture = texture;
 }
 
+void UIManager::setSelectionRect(const glm::vec2& start, const glm::vec2& end, bool active)
+{
+    selectionRectVisible_ = active;
+    if (!active)
+        return;
+
+    selectionRectMin_.x = std::min(start.x, end.x);
+    selectionRectMin_.y = std::min(start.y, end.y);
+    selectionRectMax_.x = std::max(start.x, end.x);
+    selectionRectMax_.y = std::max(start.y, end.y);
+}
+
 void UIManager::update(float mouseX, float mouseY)
 {
     for (auto& b : buttons_) {
@@ -217,6 +229,52 @@ void UIManager::render()
         glBindBuffer(GL_ARRAY_BUFFER, vbo_);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
         glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
+
+    if (selectionRectVisible_)
+    {
+        float minX = std::max(0.0f, std::min(selectionRectMin_.x, selectionRectMax_.x));
+        float maxX = std::min(static_cast<float>(screenW_), std::max(selectionRectMin_.x, selectionRectMax_.x));
+        float minY = std::max(0.0f, std::min(selectionRectMin_.y, selectionRectMax_.y));
+        float maxY = std::min(static_cast<float>(screenH_), std::max(selectionRectMin_.y, selectionRectMax_.y));
+
+        shader_->SetInt("uHasTexture", 0);
+        shader_->SetVec4("uTint", glm::vec4(0.2f, 0.8f, 0.3f, 0.18f));
+        float fillVerts[6 * 4] = {
+            minX, minY, 0.0f, 0.0f,
+            maxX, minY, 1.0f, 0.0f,
+            maxX, maxY, 1.0f, 1.0f,
+
+            minX, minY, 0.0f, 0.0f,
+            maxX, maxY, 1.0f, 1.0f,
+            minX, maxY, 0.0f, 1.0f
+        };
+        glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(fillVerts), fillVerts);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        const float border = 2.0f;
+        shader_->SetVec4("uTint", glm::vec4(0.3f, 1.0f, 0.45f, 0.85f));
+
+        auto drawBorderQuad = [&](float x0, float y0, float x1, float y1)
+        {
+            float quad[6 * 4] = {
+                x0, y0, 0.0f, 0.0f,
+                x1, y0, 1.0f, 0.0f,
+                x1, y1, 1.0f, 1.0f,
+
+                x0, y0, 0.0f, 0.0f,
+                x1, y1, 1.0f, 1.0f,
+                x0, y1, 0.0f, 1.0f
+            };
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(quad), quad);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+        };
+
+        drawBorderQuad(minX, maxY - border, maxX, maxY); // top
+        drawBorderQuad(minX, minY, maxX, minY + border); // bottom
+        drawBorderQuad(minX, minY, minX + border, maxY); // left
+        drawBorderQuad(maxX - border, minY, maxX, maxY); // right
     }
 
     // --- 2) Draw labels using bitmap font ---

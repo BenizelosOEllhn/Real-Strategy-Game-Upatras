@@ -29,6 +29,10 @@ public:
     void registerBarracks(Barracks* barracks);
 
     bool TrainUnit(EntityType type, Building* building);
+    bool HasPendingSpawn() const { return lastSpawnValid_; }
+    const glm::vec3& GetLastSpawnPosition() const { return lastSpawnPos_; }
+    EntityType GetLastTrainedType() const { return lastTrainedType_; }
+    GameEntity* GetLastSpawnedEntity() const { return lastSpawnedEntity_; }
 
 private:
     Resources* resources_ = nullptr;
@@ -37,6 +41,10 @@ private:
 
     std::vector<TownCenter*> townCenters_;
     std::vector<Barracks*> barracks_;
+    glm::vec3 lastSpawnPos_{0.0f};
+    EntityType lastTrainedType_;
+    bool lastSpawnValid_ = false;
+    GameEntity* lastSpawnedEntity_ = nullptr;
 
     bool trainVillager(TownCenter* tc);
     bool trainRanger(Barracks* barracks);

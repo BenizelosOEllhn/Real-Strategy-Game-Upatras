@@ -57,6 +57,9 @@ bool Scene::commandUnitTo(Unit* unit, const glm::vec3& destination)
         return true;
     }
 
+    if (segmentCrossesWater(unit->position, destination))
+        return false;
+
     unit->SetMoveTarget(destination);
     unit->SetTaskState(Unit::TaskState::Moving);
     return false;

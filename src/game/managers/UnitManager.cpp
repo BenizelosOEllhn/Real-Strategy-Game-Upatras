@@ -31,6 +31,10 @@ void UnitManager::init(Resources* resources,
     assets_    = assets;
     townCenters_.clear();
     barracks_.clear();
+    lastSpawnPos_ = glm::vec3(0.0f);
+    lastTrainedType_ = EntityType::Worker;
+    lastSpawnValid_ = false;
+    lastSpawnedEntity_ = nullptr;
 }
 
 void UnitManager::setActiveResources(Resources* resources)
@@ -54,6 +58,8 @@ bool UnitManager::TrainUnit(EntityType type, Building* building)
 {
     if (!resources_ || !entities_ || !building)
         return false;
+    lastSpawnValid_ = false;
+    lastSpawnedEntity_ = nullptr;
 
     switch (type)
     {
@@ -83,7 +89,12 @@ bool UnitManager::trainVillager(TownCenter* tc)
     resources_->AddVillager(1);
 
     glm::vec3 spawnPos = computeSpawnPosition(tc, glm::vec3(5.0f, 0.0f, 5.0f));
-    entities_->push_back(new Worker(spawnPos, assets_.farmer, tc->ownerID));
+    GameEntity* created = new Worker(spawnPos, assets_.farmer, tc->ownerID);
+    entities_->push_back(created);
+    lastSpawnPos_ = spawnPos;
+    lastTrainedType_ = EntityType::Worker;
+    lastSpawnValid_ = true;
+    lastSpawnedEntity_ = created;
     return true;
 }
 
@@ -100,7 +111,12 @@ bool UnitManager::trainRanger(Barracks* barracks)
 
     resources_->AddPopulation(1);
     glm::vec3 spawnPos = computeSpawnPosition(barracks, glm::vec3(-5.0f, 0.0f, -5.0f));
-    entities_->push_back(new Archer(spawnPos, assets_.archer, barracks->ownerID));
+    GameEntity* created = new Archer(spawnPos, assets_.archer, barracks->ownerID);
+    entities_->push_back(created);
+    lastSpawnPos_ = spawnPos;
+    lastTrainedType_ = EntityType::Archer;
+    lastSpawnValid_ = true;
+    lastSpawnedEntity_ = created;
     return true;
 }
 
@@ -117,7 +133,12 @@ bool UnitManager::trainKnight(Barracks* barracks)
 
     resources_->AddPopulation(1);
     glm::vec3 spawnPos = computeSpawnPosition(barracks, glm::vec3(-5.0f, 0.0f, 5.0f));
-    entities_->push_back(new Knight(spawnPos, assets_.knight, barracks->ownerID));
+    GameEntity* created = new Knight(spawnPos, assets_.knight, barracks->ownerID);
+    entities_->push_back(created);
+    lastSpawnPos_ = spawnPos;
+    lastTrainedType_ = EntityType::Knight;
+    lastSpawnValid_ = true;
+    lastSpawnedEntity_ = created;
     return true;
 }
 

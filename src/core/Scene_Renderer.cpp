@@ -141,6 +141,10 @@ void Scene::Draw(
         for (GameEntity* e : entities_)
         {
             if (!e) continue;
+            if (e->ownerID > 0 &&
+                e->ownerID != activePlayerIndex_ + 1 &&
+                !isPositionVisibleToPlayer(e->position, activePlayerIndex_ + 1))
+                continue;
             e->Draw(objectShader);   // Building::Draw sets uAlpha
         }
 
@@ -199,6 +203,8 @@ void Scene::Draw(
         glEnable(GL_CULL_FACE);
     }
 
+    DrawFogOfWar(view, projection);
+
     // ============================================================
     // 6) UI LAST
     // ============================================================
@@ -242,4 +248,105 @@ void Scene::drawSelectionIndicators(const glm::mat4& view, const glm::mat4& proj
     glBindVertexArray(0);
     glDisable(GL_BLEND);
     glEnable(GL_CULL_FACE);
+}
+
+void Scene::rebuildFogMeshForPlayer(int playerId)
+{
+    fogVertexBuffer_.clear();
+    fogVertexCount_ = 0;
+
+    if (playerId < 1 || playerId > 2)
+        return;
+    if (navGridCols_ <= 0 || navGridRows_ <= 0)
+        return;
+
+    const auto& fog = fogStates_[playerId - 1];
+    if (fog.empty() || fogVAO_ == 0 || fogVBO_ == 0)
+        return;
+
+    const size_t cellCount = static_cast<size_t>(navGridCols_) * static_cast<size_t>(navGridRows_);
+    if (fog.size() < cellCount)
+        return;
+
+    fogVertexBuffer_.reserve(cellCount * 6 * 7);
+    const float half = navCellSize_ * 0.5f;
+    const float pad = navCellSize_ * 0.08f;
+
+    auto pushVertex = [&](const glm::vec3& p, const glm::vec4& c)
+    {
+        fogVertexBuffer_.push_back(p.x);
+        fogVertexBuffer_.push_back(p.y);
+        fogVertexBuffer_.push_back(p.z);
+        fogVertexBuffer_.push_back(c.r);
+        fogVertexBuffer_.push_back(c.g);
+        fogVertexBuffer_.push_back(c.b);
+        fogVertexBuffer_.push_back(c.a);
+    };
+
+    for (int row = 0; row < navGridRows_; ++row)
+    {
+        for (int col = 0; col < navGridCols_; ++col)
+        {
+            size_t idx = static_cast<size_t>(row) * static_cast<size_t>(navGridCols_) + static_cast<size_t>(col);
+            uint8_t state = fog[idx];
+            if (state == 2)
+                continue;
+
+            glm::vec3 center = navToWorld(col, row);
+            float y = fogPlaneY_;
+            glm::vec3 p0(center.x - half - pad, y, center.z - half - pad);
+            glm::vec3 p1(center.x + half + pad, y, center.z - half - pad);
+            glm::vec3 p2(center.x + half + pad, y, center.z + half + pad);
+            glm::vec3 p3(center.x - half - pad, y, center.z + half + pad);
+
+            glm::vec4 color = (state == 0)
+                ? glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)
+                : glm::vec4(0.0f, 0.0f, 0.0f, 0.35f);
+
+            pushVertex(p0, color);
+            pushVertex(p1, color);
+            pushVertex(p2, color);
+
+            pushVertex(p0, color);
+            pushVertex(p2, color);
+            pushVertex(p3, color);
+        }
+    }
+
+    fogVertexCount_ = fogVertexBuffer_.size() / 7;
+    glBindBuffer(GL_ARRAY_BUFFER, fogVBO_);
+    glBufferData(GL_ARRAY_BUFFER,
+                 fogVertexBuffer_.size() * sizeof(float),
+                 fogVertexBuffer_.data(),
+                 GL_DYNAMIC_DRAW);
+    fogDirty_ = false;
+}
+
+void Scene::DrawFogOfWar(const glm::mat4& view, const glm::mat4& projection)
+{
+    if (!fogShader || fogVAO_ == 0 || fogVBO_ == 0)
+        return;
+
+    if (fogDirty_)
+        rebuildFogMeshForPlayer(activePlayerIndex_ + 1);
+
+    if (fogVertexCount_ == 0)
+        return;
+
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    fogShader->Use();
+    fogShader->SetMat4("view", view);
+    fogShader->SetMat4("projection", projection);
+
+    glBindVertexArray(fogVAO_);
+    glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(fogVertexCount_));
+    glBindVertexArray(0);
+
+    glDisable(GL_BLEND);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
 }

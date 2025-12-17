@@ -184,7 +184,6 @@ void Unit::selectAnimationIndices()
         idleAnimIndex_ = -1;
         walkAnimIndex_ = -1;
         useSkinning_ = false;
-        std::cout << "[Unit] Model has no animations available.\n";
         return;
     }
 
@@ -196,10 +195,6 @@ void Unit::selectAnimationIndices()
         walkAnimIndex_ = idleAnimIndex_;
 
     activeAnimationIndex_ = static_cast<size_t>(std::max(0, idleAnimIndex_));
-    std::cout << "[Unit] Animations for entity type " << static_cast<int>(type)
-              << ": idle '" << idleAnimName_ << "' -> index " << idleAnimIndex_
-              << ", walk '" << walkAnimName_ << "' -> index " << walkAnimIndex_
-              << ", total clips " << model->GetAnimationCount() << "\n";
 }
 
 void Unit::updateActiveAnimationForState()

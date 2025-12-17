@@ -58,6 +58,10 @@ void Scene::DrawDepth(Shader& depthShader,
     for (GameEntity* e : entities_)
     {
         if (!e) continue;
+        if (e->ownerID > 0 &&
+            e->ownerID != activePlayerIndex_ + 1 &&
+            !isPositionVisibleToPlayer(e->position, activePlayerIndex_ + 1))
+            continue;
 
         depthShader.SetMat4("model", e->transform);
 

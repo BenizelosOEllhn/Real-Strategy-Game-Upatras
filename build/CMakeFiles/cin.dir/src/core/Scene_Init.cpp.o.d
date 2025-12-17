@@ -1203,4 +1203,7 @@ CMakeFiles/cin.dir/src/core/Scene_Init.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/buildings/House.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/buildings/Market.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/buildings/Storage.h \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/SceneConstants.h
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/SceneConstants.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/units/Worker.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/units/Archer.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/units/Knight.h

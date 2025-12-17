@@ -35,6 +35,7 @@ public:
     void setButtonVisibility(size_t index, bool visible);
     void setLabelVisibility(size_t index, bool visible);
     void setButtonTexture(size_t index, GLuint texture);
+    void setSelectionRect(const glm::vec2& start, const glm::vec2& end, bool active);
 
     void update(float mouseX, float mouseY);
     bool handleClick(float mouseX, float mouseY);
@@ -61,4 +62,7 @@ private:
     float fontCharW_ = 8.0f;
     float fontCharH_ = 12.0f;
     float textScale_ = 1.0f;
+    bool selectionRectVisible_ = false;
+    glm::vec2 selectionRectMin_{0.0f};
+    glm::vec2 selectionRectMax_{0.0f};
 };

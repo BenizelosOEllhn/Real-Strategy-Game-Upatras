@@ -588,6 +588,22 @@ bool Scene::handleProductionRequest(EntityType unitType)
         updateResourceTexts();
         refreshUnitListUI();
         updateProductionPanel();
+
+        int trainedNetId = -1;
+        if (GameEntity* spawned = unitManager_.GetLastSpawnedEntity())
+        {
+            if (Unit* spawnedUnit = dynamic_cast<Unit*>(spawned))
+                trainedNetId = registerEntity(spawnedUnit);
+        }
+
+        if (lanModeActive_ && networkSession_.IsConnected() && !suppressNetworkSend_ &&
+            unitManager_.HasPendingSpawn() && trainedNetId > 0)
+        {
+            sendTrainCommand(unitManager_.GetLastTrainedType(),
+                             selectedBuilding_->ownerID,
+                             unitManager_.GetLastSpawnPosition(),
+                             trainedNetId);
+        }
         return true;
     }
     return false;
@@ -726,6 +742,30 @@ UnitCost Scene::getBuildingCost(BuildType type) const
     return cost;
 }
 
+UnitCost Scene::getUnitCost(EntityType type) const
+{
+    UnitCost cost;
+    switch (type)
+    {
+    case EntityType::Worker:
+        cost.food = 50;
+        break;
+    case EntityType::Archer:
+        cost.food = 40;
+        cost.ore  = 20;
+        cost.gold = 45;
+        break;
+    case EntityType::Knight:
+        cost.food = 60;
+        cost.ore  = 35;
+        cost.gold = 60;
+        break;
+    default:
+        break;
+    }
+    return cost;
+}
+
 bool Scene::canAffordBuilding(BuildType type) const
 {
     UnitCost cost = getBuildingCost(type);
@@ -786,6 +826,8 @@ void Scene::beginGameplay(bool enableLanMode)
     victoryShown_ = false;
     if (victoryLabelIndex_ != SIZE_MAX)
         uiManager_.setLabelVisibility(victoryLabelIndex_, false);
+    resetFogOfWar();
+    spawnStartingTownCenters();
     updateResourceTexts();
 }
 
