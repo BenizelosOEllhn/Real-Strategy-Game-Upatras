@@ -84,6 +84,8 @@ bool Scene::isWaterAt(float x, float z, float y) const
 
 bool Scene::isWaterArea(float x, float z) const
 {
+    if (pointOnBridge(x, z))
+        return false;
     float terrainY = Terrain::getHeight(x, z);
     if (terrainY < oceanY + 0.05f)
         return true;
@@ -91,10 +93,11 @@ bool Scene::isWaterArea(float x, float z) const
     float dx = x;
     float dz = z - SceneConst::kLakeCenterZ;
     float distSq = dx * dx + dz * dz;
-    if (distSq < (SceneConst::kLakeRadius + 2.0f) * (SceneConst::kLakeRadius + 2.0f))
+    if (distSq < (SceneConst::kLakeRadius + 2.0f) * (SceneConst::kLakeRadius + 2.0f) &&
+        terrainY < lakeY + 0.2f)
         return true;
 
-    if (nearRiver(x, z))
+    if (nearRiver(x, z) && terrainY < riverY + 0.2f)
         return true;
 
     return false;

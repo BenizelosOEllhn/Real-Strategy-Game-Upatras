@@ -77,7 +77,7 @@ bool UnitManager::TrainUnit(EntityType type, Building* building)
 
 bool UnitManager::trainVillager(TownCenter* tc)
 {
-    if (!tc || !assets_.farmer) return false;
+    if (!tc) return false;
     if (!resources_->HasPopulationRoom(1))
         return false;
 
@@ -88,8 +88,11 @@ bool UnitManager::trainVillager(TownCenter* tc)
     resources_->AddPopulation(1);
     resources_->AddVillager(1);
 
+    Model* model = (tc->ownerID == 2 && assets_.evilFarmer) ? assets_.evilFarmer : assets_.farmer;
+    if (!model) return false;
+
     glm::vec3 spawnPos = computeSpawnPosition(tc, glm::vec3(5.0f, 0.0f, 5.0f));
-    GameEntity* created = new Worker(spawnPos, assets_.farmer, tc->ownerID);
+    GameEntity* created = new Worker(spawnPos, model, tc->ownerID);
     entities_->push_back(created);
     lastSpawnPos_ = spawnPos;
     lastTrainedType_ = EntityType::Worker;
@@ -100,7 +103,7 @@ bool UnitManager::trainVillager(TownCenter* tc)
 
 bool UnitManager::trainRanger(Barracks* barracks)
 {
-    if (!barracks || !assets_.archer)
+    if (!barracks)
         return false;
     if (!resources_->HasPopulationRoom(1))
         return false;
@@ -110,8 +113,11 @@ bool UnitManager::trainRanger(Barracks* barracks)
         return false;
 
     resources_->AddPopulation(1);
+    Model* model = (barracks->ownerID == 2 && assets_.wizard) ? assets_.wizard : assets_.archer;
+    if (!model) return false;
+
     glm::vec3 spawnPos = computeSpawnPosition(barracks, glm::vec3(-5.0f, 0.0f, -5.0f));
-    GameEntity* created = new Archer(spawnPos, assets_.archer, barracks->ownerID);
+    GameEntity* created = new Archer(spawnPos, model, barracks->ownerID);
     entities_->push_back(created);
     lastSpawnPos_ = spawnPos;
     lastTrainedType_ = EntityType::Archer;
@@ -122,7 +128,7 @@ bool UnitManager::trainRanger(Barracks* barracks)
 
 bool UnitManager::trainKnight(Barracks* barracks)
 {
-    if (!barracks || !assets_.knight)
+    if (!barracks)
         return false;
     if (!resources_->HasPopulationRoom(1))
         return false;
@@ -132,8 +138,11 @@ bool UnitManager::trainKnight(Barracks* barracks)
         return false;
 
     resources_->AddPopulation(1);
+    Model* model = (barracks->ownerID == 2 && assets_.skeleton) ? assets_.skeleton : assets_.knight;
+    if (!model) return false;
+
     glm::vec3 spawnPos = computeSpawnPosition(barracks, glm::vec3(-5.0f, 0.0f, 5.0f));
-    GameEntity* created = new Knight(spawnPos, assets_.knight, barracks->ownerID);
+    GameEntity* created = new Knight(spawnPos, model, barracks->ownerID);
     entities_->push_back(created);
     lastSpawnPos_ = spawnPos;
     lastTrainedType_ = EntityType::Knight;

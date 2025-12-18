@@ -1,8 +1,14 @@
 #include "BuildingManager.h"
+#include <algorithm>
+#include <utility>
+#include <glm/gtc/constants.hpp>
 
 BuildingManager::BuildingManager()
 {
     previewModels_.fill(nullptr);
+    previewScales_.fill(20.0f);
+    previewRotations_.fill(glm::vec3(0.0f));
+    previewOffsets_.fill(glm::vec3(0.0f));
 }
 
 void BuildingManager::init(Terrain* t, Camera* c, int screenW, int screenH)
@@ -19,6 +25,7 @@ void BuildingManager::startPlacing(BuildType type)
     isPlacing_   = (type != BuildType::None);
     hasPreview_  = false;
     validHit_    = false;
+    previewYawDelta_ = 0.0f;
 
     const std::size_t idx = static_cast<std::size_t>(type);
     if (idx < previewModels_.size())
@@ -45,7 +52,7 @@ void BuildingManager::update(double mouseX, double mouseY, int currentScreenW, i
     );
 
     // Raycast to terrain
-glm::vec3 hit;
+    glm::vec3 hit;
     if (Raycaster::raycastTerrain(ray, *terrain_, hit))
     {
         previewPos_ = hit;
@@ -55,15 +62,9 @@ glm::vec3 hit;
         // VALIDITY CHECK
         // ------------------------
         float waterLevel = std::max({ -1.2, 4.5, 1.5 });
-
-        if (hit.y > waterLevel + 0.1f)
-        {
-            validPlacement_ = true;
-        }
-        else
-        {
-            validPlacement_ = false;
-        }
+        bool aboveWater = (hit.y > waterLevel + 0.1f);
+        bool passesVisibility = !placementValidator_ || placementValidator_(currentType_, hit);
+        validPlacement_ = aboveWater && passesVisibility;
     }
     else
     {
@@ -78,7 +79,7 @@ void BuildingManager::confirmPlacement(double mouseX, double mouseY)
         return;
 
     if (onPlaceBuilding)
-        onPlaceBuilding(currentType_, previewPos_);
+        onPlaceBuilding(currentType_, previewPos_, getPreviewRotation());
 
     // reset
     isPlacing_ = false;
@@ -86,6 +87,7 @@ void BuildingManager::confirmPlacement(double mouseX, double mouseY)
     validPlacement_ = false;
     currentType_ = BuildType::None;
     previewModel_ = nullptr;
+    previewYawDelta_ = 0.0f;
 }
 
 void BuildingManager::setPreviewModel(BuildType type, Model* model)
@@ -94,4 +96,70 @@ void BuildingManager::setPreviewModel(BuildType type, Model* model)
     if (idx >= previewModels_.size())
         return;
     previewModels_[idx] = model;
+}
+
+void BuildingManager::setPreviewScale(BuildType type, float scale)
+{
+    const std::size_t idx = static_cast<std::size_t>(type);
+    if (idx >= previewScales_.size())
+        return;
+    previewScales_[idx] = scale;
+}
+
+void BuildingManager::setPreviewRotation(BuildType type, const glm::vec3& rotation)
+{
+    const std::size_t idx = static_cast<std::size_t>(type);
+    if (idx >= previewRotations_.size())
+        return;
+    previewRotations_[idx] = rotation;
+}
+
+void BuildingManager::setPreviewOffset(BuildType type, const glm::vec3& offset)
+{
+    const std::size_t idx = static_cast<std::size_t>(type);
+    if (idx >= previewOffsets_.size())
+        return;
+    previewOffsets_[idx] = offset;
+}
+
+float BuildingManager::getPreviewScale() const
+{
+    std::size_t idx = static_cast<std::size_t>(currentType_);
+    if (idx >= previewScales_.size())
+        return 20.0f;
+    return previewScales_[idx];
+}
+
+glm::vec3 BuildingManager::getPreviewOffset() const
+{
+    std::size_t idx = static_cast<std::size_t>(currentType_);
+    if (idx >= previewOffsets_.size())
+        return glm::vec3(0.0f);
+    return previewOffsets_[idx];
+}
+
+glm::vec3 BuildingManager::getPreviewRotation() const
+{
+    std::size_t idx = static_cast<std::size_t>(currentType_);
+    if (idx >= previewRotations_.size())
+        return glm::vec3(0.0f, previewYawDelta_, 0.0f);
+    glm::vec3 rotation = previewRotations_[idx];
+    rotation.y += previewYawDelta_;
+    return rotation;
+}
+
+void BuildingManager::rotatePreviewYaw(float radians)
+{
+    if (!isPlacing_)
+        return;
+    previewYawDelta_ += radians;
+    if (previewYawDelta_ > glm::pi<float>())
+        previewYawDelta_ -= glm::two_pi<float>();
+    else if (previewYawDelta_ < -glm::pi<float>())
+        previewYawDelta_ += glm::two_pi<float>();
+}
+
+void BuildingManager::setPlacementValidator(std::function<bool(BuildType, const glm::vec3&)> validator)
+{
+    placementValidator_ = std::move(validator);
 }

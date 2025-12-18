@@ -146,6 +146,15 @@ void Scene::cancelCurrentAction()
     }
 }
 
+void Scene::rotatePlacementPreview(float radians)
+{
+    if (mainMenuActive_)
+        return;
+    if (!buildingManager_.isPlacing())
+        return;
+    buildingManager_.rotatePreviewYaw(radians);
+}
+
 void Scene::toggleUnitCamera()
 {
     if (!camera)
@@ -1095,6 +1104,10 @@ void Scene::switchActivePlayer()
     unitManager_.setActiveResources(activeResources_);
     clearUnitSelection();
     selectedBuilding_ = nullptr;
+    configureBuildingPreviewsForOwner(activePlayerIndex_ + 1);
+    updateBuildingBarLabels();
+    updateBuildingButtonTexturesForOwner(activePlayerIndex_ + 1);
+    updateBuildingInfoPanel(BuildType::None);
     if (unitCameraActive_)
     {
         unitCameraActive_ = false;
@@ -1218,13 +1231,15 @@ void Scene::handleNetworkMessage(const std::string& message)
         float x = 0.0f, y = 0.0f, z = 0.0f;
         int buildingId = -1;
         int workerId = -1;
-        if (iss >> ownerId >> typeInt >> x >> y >> z >> buildingId >> workerId)
+        float rotX = 0.0f, rotY = 0.0f, rotZ = 0.0f;
+        if (iss >> ownerId >> typeInt >> x >> y >> z >> buildingId >> workerId >> rotX >> rotY >> rotZ)
         {
             applyBuildCommand(ownerId,
                               static_cast<BuildType>(typeInt),
                               glm::vec3(x, y, z),
                               buildingId,
-                              workerId);
+                              workerId,
+                              glm::vec3(rotX, rotY, rotZ));
         }
     }
     else if (cmd == "TRAIN")
@@ -1253,7 +1268,8 @@ void Scene::sendBuildCommand(BuildType type,
                              int ownerId,
                              const glm::vec3& pos,
                              int buildingNetId,
-                             int initialWorkerNetId)
+                             int initialWorkerNetId,
+                             const glm::vec3& rotation)
 {
     if (!lanModeActive_ || !networkSession_.IsConnected())
         return;
@@ -1261,7 +1277,8 @@ void Scene::sendBuildCommand(BuildType type,
     std::ostringstream oss;
     oss << "BUILD " << ownerId << " " << static_cast<int>(type) << " "
         << pos.x << " " << pos.y << " " << pos.z << " "
-        << buildingNetId << " " << initialWorkerNetId;
+        << buildingNetId << " " << initialWorkerNetId << " "
+        << rotation.x << " " << rotation.y << " " << rotation.z;
     networkSession_.SendMessage(oss.str());
 }
 
@@ -1269,7 +1286,8 @@ bool Scene::applyBuildCommand(int ownerId,
                               BuildType type,
                               const glm::vec3& pos,
                               int buildingNetId,
-                              int initialWorkerNetId)
+                              int initialWorkerNetId,
+                              const glm::vec3& rotation)
 {
     Resources* ownerRes = resourcesForOwner(ownerId);
     if (!ownerRes)
@@ -1277,7 +1295,7 @@ bool Scene::applyBuildCommand(int ownerId,
 
     const bool previous = suppressNetworkSend_;
     suppressNetworkSend_ = true;
-    Building* building = placeBuildingForOwner(type, pos, ownerId, ownerRes, true, buildingNetId);
+    Building* building = placeBuildingForOwner(type, pos, ownerId, ownerRes, true, buildingNetId, &rotation);
     bool result = (building != nullptr);
     if (result && type == BuildType::TownCenter && building && initialWorkerNetId > 0)
     {
@@ -1401,6 +1419,8 @@ void Scene::resetFogOfWar()
 
 void Scene::updateFogOfWar()
 {
+    if (fogRevealOverride_)
+        return;
     if (navGridCols_ <= 0 || navGridRows_ <= 0)
         return;
     if (fogStates_[0].empty())
@@ -1503,6 +1523,8 @@ float Scene::visibilityRadiusForEntity(const GameEntity* entity) const
 
 bool Scene::isPositionVisibleToPlayer(const glm::vec3& pos, int playerId) const
 {
+    if (fogRevealOverride_)
+        return true;
     if (playerId < 1 || playerId > 2)
         return true;
     if (navGridCols_ <= 0 || navGridRows_ <= 0)
@@ -1521,6 +1543,8 @@ bool Scene::isPositionVisibleToPlayer(const glm::vec3& pos, int playerId) const
 
 bool Scene::isPositionExploredByPlayer(const glm::vec3& pos, int playerId) const
 {
+    if (fogRevealOverride_)
+        return true;
     if (playerId < 1 || playerId > 2)
         return true;
     if (navGridCols_ <= 0 || navGridRows_ <= 0)
@@ -1535,4 +1559,10 @@ bool Scene::isPositionExploredByPlayer(const glm::vec3& pos, int playerId) const
     if (idx >= fog.size())
         return true;
     return fog[idx] >= 1;
+}
+
+void Scene::toggleFogReveal()
+{
+    fogRevealOverride_ = !fogRevealOverride_;
+    fogDirty_ = true;
 }

@@ -10,10 +10,10 @@ enum class EntityType {
     House,
     Market,
     Storage,
+    Bridge,
 
     // UNITS
     Worker,
     Archer,
     Knight
 };
-

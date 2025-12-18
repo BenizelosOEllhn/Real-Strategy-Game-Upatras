@@ -16,6 +16,8 @@
 #include <cstddef>
 #include <cstdint>
 #include <unordered_map>
+#include <array>
+#include <memory>
 
 // ============================================================
 // Engine / Rendering
@@ -49,6 +51,7 @@
 #include "../game/buildings/House.h"
 #include "../game/buildings/Market.h"
 #include "../game/buildings/Storage.h"
+#include "../game/buildings/Bridge.h"
 
 #ifndef ASSET_PATH
 #define ASSET_PATH "assets/"
@@ -100,6 +103,8 @@ public:
     void updateUnitInfoPanel();
     void updateBuildingInfoPanel(BuildType type);
     std::string getBuildingName(BuildType type) const;
+    std::string buildingNameForOwner(BuildType type, int ownerId) const;
+    void updateBuildingButtonTexturesForOwner(int ownerId);
     void onMouseMove(double x, double y);
     void onMouseButton(int button, int action, int mods);
     void cancelCurrentAction();
@@ -118,6 +123,17 @@ public:
     void registerBarracks(Barracks* barracks);
     void drawSelectionIndicators(const glm::mat4& view, const glm::mat4& projection);
     void initSelectionCircle();
+    void configureBuildingPreviewsForOwner(int ownerId);
+    void updateBuildingBarLabels();
+    Model* modelForBuildType(BuildType type, int ownerId) const;
+    Model* unitModelForType(EntityType type, int ownerId) const;
+    const std::unordered_map<BuildType, std::string>& buildingInfoMapForOwner(int ownerId) const;
+    float buildingScaleForOwner(BuildType type, int ownerId) const;
+    glm::vec3 buildingRotationForOwner(BuildType type, int ownerId) const;
+    glm::vec3 buildingOffsetForOwner(BuildType type, int ownerId) const;
+    void applyBuildingVisualTweaks(Building* building, BuildType type, int ownerId, const glm::vec3* forcedRotation = nullptr);
+    void addBridgeSpan(const glm::vec3& pos, float yawRadians);
+    bool pointOnBridge(float x, float z) const;
     void initFogOfWar();
     void resetFogOfWar();
     void updateFogOfWar();
@@ -144,9 +160,9 @@ public:
     std::string readLanAddress() const;
     void processNetworkMessages();
     void handleNetworkMessage(const std::string& message);
-    bool applyBuildCommand(int ownerId, BuildType type, const glm::vec3& pos, int buildingNetId, int initialWorkerNetId);
-    void sendBuildCommand(BuildType type, int ownerId, const glm::vec3& pos, int buildingNetId, int initialWorkerNetId);
-    Building* placeBuildingForOwner(BuildType type, const glm::vec3& pos, int ownerId, Resources* ownerRes, bool spendResources, int forcedNetworkId = -1);
+    bool applyBuildCommand(int ownerId, BuildType type, const glm::vec3& pos, int buildingNetId, int initialWorkerNetId, const glm::vec3& rotation);
+    void sendBuildCommand(BuildType type, int ownerId, const glm::vec3& pos, int buildingNetId, int initialWorkerNetId, const glm::vec3& rotation);
+    Building* placeBuildingForOwner(BuildType type, const glm::vec3& pos, int ownerId, Resources* ownerRes, bool spendResources, int forcedNetworkId = -1, const glm::vec3* forcedRotation = nullptr);
     void sendTrainCommand(EntityType type, int ownerId, const glm::vec3& pos, int unitNetId);
     bool applyTrainCommand(int ownerId, EntityType type, const glm::vec3& pos, int unitNetId);
     void sendMoveCommand(int networkId, int ownerId, const glm::vec3& pos);
@@ -189,10 +205,13 @@ public:
     bool IsUnitCameraActive() const { return unitCameraActive_; }
     void RotateUnitCamera(float yawDeltaDeg, float pitchDeltaDeg);
     void focusCameraOnTownCenter();
+    void rotatePlacementPreview(float radians);
     void initPathfindingGrid();
     void refreshNavObstacles();
     bool commandUnitTo(Unit* unit, const glm::vec3& destination);
     bool findPath(const glm::vec3& start, const glm::vec3& goal, std::vector<glm::vec3>& outPath) const;
+    void toggleFogReveal();
+    bool isFogRevealed() const { return fogRevealOverride_; }
 
 private:
     // ========================================================
@@ -218,6 +237,16 @@ private:
     Model* farmerModel      = nullptr;
     Model* archerUnitModel  = nullptr;
     Model* knightUnitModel  = nullptr;
+    Model* evilFarmerModel  = nullptr;
+    Model* wizardUnitModel  = nullptr;
+    Model* skeletonUnitModel = nullptr;
+    Model* altarModel       = nullptr;
+    Model* graveyardModel   = nullptr;
+    Model* hutModel         = nullptr;
+    Model* smithyModel      = nullptr;
+    Model* hangmanModel     = nullptr;
+    Model* stoneTempleModel = nullptr;
+    Model* bridgeModel      = nullptr;
 
     // ========================================================
     // Textures
@@ -241,6 +270,9 @@ private:
     Texture* villagerIconTex = nullptr;
     Texture* archerIconTex = nullptr;
     Texture* knightIconTex = nullptr;
+    Texture* evilVillagerIconTex = nullptr;
+    Texture* evilArcherIconTex = nullptr;
+    Texture* evilKnightIconTex = nullptr;
     Texture* selectionRingTex = nullptr;
 
     // ========================================================
@@ -407,6 +439,14 @@ void DrawLakeWater(const glm::mat4& view,
     glm::vec2 buildingBarSize_{0.0f};
     std::vector<size_t> buildingButtonIndices_;
     std::vector<size_t> buildingLabelIndices_;
+    std::vector<BuildType> buildingButtonTypes_;
+    struct BuildingButtonIcons
+    {
+        GLuint friendlyTex = 0;
+        GLuint evilTex = 0;
+    };
+    std::vector<BuildingButtonIcons> buildingButtonIcons_;
+    std::vector<std::unique_ptr<Texture>> buildingBarTextures_;
     std::vector<size_t> unitEntryIconIndices_;
     std::vector<size_t> unitEntryLabelIndices_;
     std::vector<Unit*>  unitEntryTargets_;
@@ -431,6 +471,17 @@ void DrawLakeWater(const glm::mat4& view,
     size_t buildingInfoTitleLabelIndex_ = SIZE_MAX;
     size_t buildingInfoTextLabelIndex_ = SIZE_MAX;
     std::unordered_map<BuildType, std::string> buildingInfoText_;
+    std::unordered_map<BuildType, std::string> evilBuildingInfoText_;
+    struct BridgeSpan
+    {
+        glm::vec3 center{0.0f};
+        float halfLength = 0.0f;
+        float halfWidth = 0.0f;
+        float yawRadians = 0.0f;
+        float cosYaw = 1.0f;
+        float sinYaw = 0.0f;
+    };
+    std::vector<BridgeSpan> bridgeSpans_;
 
     // Pathfinding
     float navCellSize_ = 3.0f;
@@ -463,5 +514,6 @@ void DrawLakeWater(const glm::mat4& view,
     std::vector<float> fogVertexBuffer_;
     Shader* fogShader = nullptr;
     float fogPlaneY_ = 12.0f;
+    bool fogRevealOverride_ = false;
     bool startingBasesSpawned_ = false;
 };

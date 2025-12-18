@@ -1,5 +1,8 @@
 #include "Scene.h"
 #include "SceneConstants.h"
+#include <cmath>
+#include <limits>
+#include <glm/gtx/euler_angles.hpp>
 
 static inline glm::vec4 NoClip()
 {
@@ -182,8 +185,16 @@ void Scene::Draw(
         previewShader->SetMat4("projection", projection);
         previewShader->BindBoneTexture(0, 0);
 
-        glm::mat4 m = glm::translate(glm::mat4(1.0f), buildingManager_.getPreviewPos());
-        m = glm::scale(m, glm::vec3(20.0f));
+        glm::vec3 previewPos = buildingManager_.getPreviewPos() + buildingManager_.getPreviewOffset();
+        glm::vec3 previewRotation = buildingManager_.getPreviewRotation();
+        float previewScale = buildingManager_.getPreviewScale();
+        glm::mat4 m = glm::translate(glm::mat4(1.0f), previewPos);
+        if (glm::length(previewRotation) > std::numeric_limits<float>::epsilon())
+        {
+            glm::mat4 rot = glm::yawPitchRoll(previewRotation.y, previewRotation.x, previewRotation.z);
+            m *= rot;
+        }
+        m = glm::scale(m, glm::vec3(previewScale));
         previewShader->SetMat4("model", m);
 
         // Pulse alpha for fade in/out effect
@@ -203,7 +214,8 @@ void Scene::Draw(
         glEnable(GL_CULL_FACE);
     }
 
-    DrawFogOfWar(view, projection);
+    if (!isFogRevealed())
+        DrawFogOfWar(view, projection);
 
     // ============================================================
     // 6) UI LAST
@@ -324,6 +336,8 @@ void Scene::rebuildFogMeshForPlayer(int playerId)
 
 void Scene::DrawFogOfWar(const glm::mat4& view, const glm::mat4& projection)
 {
+    if (isFogRevealed())
+        return;
     if (!fogShader || fogVAO_ == 0 || fogVBO_ == 0)
         return;
 

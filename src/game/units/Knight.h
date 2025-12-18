@@ -1,13 +1,24 @@
 #pragma once
 #include "Unit.h"
+#include <glm/gtc/constants.hpp>
 
 class Knight : public Unit {
 public:
     Knight(glm::vec3 pos, Model* m, int owner)
-        : Unit(pos, EntityType::Knight, m, owner, 0.8f)
+        : Unit(pos, EntityType::Knight, m, owner, owner == 2 ? 1.8f : 0.8f)
     {
-        SetAnimationNames("Idle", "Walk");
-        SetBaseHeightOffset(4.5f);
+        if (owner == 2)
+        {
+            SetAnimationNames("Take 001", "Take 001");
+            SetBaseHeightOffset(3.5f);
+            SetRotationEuler(glm::vec3(-glm::half_pi<float>(), 0.0f, 0.0f));
+            FreezeAnimation(true, 0.0);
+        }
+        else
+        {
+            SetAnimationNames("Idle", "Walk");
+            SetBaseHeightOffset(5.2f);
+        }
     }
 
     void Update(float dt) override;

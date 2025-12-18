@@ -1203,6 +1203,7 @@ CMakeFiles/cin.dir/src/core/Scene_UI.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/buildings/House.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/buildings/Market.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/buildings/Storage.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/buildings/Bridge.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/fstream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/filesystem \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__filesystem/copy_options.h \

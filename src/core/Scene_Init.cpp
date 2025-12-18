@@ -3,6 +3,7 @@
 #include "../game/units/Worker.h"
 #include "../game/units/Archer.h"
 #include "../game/units/Knight.h"
+#include <glm/gtc/constants.hpp>
 
 Scene::Scene()
     : terrain(nullptr),
@@ -71,6 +72,7 @@ void Scene::initSelectionCircle()
 
 Scene::~Scene()
 {
+    soundManager_.Shutdown();
     networkSession_.Shutdown();
     delete terrain;
     delete treeModel;
@@ -83,11 +85,22 @@ Scene::~Scene()
     delete cornIconTex; delete woodIconTex; delete goldIconTex;
     delete oreIconTex; delete populationIconTex;
     delete villagerIconTex; delete archerIconTex; delete knightIconTex;
+    delete evilVillagerIconTex; delete evilArcherIconTex; delete evilKnightIconTex;
     delete selectionRingTex;
 
     delete farmerModel;
     delete archerUnitModel;
     delete knightUnitModel;
+    delete evilFarmerModel;
+    delete wizardUnitModel;
+    delete skeletonUnitModel;
+    delete altarModel;
+    delete graveyardModel;
+    delete hutModel;
+    delete smithyModel;
+    delete hangmanModel;
+    delete stoneTempleModel;
+    delete bridgeModel;
 
     for (GameEntity* e : entities_)
         delete e;
@@ -143,9 +156,14 @@ void Scene::Init(Camera* activeCamera) {
     villagerIconTex = new Texture((base + "units/unitspngs/farmer.png").c_str());
     archerIconTex   = new Texture((base + "units/unitspngs/archer.png").c_str());
     knightIconTex   = new Texture((base + "units/unitspngs/swordman.png").c_str());
+    evilVillagerIconTex = new Texture((base + "evilunits/evilunitspngs/orc-head.png").c_str());
+    evilArcherIconTex   = new Texture((base + "evilunits/evilunitspngs/wizard-face.png").c_str());
+    evilKnightIconTex   = new Texture((base + "evilunits/evilunitspngs/skeleton.png").c_str());
     selectionRingTex = new Texture((base + "units/unitspngs/ring.png").c_str());
     soundManager_.SetWoodChopPath(base + "audio/wood_chopping.wav");
     soundManager_.SetStoneMinePath(base + "audio/stone_mining.wav");
+    soundManager_.SetAmbiencePath(base + "audio/ambience.mp3");
+    soundManager_.StartAmbience();
 
 
     // 3. Load Models
@@ -161,6 +179,16 @@ void Scene::Init(Camera* activeCamera) {
     farmerModel      = new Model((base + "units/Farmer.glb").c_str());
     archerUnitModel  = new Model((base + "units/archer_version_3.glb").c_str());
     knightUnitModel  = new Model((base + "units/knight.glb").c_str());
+    evilFarmerModel  = new Model((base + "evilunits/evil_farmer.glb").c_str());
+    wizardUnitModel  = new Model((base + "evilunits/evil_wizard.glb").c_str());
+    skeletonUnitModel = new Model((base + "evilunits/skeleton_knight.glb").c_str());
+    altarModel       = new Model((base + "evilbuildings/altar.glb").c_str());
+    graveyardModel   = new Model((base + "evilbuildings/Demo_Scene.obj").c_str());
+    hutModel         = new Model((base + "evilbuildings/hut.fbx").c_str());
+    smithyModel      = new Model((base + "evilbuildings/smithy.fbx").c_str());
+    hangmanModel     = new Model((base + "evilbuildings/hangman_wooden_structure.glb").c_str());
+    stoneTempleModel = new Model((base + "evilbuildings/old_ruined_temple.glb").c_str());
+    bridgeModel      = new Model((base + "buildings/stylized_bridge_low_poly.glb").c_str());
     if (archerUnitModel)
     {
         archerUnitModel->SetOverrideTexture(base + "units/Archer.png");
@@ -168,6 +196,18 @@ void Scene::Init(Camera* activeCamera) {
     if (knightUnitModel)
     {
         knightUnitModel->SetOverrideTexture(base + "units/Knight.png");
+    }
+    if (graveyardModel)
+    {
+        graveyardModel->SetOverrideTexture(base + "evilbuildings/gravetex.png");
+    }
+    if (hutModel)
+    {
+        hutModel->SetOverrideTexture(base + "evilbuildings/proto_orc_RTS_color.tga.png");
+    }
+    if (smithyModel)
+    {
+        smithyModel->SetOverrideTexture(base + "evilbuildings/proto_orc_RTS_color.tga.png");
     }
 
     // 4. Load Water Shader
@@ -189,17 +229,19 @@ void Scene::Init(Camera* activeCamera) {
     // 2. Init UIManager with shader + window size
     uiManager_.init(uiShader, fbWidth, fbHeight);
     buildingManager_.init(terrain, camera, fbWidth, fbHeight);
-    buildingManager_.setPreviewModel(BuildType::TownCenter, townCenterModel);
-    buildingManager_.setPreviewModel(BuildType::Barracks,   barracksModel);
-    buildingManager_.setPreviewModel(BuildType::Farm,       farmModel);
-    buildingManager_.setPreviewModel(BuildType::House,      houseModel);
-    buildingManager_.setPreviewModel(BuildType::Market,     marketModel);
-    buildingManager_.setPreviewModel(BuildType::Storage,    storageModel);
+    buildingManager_.setPlacementValidator([this](BuildType, const glm::vec3& pos)
+    {
+        return isPositionExploredByPlayer(pos, activePlayerIndex_ + 1);
+    });
+    configureBuildingPreviewsForOwner(activePlayerIndex_ + 1);
 
     UnitManager::UnitAssets unitAssets;
     unitAssets.farmer       = farmerModel;
     unitAssets.archer       = archerUnitModel;
     unitAssets.knight       = knightUnitModel;
+    unitAssets.evilFarmer   = evilFarmerModel;
+    unitAssets.wizard       = wizardUnitModel;
+    unitAssets.skeleton     = skeletonUnitModel;
     unitManager_.init(activePlayerPtr(), &entities_, unitAssets);
     
     // 5. Generate Procedural Content
@@ -236,16 +278,14 @@ void Scene::Init(Camera* activeCamera) {
     std::string(ASSET_PATH) + "shaders/fog.vert",
     std::string(ASSET_PATH) + "shaders/fog.frag"
     );
-    buildingManager_.onPlaceBuilding = [this](BuildType type, glm::vec3 pos)
+    buildingManager_.onPlaceBuilding = [this](BuildType type, glm::vec3 pos, glm::vec3 rotation)
     {
-        std::cout << "Placing building at " 
-                << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
         Resources* ownerRes = resourcesForOwner(activePlayerIndex_ + 1);
         if (!ownerRes)
             return;
 
         int ownerId = activePlayerIndex_ + 1;
-        Building* building = placeBuildingForOwner(type, pos, ownerId, ownerRes, true);
+        Building* building = placeBuildingForOwner(type, pos, ownerId, ownerRes, true, -1, &rotation);
         if (!building)
             return;
 
@@ -261,13 +301,19 @@ void Scene::Init(Camera* activeCamera) {
         }
 
         if (lanModeActive_ && !suppressNetworkSend_ && networkSession_.IsConnected())
-            sendBuildCommand(type, ownerId, pos, buildingNetId, initialVillagerId);
+            sendBuildCommand(type, ownerId, pos, buildingNetId, initialVillagerId, rotation);
     };
 
     initSelectionCircle();
 }
 
-Building* Scene::placeBuildingForOwner(BuildType type, const glm::vec3& pos, int ownerId, Resources* ownerRes, bool spendResources, int forcedNetworkId)
+Building* Scene::placeBuildingForOwner(BuildType type,
+                                       const glm::vec3& pos,
+                                       int ownerId,
+                                       Resources* ownerRes,
+                                       bool spendResources,
+                                       int forcedNetworkId,
+                                       const glm::vec3* forcedRotation)
 {
     if (!ownerRes)
         return nullptr;
@@ -282,26 +328,33 @@ Building* Scene::placeBuildingForOwner(BuildType type, const glm::vec3& pos, int
         }
     }
 
+    Model* finalModel = modelForBuildType(type, ownerId);
+    if (!finalModel)
+        finalModel = modelForBuildType(type, 1);
+    Model* foundation = finalModel;
     Building* newBuilding = nullptr;
     switch (type)
     {
     case BuildType::TownCenter:
-        newBuilding = new TownCenter(pos, townCenterModel, townCenterModel, ownerId);
+        newBuilding = new TownCenter(pos, foundation, finalModel, ownerId);
         break;
     case BuildType::Barracks:
-        newBuilding = new Barracks(pos, barracksModel, barracksModel, ownerId);
+        newBuilding = new Barracks(pos, foundation, finalModel, ownerId);
         break;
     case BuildType::Farm:
-        newBuilding = new Farm(pos, farmModel, farmModel, ownerId, ownerRes);
+        newBuilding = new Farm(pos, foundation, finalModel, ownerId, ownerRes);
         break;
     case BuildType::House:
-        newBuilding = new House(pos, houseModel, houseModel, ownerId, ownerRes);
+        newBuilding = new House(pos, foundation, finalModel, ownerId, ownerRes);
         break;
     case BuildType::Market:
-        newBuilding = new Market(pos, marketModel, marketModel, ownerId, ownerRes);
+        newBuilding = new Market(pos, foundation, finalModel, ownerId, ownerRes);
         break;
     case BuildType::Storage:
-        newBuilding = new Storage(pos, storageModel, storageModel, ownerId, ownerRes);
+        newBuilding = new Storage(pos, foundation, finalModel, ownerId, ownerRes);
+        break;
+    case BuildType::Bridge:
+        newBuilding = new Bridge(pos, foundation, finalModel, ownerId);
         break;
     default:
         break;
@@ -309,6 +362,14 @@ Building* Scene::placeBuildingForOwner(BuildType type, const glm::vec3& pos, int
 
     if (!newBuilding)
         return nullptr;
+
+    glm::vec3 rotationApplied = forcedRotation
+        ? *forcedRotation
+        : buildingRotationForOwner(type, ownerId);
+    applyBuildingVisualTweaks(newBuilding, type, ownerId, &rotationApplied);
+
+    if (type == BuildType::Bridge)
+        addBridgeSpan(pos, rotationApplied.y);
 
     registerEntity(newBuilding, forcedNetworkId);
     entities_.push_back(newBuilding);
@@ -329,19 +390,20 @@ Building* Scene::placeBuildingForOwner(BuildType type, const glm::vec3& pos, int
 Unit* Scene::spawnUnitForOwner(EntityType type, const glm::vec3& pos, int ownerId, bool adjustEconomy, int forcedNetworkId)
 {
     Unit* unit = nullptr;
+    Model* unitModel = unitModelForType(type, ownerId);
     switch (type)
     {
     case EntityType::Worker:
-        if (farmerModel)
-            unit = new Worker(pos, farmerModel, ownerId);
+        if (unitModel)
+            unit = new Worker(pos, unitModel, ownerId);
         break;
     case EntityType::Archer:
-        if (archerUnitModel)
-            unit = new Archer(pos, archerUnitModel, ownerId);
+        if (unitModel)
+            unit = new Archer(pos, unitModel, ownerId);
         break;
     case EntityType::Knight:
-        if (knightUnitModel)
-            unit = new Knight(pos, knightUnitModel, ownerId);
+        if (unitModel)
+            unit = new Knight(pos, unitModel, ownerId);
         break;
     default:
         break;
@@ -366,4 +428,108 @@ Unit* Scene::spawnUnitForOwner(EntityType type, const glm::vec3& pos, int ownerI
     refreshUnitListUI();
     updateResourceTexts();
     return unit;
+}
+
+Model* Scene::modelForBuildType(BuildType type, int ownerId) const
+{
+    const bool evil = (ownerId == 2);
+    switch (type)
+    {
+    case BuildType::TownCenter: return evil && altarModel ? altarModel : townCenterModel;
+    case BuildType::Barracks:   return evil && graveyardModel ? graveyardModel : barracksModel;
+    case BuildType::Farm:       return evil && hangmanModel ? hangmanModel : farmModel;
+    case BuildType::House:      return evil && hutModel ? hutModel : houseModel;
+    case BuildType::Market:     return evil && smithyModel ? smithyModel : marketModel;
+    case BuildType::Storage:    return evil && stoneTempleModel ? stoneTempleModel : storageModel;
+    case BuildType::Bridge:     return bridgeModel;
+    default:                    return nullptr;
+    }
+}
+
+Model* Scene::unitModelForType(EntityType type, int ownerId) const
+{
+    const bool evil = (ownerId == 2);
+    switch (type)
+    {
+    case EntityType::Worker:
+        if (evil && evilFarmerModel) return evilFarmerModel;
+        return farmerModel;
+    case EntityType::Archer:
+        if (evil && wizardUnitModel) return wizardUnitModel;
+        return archerUnitModel;
+    case EntityType::Knight:
+        if (evil && skeletonUnitModel) return skeletonUnitModel;
+        return knightUnitModel;
+    default:
+        return nullptr;
+    }
+}
+
+void Scene::configureBuildingPreviewsForOwner(int ownerId)
+{
+    auto configure = [&](BuildType type)
+    {
+        buildingManager_.setPreviewModel(type, modelForBuildType(type, ownerId));
+        buildingManager_.setPreviewScale(type, buildingScaleForOwner(type, ownerId));
+        buildingManager_.setPreviewRotation(type, buildingRotationForOwner(type, ownerId));
+        buildingManager_.setPreviewOffset(type, buildingOffsetForOwner(type, ownerId));
+    };
+
+    configure(BuildType::TownCenter);
+    configure(BuildType::Barracks);
+    configure(BuildType::Farm);
+    configure(BuildType::House);
+    configure(BuildType::Market);
+    configure(BuildType::Storage);
+    configure(BuildType::Bridge);
+}
+
+float Scene::buildingScaleForOwner(BuildType type, int ownerId) const
+{
+    const bool evil = (ownerId == 2);
+    switch (type)
+    {
+    case BuildType::Bridge:
+        return 12.0f;
+    case BuildType::Barracks:
+        return evil ? 0.06f : 20.0f;
+    case BuildType::Farm:
+        return evil ? 1.2f : 20.0f;
+    default:
+        return 20.0f;
+    }
+}
+
+glm::vec3 Scene::buildingRotationForOwner(BuildType type, int /*ownerId*/) const
+{
+    switch (type)
+    {
+    case BuildType::Bridge:
+        return glm::vec3(-glm::half_pi<float>(), 0.0f, 0.0f);
+    default:
+        return glm::vec3(0.0f);
+    }
+}
+
+glm::vec3 Scene::buildingOffsetForOwner(BuildType type, int ownerId) const
+{
+    const bool evil = (ownerId == 2);
+    if (type == BuildType::Bridge)
+        return glm::vec3(0.0f, 5.0f, 0.0f);
+    if (evil && type == BuildType::TownCenter)
+        return glm::vec3(0.0f, 5.0f, 0.0f);
+    return glm::vec3(0.0f);
+}
+
+void Scene::applyBuildingVisualTweaks(Building* building, BuildType type, int ownerId, const glm::vec3* forcedRotation)
+{
+    if (!building)
+        return;
+
+    building->SetUniformScale(buildingScaleForOwner(type, ownerId));
+    building->SetVisualOffset(buildingOffsetForOwner(type, ownerId));
+    glm::vec3 rotation = forcedRotation
+        ? *forcedRotation
+        : buildingRotationForOwner(type, ownerId);
+    building->SetRotationEuler(rotation);
 }

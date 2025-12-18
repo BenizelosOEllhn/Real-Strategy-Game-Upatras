@@ -328,7 +328,34 @@ float Scene::buildingNavRadius(EntityType type) const
     case EntityType::Market:     return 26.0f;
     case EntityType::Farm:       return 18.0f;
     case EntityType::House:      return 18.0f;
+    case EntityType::Bridge:     return 0.0f;
     default:
         return 20.0f;
     }
+}
+
+void Scene::addBridgeSpan(const glm::vec3& pos, float yawRadians)
+{
+    BridgeSpan span;
+    span.center = pos;
+    span.halfLength = 70.0f;
+    span.halfWidth = 18.0f;
+    span.yawRadians = yawRadians;
+    span.cosYaw = std::cos(yawRadians);
+    span.sinYaw = std::sin(yawRadians);
+    bridgeSpans_.push_back(span);
+}
+
+bool Scene::pointOnBridge(float x, float z) const
+{
+    for (const BridgeSpan& span : bridgeSpans_)
+    {
+        float dx = x - span.center.x;
+        float dz = z - span.center.z;
+        float localX =  span.cosYaw * dx + span.sinYaw * dz;
+        float localZ = -span.sinYaw * dx + span.cosYaw * dz;
+        if (std::abs(localX) <= span.halfLength && std::abs(localZ) <= span.halfWidth)
+            return true;
+    }
+    return false;
 }

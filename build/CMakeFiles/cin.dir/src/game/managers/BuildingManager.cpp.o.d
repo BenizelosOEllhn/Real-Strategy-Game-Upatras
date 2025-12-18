@@ -1068,4 +1068,5 @@ CMakeFiles/cin.dir/src/game/managers/BuildingManager.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/euler_angles.inl \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/compatibility.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../gtc/quaternion.hpp \
-  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/compatibility.inl
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/compatibility.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/constants.hpp

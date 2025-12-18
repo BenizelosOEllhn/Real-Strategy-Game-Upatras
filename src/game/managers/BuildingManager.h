@@ -21,7 +21,8 @@ enum class BuildType {
     Farm,
     House,
     Market,
-    Storage
+    Storage,
+    Bridge
 };
 
 class BuildingManager
@@ -46,19 +47,28 @@ public:
     // For Scene::Draw to know when to draw preview
     bool isPlacing() const { return isPlacing_; }
     bool hasPreview() const { return hasPreview_; }
+    BuildType currentType() const { return currentType_; }
     glm::vec3 getPreviewPos() const { return previewPos_; }
     Model* getPreviewModel() const { return previewModel_; }
+    float getPreviewScale() const;
+    glm::vec3 getPreviewRotation() const;
+    glm::vec3 getPreviewOffset() const;
+    void rotatePreviewYaw(float radians);
     
 
     // Scene registers this callback so it can spawn a real building
-    std::function<void(BuildType, glm::vec3)> onPlaceBuilding;
+    std::function<void(BuildType, glm::vec3, glm::vec3)> onPlaceBuilding;
 
     // Provide real building models to use for previews
     void setPreviewModel(BuildType type, Model* model);
+    void setPreviewScale(BuildType type, float scale);
+    void setPreviewRotation(BuildType type, const glm::vec3& rotation);
+    void setPreviewOffset(BuildType type, const glm::vec3& offset);
+    void setPlacementValidator(std::function<bool(BuildType, const glm::vec3&)> validator);
 
 private:
     static constexpr std::size_t kBuildTypeCount =
-        static_cast<std::size_t>(BuildType::Storage) + 1;
+        static_cast<std::size_t>(BuildType::Bridge) + 1;
 
     Terrain* terrain_ = nullptr;
     Camera*  camera_  = nullptr;
@@ -75,7 +85,12 @@ private:
 
     glm::vec3 previewPos_ = glm::vec3(0);
     glm::vec3 finalPos = glm::vec3(0);
+    float previewYawDelta_ = 0.0f;
 
     Model* previewModel_ = nullptr;
     std::array<Model*, kBuildTypeCount> previewModels_{};
+    std::array<float, kBuildTypeCount> previewScales_{};
+    std::array<glm::vec3, kBuildTypeCount> previewRotations_{};
+    std::array<glm::vec3, kBuildTypeCount> previewOffsets_{};
+    std::function<bool(BuildType, const glm::vec3&)> placementValidator_;
 };

@@ -163,8 +163,10 @@ void Unit::updateAnimation(float dt)
         ensureBoneCapacity();
     }
 
-    animationTimeSeconds_ += static_cast<double>(dt);
-    model->EvaluateAnimation(activeAnimationIndex_, animationTimeSeconds_, boneTransforms_);
+    if (!freezeAnimation_)
+        animationTimeSeconds_ += static_cast<double>(dt);
+    double evalTime = freezeAnimation_ ? frozenAnimationTime_ : animationTimeSeconds_;
+    model->EvaluateAnimation(activeAnimationIndex_, evalTime, boneTransforms_);
     uploadBonePalette();
 }
 
@@ -242,6 +244,16 @@ void Unit::ClearActionAnimation()
     actionAnimName_.clear();
     actionAnimIndex_ = -1;
     updateActiveAnimationForState();
+}
+
+void Unit::FreezeAnimation(bool freeze, double timeSeconds)
+{
+    freezeAnimation_ = freeze;
+    if (freeze)
+    {
+        frozenAnimationTime_ = timeSeconds;
+        animationTimeSeconds_ = timeSeconds;
+    }
 }
 
 void Unit::Draw(Shader& shader)

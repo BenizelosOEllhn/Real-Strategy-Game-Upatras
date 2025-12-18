@@ -18,6 +18,9 @@ public:
         Model* farmer = nullptr;
         Model* archer = nullptr;
         Model* knight = nullptr;
+        Model* evilFarmer = nullptr;
+        Model* wizard = nullptr;
+        Model* skeleton = nullptr;
     };
 
     void init(Resources* resources,

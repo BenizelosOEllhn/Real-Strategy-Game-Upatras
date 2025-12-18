@@ -18,6 +18,7 @@
 #include <glm/gtx/quaternion.hpp>
 #include <glm/common.hpp>
 #include <assimp/anim.h>
+#include "stb_image.h"
 
 Model::Model(const char* path) : instanceVBO(0)
 {
@@ -60,6 +61,11 @@ Model::~Model()
     if (VBO) glDeleteBuffers(1, &VBO);
     if (instanceVBO) glDeleteBuffers(1, &instanceVBO);
     if (VAO) glDeleteVertexArrays(1, &VAO);
+    for (GLuint tex : ownedGLTextures_)
+    {
+        if (tex != 0)
+            glDeleteTextures(1, &tex);
+    }
 }
 
 bool Model::loadWithTinyObj(const char* path)
@@ -438,16 +444,34 @@ void Model::loadMaterialTextures(const aiScene* scene)
         {
             std::string relPath = texPath.C_Str();
             unsigned int texID = 0;
-            auto it = cache.find(relPath);
-            if (it != cache.end())
+            bool embedded = !relPath.empty() && relPath[0] == '*';
+            if (!embedded)
             {
-                texID = it->second;
+                auto it = cache.find(relPath);
+                if (it != cache.end())
+                {
+                    texID = it->second;
+                }
+                else
+                {
+                    texID = loadTextureForMaterial(relPath);
+                    if (texID != 0)
+                        cache[relPath] = texID;
+                }
             }
             else
             {
-                texID = loadTextureForMaterial(relPath);
-                if (texID != 0)
-                    cache[relPath] = texID;
+                auto it = cache.find(relPath);
+                if (it != cache.end())
+                {
+                    texID = it->second;
+                }
+                else
+                {
+                    texID = loadEmbeddedTexture(scene, relPath);
+                    if (texID != 0)
+                        cache[relPath] = texID;
+                }
             }
 
             materialTextureIDs_[i] = texID;
@@ -528,6 +552,79 @@ unsigned int Model::loadTextureForMaterial(const std::string& relPath)
     std::unique_ptr<Texture> tex = std::make_unique<Texture>(fullPath.c_str());
     unsigned int texID = tex->ID;
     ownedTextures_.push_back(std::move(tex));
+    return texID;
+}
+
+unsigned int Model::loadEmbeddedTexture(const aiScene* scene, const std::string& token)
+{
+    if (!scene || token.empty() || token[0] != '*')
+        return 0;
+
+    int index = 0;
+    try
+    {
+        index = std::stoi(token.substr(1));
+    }
+    catch (...)
+    {
+        return 0;
+    }
+
+    if (index < 0 || index >= static_cast<int>(scene->mNumTextures))
+        return 0;
+
+    const aiTexture* texture = scene->mTextures[index];
+    if (!texture)
+        return 0;
+
+    GLuint texID = 0;
+    glGenTextures(1, &texID);
+    glBindTexture(GL_TEXTURE_2D, texID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    if (texture->mHeight == 0)
+    {
+        int width = 0;
+        int height = 0;
+        int channels = 0;
+        const stbi_uc* buffer = reinterpret_cast<const stbi_uc*>(texture->pcData);
+        stbi_uc* data = stbi_load_from_memory(
+            buffer,
+            static_cast<int>(texture->mWidth),
+            &width,
+            &height,
+            &channels,
+            0);
+        if (!data)
+        {
+            glDeleteTextures(1, &texID);
+            return 0;
+        }
+        GLenum format = channels == 4 ? GL_RGBA : (channels == 3 ? GL_RGB : GL_RED);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        stbi_image_free(data);
+    }
+    else
+    {
+        int width = texture->mWidth;
+        int height = texture->mHeight;
+        std::vector<unsigned char> pixels(width * height * 4);
+        for (int i = 0; i < width * height; ++i)
+        {
+            pixels[i * 4 + 0] = texture->pcData[i].r;
+            pixels[i * 4 + 1] = texture->pcData[i].g;
+            pixels[i * 4 + 2] = texture->pcData[i].b;
+            pixels[i * 4 + 3] = texture->pcData[i].a;
+        }
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+
+    ownedGLTextures_.push_back(texID);
     return texID;
 }
 

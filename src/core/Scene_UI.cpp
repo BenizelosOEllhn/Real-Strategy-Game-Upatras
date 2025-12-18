@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include <fstream>
 #include <functional>
+#include <utility>
 
 void Scene::setupBuildingBar()
 {
@@ -24,23 +25,37 @@ void Scene::setupBuildingBar()
 
     buildingButtonIndices_.clear();
     buildingLabelIndices_.clear();
+    buildingButtonTypes_.clear();
+    buildingButtonIcons_.clear();
+    buildingBarTextures_.clear();
 
     int i = 0;
     const float labelScale   = 1.6f;
     const float charW        = 8.0f * labelScale;
 
-    auto addButton = [&](const char* fileName,
-                         const char* label,
+    auto loadGuiTexture = [&](const std::string& fileName) -> GLuint
+    {
+        if (fileName.empty())
+            return 0;
+        auto tex = std::make_unique<Texture>((std::string(ASSET_PATH) + "gui/" + fileName).c_str());
+        GLuint id = tex->ID;
+        buildingBarTextures_.push_back(std::move(tex));
+        return id;
+    };
+
+    auto addButton = [&](const std::string& friendlyFile,
+                         const std::string& evilFile,
                          BuildType type)
     {
+        GLuint friendlyTex = loadGuiTexture(friendlyFile);
+        GLuint evilTex = evilFile.empty() ? friendlyTex : loadGuiTexture(evilFile);
+
         UIButton btn;
         btn.pos  = glm::vec2(padding + i * (buttonSize + spacing),
                              baseY + (barHeight - buttonSize) * 0.5f - 8.0f);
         btn.size = glm::vec2(buttonSize, buttonSize);
 
-        std::string fullPath = std::string(ASSET_PATH) + "gui/" + fileName;
-        Texture* btnTex = new Texture(fullPath.c_str());
-        btn.texture = btnTex->ID;
+        btn.texture = friendlyTex;
 
         btn.onClick = [this, type]() {
             updateBuildingInfoPanel(type);
@@ -50,24 +65,60 @@ void Scene::setupBuildingBar()
         size_t idx = uiManager_.addButton(btn);
         buildingButtonIndices_.push_back(idx);
 
-        std::string text(label);
-        float textWidth = text.size() * charW;
-        float centerX   = btn.pos.x + btn.size.x * 0.5f;
-        float labelX    = centerX - textWidth * 0.5f;
+        std::string text = "";
+        float labelX    = btn.pos.x + 10.0f;
         float labelY    = bar.pos.y + 8.0f;
 
         size_t labelIdx = uiManager_.addLabel(text, glm::vec2(labelX, labelY), labelScale);
         buildingLabelIndices_.push_back(labelIdx);
+        buildingButtonTypes_.push_back(type);
+        buildingButtonIcons_.push_back({ friendlyTex, evilTex });
 
         ++i;
     };
 
-    addButton("TownCenter_FirstAge_Level1.png", "Town Center", BuildType::TownCenter);
-    addButton("Barracks_FirstAge_Level1.png",   "Barracks",    BuildType::Barracks);
-    addButton("Farm_FirstAge_Level1_Wheat.png", "Farm",        BuildType::Farm);
-    addButton("Houses_FirstAge_1_Level1.png",   "Houses",      BuildType::House);
-    addButton("Market_FirstAge_Level1.png",     "Market",      BuildType::Market);
-    addButton("Storage_FirstAge_Level1.png",    "Storage",     BuildType::Storage);
+    addButton("TownCenter_FirstAge_Level1.png", "altar.png", BuildType::TownCenter);
+    addButton("Barracks_FirstAge_Level1.png",   "graveyard.png", BuildType::Barracks);
+    addButton("Farm_FirstAge_Level1_Wheat.png", "hangman.png", BuildType::Farm);
+    addButton("Houses_FirstAge_1_Level1.png",   "hut.png", BuildType::House);
+    addButton("Market_FirstAge_Level1.png",     "smithy.png", BuildType::Market);
+    addButton("Storage_FirstAge_Level1.png",    "temple.png", BuildType::Storage);
+    addButton("Bridge.png",                     "", BuildType::Bridge);
+
+    updateBuildingBarLabels();
+    updateBuildingButtonTexturesForOwner(activePlayerIndex_ + 1);
+}
+
+void Scene::updateBuildingBarLabels()
+{
+    int owner = activePlayerIndex_ + 1;
+    for (size_t idx = 0; idx < buildingLabelIndices_.size(); ++idx)
+    {
+        if (idx >= buildingButtonTypes_.size())
+            break;
+        size_t labelIdx = buildingLabelIndices_[idx];
+        if (labelIdx == SIZE_MAX)
+            continue;
+        std::string text = buildingNameForOwner(buildingButtonTypes_[idx], owner);
+        uiManager_.setLabelText(labelIdx, text);
+    }
+}
+
+void Scene::updateBuildingButtonTexturesForOwner(int ownerId)
+{
+    bool evil = (ownerId == 2);
+    for (size_t i = 0; i < buildingButtonIndices_.size(); ++i)
+    {
+        if (i >= buildingButtonIcons_.size())
+            break;
+        size_t buttonIdx = buildingButtonIndices_[i];
+        if (buttonIdx == SIZE_MAX)
+            continue;
+        GLuint tex = buildingButtonIcons_[i].friendlyTex;
+        if (evil && buildingButtonIcons_[i].evilTex != 0)
+            tex = buildingButtonIcons_[i].evilTex;
+        uiManager_.setButtonTexture(buttonIdx, tex);
+    }
 }
 
 void Scene::setupResourceBar()
@@ -336,6 +387,16 @@ void Scene::setupBuildingInfoPanel()
     buildingInfoText_[BuildType::House]      = "House\nAdds +5 population cap.";
     buildingInfoText_[BuildType::Market]     = "Market\nPassive gold income & trades.";
     buildingInfoText_[BuildType::Storage]    = "Storage\nExpands resource storage caps.";
+    buildingInfoText_[BuildType::Bridge]     = "Bridge\nAllows units to cross rivers safely.";
+
+    evilBuildingInfoText_.clear();
+    evilBuildingInfoText_[BuildType::TownCenter] = "Altar\nSummons orc peasants and stores goods.";
+    evilBuildingInfoText_[BuildType::Barracks]   = "Graveyard\nRaises skeleton warriors and wizards.";
+    evilBuildingInfoText_[BuildType::Farm]       = "Hangman\nHarvests food from grim tributes.";
+    evilBuildingInfoText_[BuildType::House]      = "Hut\nExpands the horde population by +5.";
+    evilBuildingInfoText_[BuildType::Market]     = "Smithy\nPassive ore and gold income.";
+    evilBuildingInfoText_[BuildType::Storage]    = "Stone Temple\nExpands dark resource storage.";
+    evilBuildingInfoText_[BuildType::Bridge]     = "Bridge\nAllows units to cross rivers safely.";
 
     updateBuildingInfoPanel(BuildType::None);
 }
@@ -490,6 +551,17 @@ void Scene::refreshUnitListUI()
         }
     }
 
+    auto iconForUnit = [&](EntityType type, bool evilOwner) -> Texture*
+    {
+        switch (type)
+        {
+        case EntityType::Worker: return evilOwner ? evilVillagerIconTex : villagerIconTex;
+        case EntityType::Archer: return evilOwner ? evilArcherIconTex : archerIconTex;
+        case EntityType::Knight: return evilOwner ? evilKnightIconTex : knightIconTex;
+        default: return nullptr;
+        }
+    };
+
     for (size_t i = 0; i < displayCount; ++i)
     {
         Unit* unit = units[i];
@@ -500,17 +572,17 @@ void Scene::refreshUnitListUI()
         std::string prefix = "Unit";
         if (type == EntityType::Worker)
         {
-            icon = villagerIconTex;
+            icon = iconForUnit(type, unit->ownerID == 2);
             prefix = "Villager";
         }
         else if (type == EntityType::Archer)
         {
-            icon = archerIconTex;
+            icon = iconForUnit(type, unit->ownerID == 2);
             prefix = "Archer";
         }
         else if (type == EntityType::Knight)
         {
-            icon = knightIconTex;
+            icon = iconForUnit(type, unit->ownerID == 2);
             prefix = "Knight";
         }
 
@@ -571,6 +643,16 @@ void Scene::updateProductionPanel()
                 (type == EntityType::Archer || type == EntityType::Knight))
             visible = true;
 
+        bool ownerIsEvil = (selectedBuilding_->ownerID == 2);
+        Texture* iconTex = nullptr;
+        if (type == EntityType::Worker)
+            iconTex = ownerIsEvil ? evilVillagerIconTex : villagerIconTex;
+        else if (type == EntityType::Archer)
+            iconTex = ownerIsEvil ? evilArcherIconTex : archerIconTex;
+        else if (type == EntityType::Knight)
+            iconTex = ownerIsEvil ? evilKnightIconTex : knightIconTex;
+
+        uiManager_.setButtonTexture(productionButtonIndices_[i], iconTex ? iconTex->ID : 0);
         uiManager_.setButtonVisibility(productionButtonIndices_[i], visible);
         uiManager_.setLabelVisibility(productionLabelIndices_[i], visible);
     }
@@ -672,10 +754,19 @@ void Scene::updateBuildingInfoPanel(BuildType type)
         return;
 
     std::string title = (type == BuildType::None) ? "Building Info" : getBuildingName(type);
-    auto it = buildingInfoText_.find(type);
-    std::string text = (it != buildingInfoText_.end())
-        ? it->second
-        : "Select a building to see its description.";
+    const auto& infoMap = buildingInfoMapForOwner(activePlayerIndex_ + 1);
+    std::string text = "Select a building to see its description.";
+    auto it = infoMap.find(type);
+    if (it != infoMap.end())
+    {
+        text = it->second;
+    }
+    else if (&infoMap != &buildingInfoText_)
+    {
+        auto fallbackIt = buildingInfoText_.find(type);
+        if (fallbackIt != buildingInfoText_.end())
+            text = fallbackIt->second;
+    }
 
     uiManager_.setLabelText(buildingInfoTitleLabelIndex_, title);
     uiManager_.setLabelText(buildingInfoTextLabelIndex_, text);
@@ -683,16 +774,30 @@ void Scene::updateBuildingInfoPanel(BuildType type)
 
 std::string Scene::getBuildingName(BuildType type) const
 {
+    return buildingNameForOwner(type, activePlayerIndex_ + 1);
+}
+
+std::string Scene::buildingNameForOwner(BuildType type, int ownerId) const
+{
+    const bool evil = (ownerId == 2);
     switch (type)
     {
-    case BuildType::TownCenter: return "Town Center";
-    case BuildType::Barracks:   return "Barracks";
-    case BuildType::Farm:       return "Farm";
-    case BuildType::House:      return "House";
-    case BuildType::Market:     return "Market";
-    case BuildType::Storage:    return "Storage";
-    default:                    return "Building Info";
+    case BuildType::TownCenter: return evil ? "Altar" : "Town Center";
+    case BuildType::Barracks:   return evil ? "Graveyard" : "Barracks";
+    case BuildType::Farm:       return evil ? "Hangman" : "Farm";
+    case BuildType::House:      return evil ? "Hut" : "House";
+    case BuildType::Market:     return evil ? "Smithy" : "Market";
+    case BuildType::Storage:    return evil ? "Stone Temple" : "Storage";
+    case BuildType::Bridge:     return "Bridge";
+    default:                    return evil ? "Structure" : "Building";
     }
+}
+
+const std::unordered_map<BuildType, std::string>& Scene::buildingInfoMapForOwner(int ownerId) const
+{
+    if (ownerId == 2 && !evilBuildingInfoText_.empty())
+        return evilBuildingInfoText_;
+    return buildingInfoText_;
 }
 
 UnitCost Scene::getBuildingCost(BuildType type) const
@@ -734,6 +839,12 @@ UnitCost Scene::getBuildingCost(BuildType type) const
         cost.food = 0;
         cost.wood = 90;
         cost.ore  = 30;
+        cost.gold = 0;
+        break;
+    case BuildType::Bridge:
+        cost.food = 0;
+        cost.wood = 180;
+        cost.ore  = 60;
         cost.gold = 0;
         break;
     default:

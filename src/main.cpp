@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/constants.hpp>
 
 #include "core/Scene.h"
 #include "core/Camera.h"
@@ -262,6 +263,33 @@ void processInput(GLFWwindow *window)
         gScene->focusCameraOnTownCenter();
     }
     tDown = tPressed;
+
+    static bool fDown = false;
+    int fState = glfwGetKey(window, GLFW_KEY_F);
+    bool fPressed = (fState == GLFW_PRESS);
+    if (fPressed && !fDown && gScene)
+    {
+        gScene->toggleFogReveal();
+    }
+    fDown = fPressed;
+
+    static bool qDown = false;
+    int qState = glfwGetKey(window, GLFW_KEY_Q);
+    bool qPressed = (qState == GLFW_PRESS);
+    if (qPressed && !qDown && gScene)
+    {
+        gScene->rotatePlacementPreview(glm::radians(-15.0f));
+    }
+    qDown = qPressed;
+
+    static bool eDown = false;
+    int eState = glfwGetKey(window, GLFW_KEY_E);
+    bool ePressed = (eState == GLFW_PRESS);
+    if (ePressed && !eDown && gScene)
+    {
+        gScene->rotatePlacementPreview(glm::radians(15.0f));
+    }
+    eDown = ePressed;
 }
 
 void scroll_callback(GLFWwindow* /*window*/, double /*xoffset*/, double yoffset)

@@ -58,6 +58,7 @@ private:
     std::vector<glm::vec3> materialColors; // Stores Kd colors from MTL
     std::vector<unsigned int> materialTextureIDs_;
     std::vector<std::unique_ptr<Texture>> ownedTextures_;
+    std::vector<GLuint> ownedGLTextures_;
     bool hasAnyTextures_ = false;
     std::string baseDirectory_;
     std::string sourcePath_;
@@ -102,6 +103,7 @@ private:
     void processAssimpMesh(const aiMesh* mesh);
     void loadMaterialTextures(const aiScene* scene);
     unsigned int loadTextureForMaterial(const std::string& relPath);
+    unsigned int loadEmbeddedTexture(const aiScene* scene, const std::string& token);
     void readHierarchyData(NodeData& dest, const aiNode* src);
     void loadAnimations(const aiScene* scene);
     void extractBoneWeights(const aiMesh* mesh, std::vector<ModelVertex>& tempVertices);

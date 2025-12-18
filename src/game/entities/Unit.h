@@ -46,6 +46,7 @@ public:
     void SetActionAnimation(const std::string& name);
     void ClearActionAnimation();
     void SetBaseHeightOffset(float offset) { baseHeightOffset_ = offset; }
+    void FreezeAnimation(bool freeze, double timeSeconds = 0.0);
 
 protected:
     glm::vec3 targetPosition;
@@ -85,4 +86,6 @@ protected:
     unsigned int boneBuffer_ = 0;
     size_t boneCapacity_ = 0;
     float baseHeightOffset_ = 0.0f;
+    bool freezeAnimation_ = false;
+    double frozenAnimationTime_ = 0.0;
 };

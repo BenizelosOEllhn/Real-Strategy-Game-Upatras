@@ -1142,4 +1142,5 @@ CMakeFiles/cin.dir/common/Model.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../gtx/../glm.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../gtx/../gtx/quaternion.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/../gtx/norm.inl \
-  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/quaternion.inl
+  /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtx/quaternion.inl \
+  /Users/konstantinoskanellopoulos/Desktop/rts/common/stb_image.h

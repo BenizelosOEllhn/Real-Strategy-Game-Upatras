@@ -43,15 +43,29 @@ public:
     float GetYaw() const { return rotationEuler_.y; }
     int  GetNetworkId() const { return networkId_; }
     void SetNetworkId(int id) { networkId_ = id; }
-
-protected:
-    void SetVisualOffset(const glm::vec3& offset) { visualOffset_ = offset; }
-    const glm::vec3& GetVisualOffset() const { return visualOffset_; }
+    void SetVisualOffset(const glm::vec3& offset)
+    {
+        visualOffset_ = offset;
+        RebuildTransform();
+    }
     void SetYaw(float yaw)
     {
         rotationEuler_.y = yaw;
         RebuildTransform();
     }
+    void SetRotationEuler(const glm::vec3& euler)
+    {
+        rotationEuler_ = euler;
+        RebuildTransform();
+    }
+    void SetUniformScale(float scale)
+    {
+        uniformScale_ = scale;
+        RebuildTransform();
+    }
+
+protected:
+    const glm::vec3& GetVisualOffset() const { return visualOffset_; }
 
     void RebuildTransform()
     {

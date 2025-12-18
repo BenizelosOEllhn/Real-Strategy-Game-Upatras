@@ -1073,8 +1073,8 @@ CMakeFiles/cin.dir/src/main.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../geometric.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../trigonometric.hpp \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/../matrix.hpp \
-  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/Scene.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/external/glm-0.9.7.1/glm/gtc/constants.hpp \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/Scene.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/random \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__random/bernoulli_distribution.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/c++/v1/__random/uniform_real_distribution.h \
@@ -1203,4 +1203,5 @@ CMakeFiles/cin.dir/src/main.cpp.o: \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/buildings/House.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/buildings/Market.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/buildings/Storage.h \
+  /Users/konstantinoskanellopoulos/Desktop/rts/src/core/../game/buildings/Bridge.h \
   /Users/konstantinoskanellopoulos/Desktop/rts/src/../common/Shader.h
