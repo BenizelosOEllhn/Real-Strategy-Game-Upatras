@@ -23,6 +23,7 @@ private:
     std::string ambiencePath_;
     std::atomic<bool> ambienceRunning_{false};
     std::thread ambienceThread_;
+    std::atomic<pid_t> ambiencePid_{-1};
 
     void playClip(const std::string& path) const;
 };

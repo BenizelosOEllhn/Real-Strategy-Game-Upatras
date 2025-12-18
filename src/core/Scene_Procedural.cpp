@@ -60,7 +60,7 @@ void Scene::generateTrees() {
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, glm::vec3(x, height, z));
         model = glm::rotate(model, rotDist(rng), glm::vec3(0.0f, 1.0f, 0.0f));
-        float scale = scaleDist(rng);
+        float scale = scaleDist(rng) * 1.25f;
         model = glm::scale(model, glm::vec3(scale));
 
         treeTransforms.push_back(model);

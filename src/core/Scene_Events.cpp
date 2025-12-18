@@ -203,9 +203,12 @@ void Scene::updateUnitCameraView()
     }
 
     glm::vec3 pos = unitCameraTarget_->position;
-    pos.y += 4.5f;
+    pos.y += 9.0f;
     float yawDeg = glm::degrees(unitCameraTarget_->GetYaw()) + unitCameraYawOffset_;
     float pitchDeg = -5.0f + unitCameraPitchOffset_;
+    float yawRad = glm::radians(yawDeg);
+    glm::vec3 forward(std::cos(yawRad), 0.0f, std::sin(yawRad));
+    pos += forward * 2.5f;
     camera->SetPose(pos, yawDeg, pitchDeg);
 }
 

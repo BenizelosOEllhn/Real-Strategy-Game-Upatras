@@ -63,8 +63,9 @@ void BuildingManager::update(double mouseX, double mouseY, int currentScreenW, i
         // ------------------------
         float waterLevel = std::max({ -1.2, 4.5, 1.5 });
         bool aboveWater = (hit.y > waterLevel + 0.1f);
+        bool allowWaterPlacement = (currentType_ == BuildType::Bridge);
         bool passesVisibility = !placementValidator_ || placementValidator_(currentType_, hit);
-        validPlacement_ = aboveWater && passesVisibility;
+        validPlacement_ = (allowWaterPlacement || aboveWater) && passesVisibility;
     }
     else
     {
