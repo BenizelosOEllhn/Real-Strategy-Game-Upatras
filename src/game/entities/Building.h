@@ -43,6 +43,10 @@ public:
 
     float GetHealth() const { return health_; }
     float GetMaxHealth() const { return maxHealth_; }
+    void SetHealth(float value)
+    {
+        health_ = std::clamp(value, 0.0f, maxHealth_);
+    }
     void ApplyDamage(float amount)
     {
         if (amount <= 0.0f) return;

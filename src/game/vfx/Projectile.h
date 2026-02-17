@@ -45,7 +45,7 @@ struct Projectile {
     }
     
     // Update projectile position and check for hits
-    bool Update(float dt);
+    bool Update(float dt, bool applyDamage);
     
     // Set target unit
     void SetTargetUnit(Unit* target) { targetUnit = target; }

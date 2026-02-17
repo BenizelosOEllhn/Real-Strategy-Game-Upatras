@@ -17,7 +17,7 @@ bool Projectile::HasReachedTarget() const
     return dist <= threshold;
 }
 
-bool Projectile::Update(float dt)
+bool Projectile::Update(float dt, bool applyDamage)
 {
     if (hasHit || IsExpired())
         return false;
@@ -55,15 +55,18 @@ bool Projectile::Update(float dt)
         hasHit = true;
         position = targetPos;  // Snap to exact target position
         
-        // Deal damage
-        if (targetUnit)
+        if (applyDamage)
         {
-            float newHealth = targetUnit->GetHealth() - damage;
-            targetUnit->SetHealth(newHealth);
-        }
-        else if (targetBuilding)
-        {
-            targetBuilding->ApplyDamage(damage);
+            // Deal damage
+            if (targetUnit)
+            {
+                float newHealth = targetUnit->GetHealth() - damage;
+                targetUnit->SetHealth(newHealth);
+            }
+            else if (targetBuilding)
+            {
+                targetBuilding->ApplyDamage(damage);
+            }
         }
         
         return true;  // Signal that projectile hit

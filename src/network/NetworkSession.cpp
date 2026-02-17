@@ -239,7 +239,15 @@ void NetworkSession::receiveLoop()
         }
 
         std::lock_guard<std::mutex> lock(queueMutex_);
-        incomingMessages_.emplace(buffer, buffer + received);
+        recvBuffer_.append(buffer, buffer + received);
+        size_t pos = 0;
+        while ((pos = recvBuffer_.find('\n')) != std::string::npos)
+        {
+            std::string line = recvBuffer_.substr(0, pos);
+            recvBuffer_.erase(0, pos + 1);
+            if (!line.empty())
+                incomingMessages_.push(std::move(line));
+        }
     }
 }
 

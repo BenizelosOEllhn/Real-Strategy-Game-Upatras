@@ -52,4 +52,5 @@ private:
     std::thread recvThread_;
     std::mutex queueMutex_;
     std::queue<std::string> incomingMessages_;
+    std::string recvBuffer_;
 };

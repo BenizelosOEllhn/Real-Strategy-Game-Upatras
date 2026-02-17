@@ -167,6 +167,14 @@ void Scene::cancelCurrentAction()
         if (!unit) continue;
         clearGatherTasksFor(unit);
         unit->ClearMoveTarget();
+        unit->ClearAttackTarget();
+        unit->SetTaskState(Unit::TaskState::Idle);
+        if (lanModeActive_ && networkSession_.IsConnected() && !suppressNetworkSend_)
+        {
+            int netId = unit->GetNetworkId();
+            if (netId > 0)
+                sendStopCommand(unit->ownerID, netId);
+        }
     }
 }
 
@@ -532,6 +540,7 @@ void Scene::issueMoveCommand()
     {
         GameEntity* attackTarget = clickedEnemyUnit ? static_cast<GameEntity*>(clickedEnemyUnit)
                                                      : static_cast<GameEntity*>(clickedEnemyBuilding);
+        int targetNetId = attackTarget ? attackTarget->GetNetworkId() : -1;
         for (Unit* unit : selectedUnits_)
         {
             if (!unit) continue;
@@ -563,6 +572,13 @@ void Scene::issueMoveCommand()
                         unit->SetTaskState(Unit::TaskState::Moving);
                     }
                 }
+            }
+
+            if (lanModeActive_ && networkSession_.IsConnected() && !suppressNetworkSend_)
+            {
+                int attackerNetId = unit->GetNetworkId();
+                if (attackerNetId > 0 && targetNetId > 0)
+                    sendAttackCommand(unit->ownerID, attackerNetId, targetNetId);
             }
         }
         return;
@@ -643,6 +659,13 @@ void Scene::deleteUnit(Unit* unit)
 {
     if (!unit)
         return;
+
+    if (lanModeActive_ && networkSession_.IsConnected() && !suppressNetworkSend_)
+    {
+        int netId = unit->GetNetworkId();
+        if (netId > 0)
+            sendUnitDeleteCommand(netId);
+    }
 
     for (GameEntity* entity : entities_)
     {
@@ -959,6 +982,12 @@ bool Scene::handleResourceGather(const glm::vec3& point)
         float groundY = Terrain::getHeight(resourcePos.x, resourcePos.z);
         glm::vec3 dest(resourcePos.x, groundY, resourcePos.z);
         commandUnitTo(worker, dest);
+        if (lanModeActive_ && networkSession_.IsConnected() && !suppressNetworkSend_)
+        {
+            int workerNetId = worker->GetNetworkId();
+            if (workerNetId > 0)
+                sendGatherCommand(worker->ownerID, workerNetId, static_cast<int>(ResourceNodeType::Tree), static_cast<int>(resourceIndex));
+        }
         return true;
     }
 
@@ -973,6 +1002,12 @@ bool Scene::handleResourceGather(const glm::vec3& point)
         float groundY = Terrain::getHeight(resourcePos.x, resourcePos.z);
         glm::vec3 dest(resourcePos.x, groundY, resourcePos.z);
         commandUnitTo(worker, dest);
+        if (lanModeActive_ && networkSession_.IsConnected() && !suppressNetworkSend_)
+        {
+            int workerNetId = worker->GetNetworkId();
+            if (workerNetId > 0)
+                sendGatherCommand(worker->ownerID, workerNetId, static_cast<int>(ResourceNodeType::Rock), static_cast<int>(resourceIndex));
+        }
         return true;
     }
 
@@ -1034,6 +1069,12 @@ bool Scene::gatherSelectedWorkersNearby(float radius)
         float groundY = Terrain::getHeight(chosenPos.x, chosenPos.z);
         glm::vec3 dest(chosenPos.x, groundY, chosenPos.z);
         commandUnitTo(unit, dest);
+        if (lanModeActive_ && networkSession_.IsConnected() && !suppressNetworkSend_)
+        {
+            int workerNetId = unit->GetNetworkId();
+            if (workerNetId > 0)
+                sendGatherCommand(unit->ownerID, workerNetId, static_cast<int>(chosenType), static_cast<int>(chosenIndex));
+        }
         assigned = true;
     }
 
@@ -1086,6 +1127,7 @@ void Scene::clearGatherTasksFor(ResourceNodeType type, size_t resourceIndex)
 
 void Scene::updateGatherTasks(float dt)
 {
+    const bool isHostAuthority = !lanModeActive_ || networkSession_.GetMode() == NetworkSession::Mode::Host;
     size_t i = 0;
     while (i < gatherTasks_.size())
     {
@@ -1136,6 +1178,11 @@ void Scene::updateGatherTasks(float dt)
 
                     if (task.progress >= 2.0f)
                     {
+                        if (!isHostAuthority)
+                        {
+                            task.progress = 1.95f;
+                            continue;
+                        }
                         task.soundActive = false;
                         ResourceNodeType type = task.type;
                         size_t resourceIdx = task.resourceIndex;
@@ -1154,12 +1201,22 @@ void Scene::updateGatherTasks(float dt)
         {
             if (awardRes)
                 awardRes->AddWood(50);
+            if (lanModeActive_ && networkSession_.IsConnected() && !suppressNetworkSend_)
+            {
+                sendResourceGainCommand(workerPtr ? workerPtr->ownerID : 0, static_cast<int>(ResourceNodeType::Tree), 50);
+                sendResourceRemoveCommand(static_cast<int>(ResourceNodeType::Tree), static_cast<int>(resourceIdx));
+            }
             removeTree(resourceIdx);
         }
         else
         {
             if (awardRes)
                 awardRes->AddOre(30);
+            if (lanModeActive_ && networkSession_.IsConnected() && !suppressNetworkSend_)
+            {
+                sendResourceGainCommand(workerPtr ? workerPtr->ownerID : 0, static_cast<int>(ResourceNodeType::Rock), 30);
+                sendResourceRemoveCommand(static_cast<int>(ResourceNodeType::Rock), static_cast<int>(resourceIdx));
+            }
             removeRock(resourceIdx);
         }
                         updateResourceTexts();
@@ -1208,6 +1265,12 @@ void Scene::updateGatherTasks(float dt)
                                 float groundY = Terrain::getHeight(nextPos.x, nextPos.z);
                                 glm::vec3 dest(nextPos.x, groundY, nextPos.z);
                                 commandUnitTo(workerPtr, dest);
+                                if (lanModeActive_ && networkSession_.IsConnected() && !suppressNetworkSend_)
+                                {
+                                    int workerNetId = workerPtr->GetNetworkId();
+                                    if (workerNetId > 0)
+                                        sendGatherCommand(workerPtr->ownerID, workerNetId, static_cast<int>(nextType), static_cast<int>(nextIdx));
+                                }
                             }
                             else
                             {
@@ -1255,6 +1318,8 @@ void Scene::updateCombat(float dt)
 {
     if (victoryShown_)
         return;
+
+    const bool isHostAuthority = !lanModeActive_ || networkSession_.GetMode() == NetworkSession::Mode::Host;
 
     std::vector<Knight*> knights;
     std::vector<Unit*> allUnits;
@@ -1342,11 +1407,15 @@ void Scene::updateCombat(float dt)
             knight->SetActionAnimation("Attack");
             if (knight->ReadyToStrike())
             {
-                const float damage = knight->AttackDamage() * knight->GetDamageMultiplier();
-                unitTarget->SetHealth(unitTarget->GetHealth() - damage);
+                if (isHostAuthority)
+                {
+                    const float damage = knight->AttackDamage() * knight->GetDamageMultiplier();
+                    unitTarget->SetHealth(unitTarget->GetHealth() - damage);
+                    sendUnitHealthCommand(unitTarget->GetNetworkId(), unitTarget->GetHealth());
+                    if (unitTarget->GetHealth() <= 0.0f)
+                        deleteUnit(unitTarget);
+                }
                 knight->ResetAttackTimer();
-                if (unitTarget->GetHealth() <= 0.0f)
-                    deleteUnit(unitTarget);
             }
         }
         else if (buildingTarget)
@@ -1355,13 +1424,17 @@ void Scene::updateCombat(float dt)
             knight->SetActionAnimation("Attack");
             if (knight->ReadyToStrike())
             {
-                const float damage = knight->AttackDamage() * knight->GetDamageMultiplier();
-                buildingTarget->ApplyDamage(damage);
-                knight->ResetAttackTimer();
-                if (buildingTarget->IsDestroyed())
+                if (isHostAuthority)
                 {
-                    destroyBuilding(buildingTarget);
+                    const float damage = knight->AttackDamage() * knight->GetDamageMultiplier();
+                    buildingTarget->ApplyDamage(damage);
+                    sendBuildingHealthCommand(buildingTarget->GetNetworkId(), buildingTarget->GetHealth());
+                    if (buildingTarget->IsDestroyed())
+                    {
+                        destroyBuilding(buildingTarget);
+                    }
                 }
+                knight->ResetAttackTimer();
             }
         }
         else
@@ -1518,6 +1591,7 @@ void Scene::updateCombat(float dt)
 // ============================================================
 void Scene::updateProjectiles(float dt)
 {
+    const bool isHostAuthority = !lanModeActive_ || networkSession_.GetMode() == NetworkSession::Mode::Host;
     auto entityExists = [&](GameEntity* ptr) -> bool
     {
         return ptr && std::find(entities_.begin(), entities_.end(), ptr) != entities_.end();
@@ -1533,13 +1607,24 @@ void Scene::updateProjectiles(float dt)
         else
         {
             auto& proj = *it;
-            proj->Update(dt);
+            proj->Update(dt, isHostAuthority);
             if (proj->hasHit)
             {
-                if (proj->targetUnit && entityExists(proj->targetUnit) && proj->targetUnit->GetHealth() <= 0.0f)
-                    deleteUnit(proj->targetUnit);
-                if (proj->targetBuilding && entityExists(proj->targetBuilding) && proj->targetBuilding->IsDestroyed())
-                    destroyBuilding(proj->targetBuilding);
+                if (isHostAuthority)
+                {
+                    if (proj->targetUnit && entityExists(proj->targetUnit))
+                    {
+                        sendUnitHealthCommand(proj->targetUnit->GetNetworkId(), proj->targetUnit->GetHealth());
+                        if (proj->targetUnit->GetHealth() <= 0.0f)
+                            deleteUnit(proj->targetUnit);
+                    }
+                    if (proj->targetBuilding && entityExists(proj->targetBuilding))
+                    {
+                        sendBuildingHealthCommand(proj->targetBuilding->GetNetworkId(), proj->targetBuilding->GetHealth());
+                        if (proj->targetBuilding->IsDestroyed())
+                            destroyBuilding(proj->targetBuilding);
+                    }
+                }
                 it = projectiles_.erase(it);
             }
             else
@@ -1636,6 +1721,13 @@ void Scene::destroyBuilding(Building* building)
 {
     if (!building)
         return;
+
+    if (lanModeActive_ && networkSession_.IsConnected() && !suppressNetworkSend_)
+    {
+        int netId = building->GetNetworkId();
+        if (netId > 0)
+            sendBuildingDeleteCommand(netId);
+    }
 
     for (GameEntity* entity : entities_)
     {
@@ -1784,6 +1876,71 @@ void Scene::handleNetworkMessage(const std::string& message)
         float x = 0.0f, y = 0.0f, z = 0.0f;
         if (iss >> ownerId >> networkId >> x >> y >> z)
             applyMoveCommand(ownerId, networkId, glm::vec3(x, y, z));
+    }
+    else if (cmd == "GATHER")
+    {
+        int ownerId = 0;
+        int workerId = -1;
+        int typeInt = 0;
+        int resourceIndex = -1;
+        if (iss >> ownerId >> workerId >> typeInt >> resourceIndex)
+            applyGatherCommand(ownerId, workerId, typeInt, resourceIndex);
+    }
+    else if (cmd == "ATTACK")
+    {
+        int ownerId = 0;
+        int attackerId = -1;
+        int targetId = -1;
+        if (iss >> ownerId >> attackerId >> targetId)
+            applyAttackCommand(ownerId, attackerId, targetId);
+    }
+    else if (cmd == "STOP")
+    {
+        int ownerId = 0;
+        int unitId = -1;
+        if (iss >> ownerId >> unitId)
+            applyStopCommand(ownerId, unitId);
+    }
+    else if (cmd == "RESOURCE_REMOVE")
+    {
+        int typeInt = 0;
+        int resourceIndex = -1;
+        if (iss >> typeInt >> resourceIndex)
+            applyResourceRemoveCommand(typeInt, resourceIndex);
+    }
+    else if (cmd == "RESOURCE_GAIN")
+    {
+        int ownerId = 0;
+        int typeInt = 0;
+        int amount = 0;
+        if (iss >> ownerId >> typeInt >> amount)
+            applyResourceGainCommand(ownerId, typeInt, amount);
+    }
+    else if (cmd == "UNIT_HEALTH")
+    {
+        int unitId = -1;
+        float health = 0.0f;
+        if (iss >> unitId >> health)
+            applyUnitHealthCommand(unitId, health);
+    }
+    else if (cmd == "BUILDING_HEALTH")
+    {
+        int buildingId = -1;
+        float health = 0.0f;
+        if (iss >> buildingId >> health)
+            applyBuildingHealthCommand(buildingId, health);
+    }
+    else if (cmd == "UNIT_DELETE")
+    {
+        int unitId = -1;
+        if (iss >> unitId)
+            applyUnitDeleteCommand(unitId);
+    }
+    else if (cmd == "BUILDING_DELETE")
+    {
+        int buildingId = -1;
+        if (iss >> buildingId)
+            applyBuildingDeleteCommand(buildingId);
     }
     else if (cmd == "UPGRADE")
     {
@@ -1950,6 +2107,281 @@ void Scene::sendMoveCommand(int networkId, int ownerId, const glm::vec3& pos)
     oss << "MOVE " << ownerId << " " << networkId << " "
         << pos.x << " " << pos.y << " " << pos.z;
     networkSession_.SendPacket(oss.str());
+}
+
+void Scene::sendGatherCommand(int ownerId, int workerNetId, int resourceType, int resourceIndex)
+{
+    if (!lanModeActive_ || !networkSession_.IsConnected())
+        return;
+    if (workerNetId <= 0 || resourceIndex < 0)
+        return;
+
+    std::ostringstream oss;
+    oss << "GATHER " << ownerId << " " << workerNetId << " "
+        << resourceType << " " << resourceIndex;
+    networkSession_.SendPacket(oss.str());
+}
+
+bool Scene::applyGatherCommand(int ownerId, int workerNetId, int resourceType, int resourceIndex)
+{
+    if (workerNetId <= 0 || resourceIndex < 0)
+        return false;
+
+    Unit* worker = dynamic_cast<Unit*>(findEntityByNetworkId(workerNetId));
+    if (!worker || worker->ownerID != ownerId || worker->type != EntityType::Worker)
+        return false;
+
+    ResourceNodeType type = (resourceType == static_cast<int>(ResourceNodeType::Rock))
+        ? ResourceNodeType::Rock
+        : ResourceNodeType::Tree;
+
+    const std::vector<glm::vec3>& positions =
+        (type == ResourceNodeType::Tree) ? treePositions_ : rockPositions_;
+
+    if (resourceIndex >= static_cast<int>(positions.size()))
+        return false;
+
+    clearGatherTasksFor(worker);
+    GatherTask newTask;
+    newTask.worker = worker;
+    newTask.type = type;
+    newTask.resourceIndex = static_cast<size_t>(resourceIndex);
+    gatherTasks_.push_back(newTask);
+
+    glm::vec3 resPos = positions[static_cast<size_t>(resourceIndex)];
+    float groundY = Terrain::getHeight(resPos.x, resPos.z);
+    glm::vec3 dest(resPos.x, groundY, resPos.z);
+    commandUnitTo(worker, dest);
+    return true;
+}
+
+void Scene::sendAttackCommand(int ownerId, int attackerNetId, int targetNetId)
+{
+    if (!lanModeActive_ || !networkSession_.IsConnected())
+        return;
+    if (attackerNetId <= 0 || targetNetId <= 0)
+        return;
+
+    std::ostringstream oss;
+    oss << "ATTACK " << ownerId << " " << attackerNetId << " " << targetNetId;
+    networkSession_.SendPacket(oss.str());
+}
+
+bool Scene::applyAttackCommand(int ownerId, int attackerNetId, int targetNetId)
+{
+    if (attackerNetId <= 0 || targetNetId <= 0)
+        return false;
+
+    Unit* unit = dynamic_cast<Unit*>(findEntityByNetworkId(attackerNetId));
+    GameEntity* target = findEntityByNetworkId(targetNetId);
+    if (!unit || !target)
+        return false;
+    if (unit->ownerID != ownerId)
+        return false;
+
+    unit->ClearMoveTarget();
+    unit->SetAttackTarget(target);
+    unit->SetTaskState(Unit::TaskState::Combat);
+
+    float attackRange = 0.0f;
+    if (Archer* archer = dynamic_cast<Archer*>(unit))
+        attackRange = archer->AttackRange();
+    else if (Knight* knight = dynamic_cast<Knight*>(unit))
+        attackRange = knight->AttackRange();
+
+    if (attackRange > 0.0f)
+    {
+        glm::vec3 targetPos = target->position;
+        glm::vec3 toTarget = targetPos - unit->position;
+        float dist = glm::length(toTarget);
+        if (dist > attackRange)
+        {
+            glm::vec3 dir = dist > 0.001f ? (toTarget / dist) : glm::vec3(0.0f);
+            float desiredDist = std::max(attackRange * 0.9f, 1.0f);
+            glm::vec3 movePos = targetPos - dir * desiredDist;
+            movePos.y = Terrain::getHeight(movePos.x, movePos.z);
+            glm::vec3 adjusted;
+            if (findClosestLandPoint(movePos, adjusted))
+            {
+                commandUnitTo(unit, adjusted);
+                unit->SetTaskState(Unit::TaskState::Moving);
+            }
+        }
+    }
+
+    return true;
+}
+
+void Scene::sendStopCommand(int ownerId, int unitNetId)
+{
+    if (!lanModeActive_ || !networkSession_.IsConnected())
+        return;
+    if (unitNetId <= 0)
+        return;
+
+    std::ostringstream oss;
+    oss << "STOP " << ownerId << " " << unitNetId;
+    networkSession_.SendPacket(oss.str());
+}
+
+bool Scene::applyStopCommand(int ownerId, int unitNetId)
+{
+    if (unitNetId <= 0)
+        return false;
+
+    Unit* unit = dynamic_cast<Unit*>(findEntityByNetworkId(unitNetId));
+    if (!unit || unit->ownerID != ownerId)
+        return false;
+
+    clearGatherTasksFor(unit);
+    unit->ClearAttackTarget();
+    unit->ClearMoveTarget();
+    unit->SetTaskState(Unit::TaskState::Idle);
+    return true;
+}
+
+void Scene::sendResourceRemoveCommand(int resourceType, int resourceIndex)
+{
+    if (!lanModeActive_ || !networkSession_.IsConnected())
+        return;
+    if (resourceIndex < 0)
+        return;
+
+    std::ostringstream oss;
+    oss << "RESOURCE_REMOVE " << resourceType << " " << resourceIndex;
+    networkSession_.SendPacket(oss.str());
+}
+
+bool Scene::applyResourceRemoveCommand(int resourceType, int resourceIndex)
+{
+    if (resourceIndex < 0)
+        return false;
+
+    if (resourceType == static_cast<int>(ResourceNodeType::Rock))
+        removeRock(static_cast<size_t>(resourceIndex));
+    else
+        removeTree(static_cast<size_t>(resourceIndex));
+    return true;
+}
+
+void Scene::sendResourceGainCommand(int ownerId, int resourceType, int amount)
+{
+    if (!lanModeActive_ || !networkSession_.IsConnected())
+        return;
+
+    std::ostringstream oss;
+    oss << "RESOURCE_GAIN " << ownerId << " " << resourceType << " " << amount;
+    networkSession_.SendPacket(oss.str());
+}
+
+bool Scene::applyResourceGainCommand(int ownerId, int resourceType, int amount)
+{
+    Resources* res = resourcesForOwner(ownerId);
+    if (!res)
+        return false;
+
+    if (resourceType == static_cast<int>(ResourceNodeType::Rock))
+        res->AddOre(amount);
+    else
+        res->AddWood(amount);
+    updateResourceTexts();
+    return true;
+}
+
+void Scene::sendUnitHealthCommand(int unitNetId, float health)
+{
+    if (!lanModeActive_ || !networkSession_.IsConnected())
+        return;
+    if (unitNetId <= 0)
+        return;
+
+    std::ostringstream oss;
+    oss << "UNIT_HEALTH " << unitNetId << " " << health;
+    networkSession_.SendPacket(oss.str());
+}
+
+bool Scene::applyUnitHealthCommand(int unitNetId, float health)
+{
+    Unit* unit = dynamic_cast<Unit*>(findEntityByNetworkId(unitNetId));
+    if (!unit)
+        return false;
+    unit->SetHealth(health);
+    if (unitInfoTarget_ == unit)
+        updateUnitInfoPanel();
+    return true;
+}
+
+void Scene::sendBuildingHealthCommand(int buildingNetId, float health)
+{
+    if (!lanModeActive_ || !networkSession_.IsConnected())
+        return;
+    if (buildingNetId <= 0)
+        return;
+
+    std::ostringstream oss;
+    oss << "BUILDING_HEALTH " << buildingNetId << " " << health;
+    networkSession_.SendPacket(oss.str());
+}
+
+bool Scene::applyBuildingHealthCommand(int buildingNetId, float health)
+{
+    Building* building = dynamic_cast<Building*>(findEntityByNetworkId(buildingNetId));
+    if (!building)
+        return false;
+    building->SetHealth(health);
+    if (selectedBuilding_ == building)
+        updateBuildingInfoPanel(buildTypeFromEntityType(building->type));
+    return true;
+}
+
+void Scene::sendUnitDeleteCommand(int unitNetId)
+{
+    if (!lanModeActive_ || !networkSession_.IsConnected())
+        return;
+    if (unitNetId <= 0)
+        return;
+
+    std::ostringstream oss;
+    oss << "UNIT_DELETE " << unitNetId;
+    networkSession_.SendPacket(oss.str());
+}
+
+bool Scene::applyUnitDeleteCommand(int unitNetId)
+{
+    Unit* unit = dynamic_cast<Unit*>(findEntityByNetworkId(unitNetId));
+    if (!unit)
+        return false;
+
+    const bool previous = suppressNetworkSend_;
+    suppressNetworkSend_ = true;
+    deleteUnit(unit);
+    suppressNetworkSend_ = previous;
+    return true;
+}
+
+void Scene::sendBuildingDeleteCommand(int buildingNetId)
+{
+    if (!lanModeActive_ || !networkSession_.IsConnected())
+        return;
+    if (buildingNetId <= 0)
+        return;
+
+    std::ostringstream oss;
+    oss << "BUILDING_DELETE " << buildingNetId;
+    networkSession_.SendPacket(oss.str());
+}
+
+bool Scene::applyBuildingDeleteCommand(int buildingNetId)
+{
+    Building* building = dynamic_cast<Building*>(findEntityByNetworkId(buildingNetId));
+    if (!building)
+        return false;
+
+    const bool previous = suppressNetworkSend_;
+    suppressNetworkSend_ = true;
+    destroyBuilding(building);
+    suppressNetworkSend_ = previous;
+    return true;
 }
 
 bool Scene::applyMoveCommand(int ownerId, int networkId, const glm::vec3& pos)
