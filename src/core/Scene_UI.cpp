@@ -1252,6 +1252,16 @@ void Scene::beginGameplay(bool enableLanMode)
     resetFogOfWar();
     spawnStartingTownCenters();
     spawnObjectiveTemple();
+
+    // Partition the network-ID space so host and join never collide.
+    // Both sides already share IDs 1–N for the starting entities.
+    // After that, host keeps allocating from N+1, join jumps to 10000+.
+    if (enableLanMode && networkSession_.GetMode() == NetworkSession::Mode::Client)
+    {
+        if (nextNetworkId_ < 10000)
+            nextNetworkId_ = 10000;
+    }
+
     timerElapsed_ = 0.0f;
     captureState_ = CaptureState::Neutral;
     captureProgress_ = 0.0f;

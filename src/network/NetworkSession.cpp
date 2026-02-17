@@ -13,6 +13,7 @@
     #include <netinet/in.h>
     #include <sys/socket.h>
     #include <unistd.h>
+    #include <csignal>
     using SocketHandle = int;
     #define INVALID_SOCKET (-1)
     #define SOCKET_ERROR   (-1)
@@ -48,6 +49,9 @@ NetworkSession::NetworkSession()
     static WinSockGuard guard;
     if (!guard.initialized)
         updateStatus("Winsock initialization failed.");
+#else
+    // Ignore SIGPIPE so writing to a broken socket doesn't kill the process
+    std::signal(SIGPIPE, SIG_IGN);
 #endif
     updateStatus("Idle");
 }
@@ -186,6 +190,9 @@ void NetworkSession::hostThread(uint16_t port)
         return;
 
     peerSocket_ = static_cast<int>(client);
+#ifdef __APPLE__
+    { int on = 1; setsockopt(client, SOL_SOCKET, SO_NOSIGPIPE, &on, sizeof(on)); }
+#endif
     setConnected(true);
     updateStatus("Client connected.");
     startReceiveLoop();
@@ -198,6 +205,9 @@ void NetworkSession::clientThread(std::string host, uint16_t port)
         return;
 
     peerSocket_ = static_cast<int>(sock);
+#ifdef __APPLE__
+    { int on = 1; setsockopt(sock, SOL_SOCKET, SO_NOSIGPIPE, &on, sizeof(on)); }
+#endif
 
     sockaddr_in addr{};
     addr.sin_family = AF_INET;

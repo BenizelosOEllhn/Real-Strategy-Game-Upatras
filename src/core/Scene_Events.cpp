@@ -432,6 +432,13 @@ int Scene::registerEntity(GameEntity* entity, int requestedId)
     if (id <= 0)
         return -1;
 
+    // Always keep nextNetworkId_ above any ID we've seen, whether
+    // locally allocated or forced by the remote peer.  This prevents
+    // the next allocateNetworkId() call from reusing an ID that the
+    // other side already assigned.
+    if (id >= nextNetworkId_)
+        nextNetworkId_ = id + 1;
+
     networkEntities_.erase(id);
     entity->SetNetworkId(id);
     networkEntities_[id] = entity;
@@ -1180,7 +1187,13 @@ void Scene::updateGatherTasks(float dt)
                     {
                         if (!isHostAuthority)
                         {
-                            task.progress = 1.95f;
+                            // Client cannot complete gather — host handles
+                            // resource removal/gain via RESOURCE_REMOVE.
+                            // Clamp progress and move to next task so the
+                            // while-loop does NOT spin on this same index
+                            // (which would infinite-loop when dt >= 0.05).
+                            task.progress = 1.99f;
+                            ++i;
                             continue;
                         }
                         task.soundActive = false;
@@ -1297,15 +1310,15 @@ void Scene::updateGatherTasks(float dt)
         if (removeTask)
         {
             Unit* workerPtr = task.worker;
-            gatherTasks_[i] = gatherTasks_.back();
-            gatherTasks_.pop_back();
+            bool wasAnimating = task.animationActive;
             if (workerPtr && workerPtr->GetTaskState() == Unit::TaskState::Gathering)
                 workerPtr->SetTaskState(Unit::TaskState::Idle);
-            task.soundActive = false;
-            if (task.animationActive && workerPtr)
+            if (wasAnimating && workerPtr)
                 workerPtr->ClearActionAnimation();
-            if (workerPtr)
-                workerPtr->ClearActionAnimation();
+            // Swap-and-pop AFTER reading task fields so we don't
+            // accidentally read from the swapped-in element.
+            gatherTasks_[i] = gatherTasks_.back();
+            gatherTasks_.pop_back();
         }
         else
         {
@@ -1362,12 +1375,14 @@ void Scene::updateCombat(float dt)
 
         if (Unit* candidate = dynamic_cast<Unit*>(attackTarget))
         {
-            if (entityExists(candidate) && candidate->ownerID != knight->ownerID)
+            if (entityExists(candidate) && candidate->ownerID != knight->ownerID
+                && candidate->GetHealth() > 0.0f)
                 unitTarget = candidate;
         }
         else if (Building* candidate = dynamic_cast<Building*>(attackTarget))
         {
-            if (entityExists(candidate) && candidate->ownerID != knight->ownerID)
+            if (entityExists(candidate) && candidate->ownerID != knight->ownerID
+                && !candidate->IsDestroyed())
                 buildingTarget = candidate;
         }
 
@@ -1475,12 +1490,14 @@ void Scene::updateCombat(float dt)
 
         if (Unit* candidate = dynamic_cast<Unit*>(attackTarget))
         {
-            if (entityExists(candidate) && candidate->ownerID != archer->ownerID)
+            if (entityExists(candidate) && candidate->ownerID != archer->ownerID
+                && candidate->GetHealth() > 0.0f)
                 unitTarget = candidate;
         }
         else if (Building* candidate = dynamic_cast<Building*>(attackTarget))
         {
-            if (entityExists(candidate) && candidate->ownerID != archer->ownerID)
+            if (entityExists(candidate) && candidate->ownerID != archer->ownerID
+                && !candidate->IsDestroyed())
                 buildingTarget = candidate;
         }
 
@@ -2175,9 +2192,18 @@ bool Scene::applyAttackCommand(int ownerId, int attackerNetId, int targetNetId)
     Unit* unit = dynamic_cast<Unit*>(findEntityByNetworkId(attackerNetId));
     GameEntity* target = findEntityByNetworkId(targetNetId);
     if (!unit || !target)
+    {
+        std::cerr << "[NET] applyAttackCommand FAILED: attacker=" << attackerNetId
+                  << (unit ? " found" : " NOT FOUND") << ", target=" << targetNetId
+                  << (target ? " found" : " NOT FOUND") << "\n";
         return false;
+    }
     if (unit->ownerID != ownerId)
+    {
+        std::cerr << "[NET] applyAttackCommand FAILED: ownerID mismatch "
+                  << unit->ownerID << " != " << ownerId << "\n";
         return false;
+    }
 
     unit->ClearMoveTarget();
     unit->SetAttackTarget(target);
@@ -2257,10 +2283,27 @@ bool Scene::applyResourceRemoveCommand(int resourceType, int resourceIndex)
     if (resourceIndex < 0)
         return false;
 
+    size_t idx = static_cast<size_t>(resourceIndex);
     if (resourceType == static_cast<int>(ResourceNodeType::Rock))
-        removeRock(static_cast<size_t>(resourceIndex));
+    {
+        if (idx >= rockTransforms.size())
+        {
+            std::cerr << "[NET] applyResourceRemove: rock index " << resourceIndex
+                      << " out of range (" << rockTransforms.size() << ")\n";
+            return false;
+        }
+        removeRock(idx);
+    }
     else
-        removeTree(static_cast<size_t>(resourceIndex));
+    {
+        if (idx >= treeTransforms.size())
+        {
+            std::cerr << "[NET] applyResourceRemove: tree index " << resourceIndex
+                      << " out of range (" << treeTransforms.size() << ")\n";
+            return false;
+        }
+        removeTree(idx);
+    }
     return true;
 }
 
