@@ -183,6 +183,33 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
+    // F11 fullscreen toggle
+    static bool f11Down = false;
+    static int savedWinX = 0, savedWinY = 0, savedWinW = 0, savedWinH = 0;
+    int f11State = glfwGetKey(window, GLFW_KEY_F11);
+    bool f11Pressed = (f11State == GLFW_PRESS);
+    if (f11Pressed && !f11Down)
+    {
+        GLFWmonitor* monitor = glfwGetWindowMonitor(window);
+        if (monitor == nullptr)
+        {
+            // Currently windowed -> go fullscreen
+            glfwGetWindowPos(window, &savedWinX, &savedWinY);
+            glfwGetWindowSize(window, &savedWinW, &savedWinH);
+            monitor = glfwGetPrimaryMonitor();
+            const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+            glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height, mode->refreshRate);
+        }
+        else
+        {
+            // Currently fullscreen -> go windowed
+            glfwSetWindowMonitor(window, nullptr, savedWinX, savedWinY,
+                                savedWinW > 0 ? savedWinW : 1200,
+                                savedWinH > 0 ? savedWinH : 900, 0);
+        }
+    }
+    f11Down = f11Pressed;
+
     bool unitCamActive = gScene && gScene->IsUnitCameraActive();
 
     if (!unitCamActive)
@@ -298,6 +325,15 @@ void processInput(GLFWwindow *window)
     }
     mDown = mPressed;
 
+    static bool iDown = false;
+    int iState = glfwGetKey(window, GLFW_KEY_I);
+    bool iPressed = (iState == GLFW_PRESS);
+    if (iPressed && !iDown && gScene)
+    {
+        gScene->toggleBuildingInfoPanel();
+    }
+    iDown = iPressed;
+
     static bool gDown = false;
     int gState = glfwGetKey(window, GLFW_KEY_G);
     bool gPressed = (gState == GLFW_PRESS);
@@ -340,6 +376,8 @@ void scroll_callback(GLFWwindow* /*window*/, double /*xoffset*/, double yoffset)
 void framebuffer_size_callback(GLFWwindow* /*window*/, int width, int height)
 {
     glViewport(0, 0, width, height);
+    if (gScene)
+        gScene->OnResize(width, height);
 }
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {

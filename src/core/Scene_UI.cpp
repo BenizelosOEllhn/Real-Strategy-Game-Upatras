@@ -4,15 +4,138 @@
 #include <sstream>
 #include <utility>
 
+// ============================================================
+// Reference resolution for UI layout: all pixel sizes in setup*
+// functions are authored at 1200x900. We scale proportionally.
+// ============================================================
+static constexpr float kRefWidth  = 1200.0f;
+static constexpr float kRefHeight = 900.0f;
+
+static float uiScaleX(int fbW) { return static_cast<float>(fbW) / kRefWidth;  }
+static float uiScaleY(int fbH) { return static_cast<float>(fbH) / kRefHeight; }
+static float uiScale (int fbW, int fbH) { return std::min(uiScaleX(fbW), uiScaleY(fbH)); }
+
+void Scene::OnResize(int fbW, int fbH)
+{
+    if (fbW <= 0 || fbH <= 0) return;
+    if (fbW == fbWidth && fbH == fbHeight) return; // no change
+
+    fbWidth  = fbW;
+    fbHeight = fbH;
+
+    // Update water render targets
+    Resize(fbW, fbH);
+
+    // Rebuild all UI elements at the new resolution
+    rebuildUI();
+}
+
+void Scene::rebuildUI()
+{
+    // Clear all existing UI elements
+    uiManager_.clear();
+    uiManager_.resize(fbWidth, fbHeight);
+
+    // Reset all stored UI indices to SIZE_MAX so setup* functions start fresh
+    foodLabelIndex_ = SIZE_MAX;
+    woodLabelIndex_ = SIZE_MAX;
+    goldLabelIndex_ = SIZE_MAX;
+    oreLabelIndex_ = SIZE_MAX;
+    populationLabelIndex_ = SIZE_MAX;
+    timerLabelIndex_ = SIZE_MAX;
+    playerLabelIndex_ = SIZE_MAX;
+    victoryLabelIndex_ = SIZE_MAX;
+    buildingBarBackgroundIndex_ = SIZE_MAX;
+    unitPanelBackgroundIndex_ = SIZE_MAX;
+    unitPanelTitleLabelIndex_ = SIZE_MAX;
+    productionPanelBackgroundIndex_ = SIZE_MAX;
+    productionUpgradeButtonIndex_ = SIZE_MAX;
+    productionUpgradeLabelIndex_ = SIZE_MAX;
+    productionUpgradeCostLabelIndex_ = SIZE_MAX;
+    unitInfoPanelBackgroundIndex_ = SIZE_MAX;
+    unitInfoNameLabelIndex_ = SIZE_MAX;
+    unitInfoHealthLabelIndex_ = SIZE_MAX;
+    unitDeleteButtonIndex_ = SIZE_MAX;
+    unitDeleteLabelIndex_ = SIZE_MAX;
+    buildingTabButtonIndex_ = SIZE_MAX;
+    unitTabButtonIndex_ = SIZE_MAX;
+    buildingTabLabelIndex_ = SIZE_MAX;
+    unitTabLabelIndex_ = SIZE_MAX;
+    neutralFlagRingIndex_ = SIZE_MAX;
+    neutralFlagRingInnerIndex_ = SIZE_MAX;
+    neutralFlagProgressRingIndex_ = SIZE_MAX;
+    neutralFlagIconIndex_ = SIZE_MAX;
+    mainMenuBackgroundIndex_ = SIZE_MAX;
+    mainMenuTitleLabelIndex_ = SIZE_MAX;
+    mainMenuSingleBtnIndex_ = SIZE_MAX;
+    mainMenuHostBtnIndex_ = SIZE_MAX;
+    mainMenuJoinBtnIndex_ = SIZE_MAX;
+    mainMenuSingleLabelIndex_ = SIZE_MAX;
+    mainMenuHostLabelIndex_ = SIZE_MAX;
+    mainMenuJoinLabelIndex_ = SIZE_MAX;
+    mainMenuStatusLabelIndex_ = SIZE_MAX;
+    buildingInfoPanelIndex_ = SIZE_MAX;
+    buildingInfoTitleLabelIndex_ = SIZE_MAX;
+    buildingInfoTextLabelIndex_ = SIZE_MAX;
+
+    buildingButtonIndices_.clear();
+    buildingLabelIndices_.clear();
+    buildingButtonTypes_.clear();
+    buildingButtonIcons_.clear();
+    // Note: buildingBarTextures_ keeps the loaded textures alive; don't clear
+
+    productionButtonIndices_.clear();
+    productionLabelIndices_.clear();
+    productionButtonTypes_.clear();
+
+    unitEntryIconIndices_.clear();
+    unitEntryLabelIndices_.clear();
+    unitEntryTargets_.clear();
+
+    // Rebuild all UI
+    float s = uiScale(fbWidth, fbHeight);
+    uiManager_.setTextScale(2.0f * s);
+
+    setupBuildingBar();
+    setupBuildingInfoPanel();
+    setupResourceBar();
+    setupUnitPanel();
+    setupProductionPanel();
+    setupTabButtons();
+    setupUnitInfoPanel();
+    setupMainMenu();
+
+    // Restore visibility state
+    setMainMenuVisible(mainMenuActive_);
+    if (!mainMenuActive_) {
+        setActiveTab(currentTab_);
+        refreshUnitListUI();
+        updateProductionPanel();
+        updateUnitInfoPanel();
+        updateResourceTexts();
+        updateCaptureUI();
+        if (victoryShown_ && victoryLabelIndex_ != SIZE_MAX)
+            uiManager_.setLabelVisibility(victoryLabelIndex_, true);
+    }
+
+    updateBuildingButtonTexturesForOwner(activePlayerIndex_ + 1);
+}
+
 void Scene::setupBuildingBar()
 {
-    const float buttonSize = 128.0f;
-    const float barHeight = 150.0f;
-    const float padding    = 32.0f;
-    const float spacing    = 96.0f;
-    const float baseY      = 10.0f;
+    const float s = uiScale(fbWidth, fbHeight);
+    const float barHeight = 130.0f * s;
+    const float padding    = 20.0f * s;
+    const float baseY      = 10.0f * s;
+    const int   numButtons = 7;
 
-    buildingBarPos_ = glm::vec2(0.0f, baseY - 8.0f);
+    // Auto-fit buttons: compute button size and spacing from available width
+    float availableW = static_cast<float>(fbWidth) - 2.0f * padding;
+    float maxBtnSize = 128.0f * s;
+    float cellWidth  = availableW / static_cast<float>(numButtons);
+    float buttonSize = std::min(maxBtnSize, cellWidth * 0.6f);
+
+    buildingBarPos_ = glm::vec2(0.0f, baseY - 8.0f * s);
     buildingBarSize_ = glm::vec2(fbWidth, barHeight);
 
     UIButton bar;
@@ -52,8 +175,9 @@ void Scene::setupBuildingBar()
         GLuint evilTex = evilFile.empty() ? friendlyTex : loadGuiTexture(evilFile);
 
         UIButton btn;
-        btn.pos  = glm::vec2(padding + i * (buttonSize + spacing),
-                             baseY + (barHeight - buttonSize) * 0.5f - 8.0f);
+        float btnX = padding + i * cellWidth + (cellWidth - buttonSize) * 0.5f;
+        btn.pos  = glm::vec2(btnX,
+                             baseY + (barHeight - buttonSize) * 0.5f - 8.0f * s);
         btn.size = glm::vec2(buttonSize, buttonSize);
 
         btn.texture = friendlyTex;
@@ -67,8 +191,8 @@ void Scene::setupBuildingBar()
         buildingButtonIndices_.push_back(idx);
 
         std::string text = "";
-        float labelX    = btn.pos.x + 10.0f;
-        float labelY    = bar.pos.y + 8.0f;
+        float labelX    = btn.pos.x + 2.0f * s;
+        float labelY    = btn.pos.y - 10.0f * s;
 
         size_t labelIdx = uiManager_.addLabel(text, glm::vec2(labelX, labelY), labelScale);
         buildingLabelIndices_.push_back(labelIdx);
@@ -124,9 +248,10 @@ void Scene::updateBuildingButtonTexturesForOwner(int ownerId)
 
 void Scene::setupResourceBar()
 {
-    const float barHeight = 80.0f;
-    const float paddingX = 30.0f;
-    const float iconSize = 48.0f;
+    const float s = uiScale(fbWidth, fbHeight);
+    const float barHeight = 80.0f * s;
+    const float paddingX = 20.0f * s;
+    const float iconSize = 48.0f * s;
     const float labelScale = 1.2f;
     const float topEdge = static_cast<float>(fbHeight);
     float baseY = topEdge - barHeight;
@@ -138,6 +263,12 @@ void Scene::setupResourceBar()
     bar.onClick = nullptr;
     bar.clickable = false;
     uiManager_.addButton(bar);
+
+    // Auto-fit resource entries: 5 entries + timer + player label
+    // Reserve ~20% of width for timer+player at the right side
+    const int numEntries = 5;
+    float entriesWidth = static_cast<float>(fbWidth) * 0.72f - paddingX;
+    float entryCell = entriesWidth / static_cast<float>(numEntries);
 
     float cursorX = paddingX;
     float iconY = baseY + (barHeight - iconSize) * 0.5f;
@@ -157,11 +288,11 @@ void Scene::setupResourceBar()
         icon.onClick = nullptr;
         uiManager_.addButton(icon);
 
-        float textX = icon.pos.x + icon.size.x + 10.0f;
-        float textY = icon.pos.y + icon.size.y * 0.5f - 8.0f;
+        float textX = icon.pos.x + icon.size.x + 6.0f * s;
+        float textY = icon.pos.y + icon.size.y * 0.5f - 8.0f * s;
         labelIndex = uiManager_.addLabel("0", glm::vec2(textX, textY), labelScale);
 
-        cursorX = textX + 210.0f;
+        cursorX += entryCell;
     };
 
     addEntry(cornIconTex, "corn.png", foodLabelIndex_);
@@ -170,15 +301,15 @@ void Scene::setupResourceBar()
     addEntry(oreIconTex,  "ore.png", oreLabelIndex_);
     addEntry(populationIconTex, "village.png", populationLabelIndex_);
 
-    float timerLabelX = cursorX + 100.0f;
-    float timerLabelY = baseY + barHeight * 0.5f - 10.0f;
+    float timerLabelX = cursorX + 20.0f * s;
+    float timerLabelY = baseY + barHeight * 0.5f - 10.0f * s;
     timerLabelIndex_ = uiManager_.addLabel("0:00", glm::vec2(timerLabelX, timerLabelY), 1.2f);
 
-    const float flagSize = 60.0f;
-    const float ringSize = 84.0f;
-    const float ringThickness = 10.0f;
+    const float flagSize = 60.0f * s;
+    const float ringSize = 84.0f * s;
+    const float ringThickness = 10.0f * s;
     const float centerX = static_cast<float>(fbWidth) * 0.5f;
-    const float flagY = baseY - 58.0f;
+    const float flagY = baseY - 58.0f * s;
 
     if (greyRingTex)
     {
@@ -214,12 +345,12 @@ void Scene::setupResourceBar()
         neutralFlagIconIndex_ = uiManager_.addButton(flag);
     }
 
-    float playerLabelX = static_cast<float>(fbWidth) - 180.0f;
-    float playerLabelY = baseY + barHeight * 0.5f - 10.0f;
+    float playerLabelX = static_cast<float>(fbWidth) - 180.0f * s;
+    float playerLabelY = baseY + barHeight * 0.5f - 10.0f * s;
     playerLabelIndex_ = uiManager_.addLabel("Player 1", glm::vec2(playerLabelX, playerLabelY), 1.2f);
 
-    glm::vec2 victoryPos(static_cast<float>(fbWidth) * 0.5f - 140.0f,
-                         static_cast<float>(fbHeight) * 0.5f - 20.0f);
+    glm::vec2 victoryPos(static_cast<float>(fbWidth) * 0.5f - 140.0f * s,
+                         static_cast<float>(fbHeight) * 0.5f - 20.0f * s);
     victoryLabelIndex_ = uiManager_.addLabel("", victoryPos, 2.6f);
     uiManager_.setLabelVisibility(victoryLabelIndex_, false);
 
@@ -257,8 +388,9 @@ void Scene::updateResourceTexts()
 
 void Scene::setupTabButtons()
 {
-    const glm::vec2 tabSize(220.0f, 56.0f);
-    glm::vec2 start = buildingBarPos_ + glm::vec2(20.0f, buildingBarSize_.y + 10.0f);
+    const float s = uiScale(fbWidth, fbHeight);
+    const glm::vec2 tabSize(220.0f * s, 56.0f * s);
+    glm::vec2 start = buildingBarPos_ + glm::vec2(20.0f * s, buildingBarSize_.y + 10.0f * s);
 
     auto addTab = [&](const char* text, UITab tab, size_t& buttonIndex, size_t& labelIndex)
     {
@@ -270,10 +402,10 @@ void Scene::setupTabButtons()
         btn.onClick = [this, tab]() { setActiveTab(tab); };
         buttonIndex = uiManager_.addButton(btn);
 
-        glm::vec2 labelPos = glm::vec2(btn.pos.x + 12.0f, btn.pos.y + btn.size.y * 0.5f - 7.0f);
+        glm::vec2 labelPos = glm::vec2(btn.pos.x + 12.0f * s, btn.pos.y + btn.size.y * 0.5f - 7.0f * s);
         labelIndex = uiManager_.addLabel(text, labelPos, 1.2f);
 
-        start.x += tabSize.x + 60.0f;
+        start.x += tabSize.x + 60.0f * s;
     };
 
     addTab("Buildings", UITab::Buildings, buildingTabButtonIndex_, buildingTabLabelIndex_);
@@ -282,6 +414,7 @@ void Scene::setupTabButtons()
 
 void Scene::setupUnitPanel()
 {
+    const float s = uiScale(fbWidth, fbHeight);
     UIButton panel;
     panel.pos = buildingBarPos_;
     panel.size = buildingBarSize_;
@@ -291,7 +424,7 @@ void Scene::setupUnitPanel()
     unitPanelBackgroundIndex_ = uiManager_.addButton(panel);
     uiManager_.setButtonVisibility(unitPanelBackgroundIndex_, false);
 
-    glm::vec2 titlePos(panel.pos.x + 20.0f, panel.pos.y + panel.size.y - 40.0f);
+    glm::vec2 titlePos(panel.pos.x + 20.0f * s, panel.pos.y + panel.size.y - 40.0f * s);
     unitPanelTitleLabelIndex_ = uiManager_.addLabel("Units", titlePos, 1.4f);
     uiManager_.setLabelVisibility(unitPanelTitleLabelIndex_, false);
 
@@ -300,10 +433,10 @@ void Scene::setupUnitPanel()
     unitEntryTargets_.clear();
     const size_t kMaxEntries = 12;
     const int columns = 2;
-    const float cellPadding = 20.0f;
+    const float cellPadding = 20.0f * s;
     const float cellWidth = (panel.size.x - cellPadding * 2.0f) / columns;
-    const float cellHeight = 90.0f;
-    const float iconSize = 64.0f;
+    const float cellHeight = 90.0f * s;
+    const float iconSize = 64.0f * s;
 
     for (size_t i = 0; i < kMaxEntries; ++i)
     {
@@ -324,7 +457,7 @@ void Scene::setupUnitPanel()
         unitEntryIconIndices_.push_back(iconIndex);
         unitEntryTargets_.push_back(nullptr);
 
-        glm::vec2 labelPos = glm::vec2(icon.pos.x + icon.size.x + 8.0f, icon.pos.y + 20.0f);
+        glm::vec2 labelPos = glm::vec2(icon.pos.x + icon.size.x + 8.0f * s, icon.pos.y + 20.0f * s);
         size_t labelIndex = uiManager_.addLabel("", labelPos, 1.2f);
         uiManager_.setLabelVisibility(labelIndex, false);
         unitEntryLabelIndices_.push_back(labelIndex);
@@ -333,10 +466,11 @@ void Scene::setupUnitPanel()
 
 void Scene::setupProductionPanel()
 {
+    const float s = uiScale(fbWidth, fbHeight);
     UIButton panel;
-    const float panelWidth = 300.0f;
-    const float panelHeight = buildingBarSize_.y + 210.0f;
-    panel.pos = glm::vec2(fbWidth - panelWidth - 20.0f, buildingBarPos_.y);
+    const float panelWidth = 300.0f * s;
+    const float panelHeight = buildingBarSize_.y + 210.0f * s;
+    panel.pos = glm::vec2(fbWidth - panelWidth - 20.0f * s, buildingBarPos_.y);
     panel.size = glm::vec2(panelWidth, panelHeight);
     panel.texture = 0;
     panel.clickable = false;
@@ -357,95 +491,97 @@ void Scene::setupProductionPanel()
         { "Knight",   EntityType::Knight, knightIconTex }
     };
 
-    float cursorY = panel.pos.y + panel.size.y - 90.0f;
+    float cursorY = panel.pos.y + panel.size.y - 90.0f * s;
     for (const auto& def : defs)
     {
         UIButton btn;
-        btn.pos  = glm::vec2(panel.pos.x + 18.0f, cursorY);
-        btn.size = glm::vec2(78.0f, 78.0f);
+        btn.pos  = glm::vec2(panel.pos.x + 18.0f * s, cursorY);
+        btn.size = glm::vec2(78.0f * s, 78.0f * s);
         btn.texture = def.icon ? def.icon->ID : 0;
         btn.onClick = [this, def]() { handleProductionRequest(def.type); };
         size_t idx = uiManager_.addButton(btn);
         uiManager_.setButtonVisibility(idx, false);
         productionButtonIndices_.push_back(idx);
 
-        glm::vec2 labelPos = glm::vec2(btn.pos.x + btn.size.x + 12.0f, btn.pos.y + 26.0f);
+        glm::vec2 labelPos = glm::vec2(btn.pos.x + btn.size.x + 12.0f * s, btn.pos.y + 26.0f * s);
         size_t labelIndex = uiManager_.addLabel(def.label, labelPos, 1.25f);
         uiManager_.setLabelVisibility(labelIndex, false);
         productionLabelIndices_.push_back(labelIndex);
         productionButtonTypes_.push_back(def.type);
 
-        cursorY -= 96.0f;
+        cursorY -= 96.0f * s;
     }
 
     UIButton upgradeBtn;
-    upgradeBtn.pos = panel.pos + glm::vec2(18.0f, 10.0f);
-    upgradeBtn.size = glm::vec2(panel.size.x - 36.0f, 42.0f);
+    upgradeBtn.pos = panel.pos + glm::vec2(18.0f * s, 10.0f * s);
+    upgradeBtn.size = glm::vec2(panel.size.x - 36.0f * s, 42.0f * s);
     upgradeBtn.texture = 0;
     upgradeBtn.clickable = true;
     upgradeBtn.onClick = [this]() { handleUpgradeRequest(); };
     productionUpgradeButtonIndex_ = uiManager_.addButton(upgradeBtn);
     uiManager_.setButtonVisibility(productionUpgradeButtonIndex_, false);
 
-    glm::vec2 upgradeLabelPos = upgradeBtn.pos + glm::vec2(12.0f, 12.0f);
+    glm::vec2 upgradeLabelPos = upgradeBtn.pos + glm::vec2(12.0f * s, 12.0f * s);
     productionUpgradeLabelIndex_ = uiManager_.addLabel("Upgrade", upgradeLabelPos, 1.15f);
     uiManager_.setLabelVisibility(productionUpgradeLabelIndex_, false);
 
-    glm::vec2 upgradeCostPos = upgradeBtn.pos + glm::vec2(0.0f, upgradeBtn.size.y + 8.0f);
+    glm::vec2 upgradeCostPos = upgradeBtn.pos + glm::vec2(0.0f, upgradeBtn.size.y + 8.0f * s);
     productionUpgradeCostLabelIndex_ = uiManager_.addLabel("", upgradeCostPos, 1.0f);
     uiManager_.setLabelVisibility(productionUpgradeCostLabelIndex_, false);
 }
 
 void Scene::setupUnitInfoPanel()
 {
+    const float s = uiScale(fbWidth, fbHeight);
     UIButton panel;
-    panel.pos = glm::vec2(fbWidth - 260.0f, fbHeight - 260.0f);
-    panel.size = glm::vec2(240.0f, 140.0f);
+    panel.pos = glm::vec2(fbWidth - 260.0f * s, fbHeight - 260.0f * s);
+    panel.size = glm::vec2(240.0f * s, 140.0f * s);
     panel.texture = 0;
     panel.clickable = false;
     unitInfoPanelBackgroundIndex_ = uiManager_.addButton(panel);
     uiManager_.setButtonVisibility(unitInfoPanelBackgroundIndex_, false);
 
-    glm::vec2 namePos = glm::vec2(panel.pos.x + 16.0f, panel.pos.y + panel.size.y - 40.0f);
+    glm::vec2 namePos = glm::vec2(panel.pos.x + 16.0f * s, panel.pos.y + panel.size.y - 40.0f * s);
     unitInfoNameLabelIndex_ = uiManager_.addLabel("", namePos, 1.3f);
     uiManager_.setLabelVisibility(unitInfoNameLabelIndex_, false);
 
-    glm::vec2 hpPos = glm::vec2(panel.pos.x + 16.0f, panel.pos.y + panel.size.y - 80.0f);
+    glm::vec2 hpPos = glm::vec2(panel.pos.x + 16.0f * s, panel.pos.y + panel.size.y - 80.0f * s);
     unitInfoHealthLabelIndex_ = uiManager_.addLabel("", hpPos, 1.2f);
     uiManager_.setLabelVisibility(unitInfoHealthLabelIndex_, false);
 
     UIButton deleteBtn;
-    deleteBtn.pos = glm::vec2(panel.pos.x + panel.size.x - 120.0f, panel.pos.y + 20.0f);
-    deleteBtn.size = glm::vec2(100.0f, 36.0f);
+    deleteBtn.pos = glm::vec2(panel.pos.x + panel.size.x - 120.0f * s, panel.pos.y + 20.0f * s);
+    deleteBtn.size = glm::vec2(100.0f * s, 36.0f * s);
     deleteBtn.texture = 0;
     deleteBtn.onClick = [this]() { handleDeleteCurrentUnit(); };
     unitDeleteButtonIndex_ = uiManager_.addButton(deleteBtn);
     uiManager_.setButtonVisibility(unitDeleteButtonIndex_, false);
 
-    glm::vec2 deleteLabelPos = glm::vec2(deleteBtn.pos.x + 12.0f, deleteBtn.pos.y + 12.0f);
+    glm::vec2 deleteLabelPos = glm::vec2(deleteBtn.pos.x + 12.0f * s, deleteBtn.pos.y + 12.0f * s);
     unitDeleteLabelIndex_ = uiManager_.addLabel("Delete", deleteLabelPos, 1.0f);
     uiManager_.setLabelVisibility(unitDeleteLabelIndex_, false);
 }
 
 void Scene::setupBuildingInfoPanel()
 {
+    const float s = uiScale(fbWidth, fbHeight);
     UIButton panel;
-    panel.pos = buildingBarPos_ + glm::vec2(20.0f, buildingBarSize_.y + 20.0f);
-    panel.size = glm::vec2(840.0f, 190.0f);
+    panel.pos = buildingBarPos_ + glm::vec2(20.0f * s, buildingBarSize_.y + 20.0f * s);
+    panel.size = glm::vec2(840.0f * s, 190.0f * s);
     panel.texture = 0;
     panel.clickable = false;
     buildingInfoPanelIndex_ = uiManager_.addButton(panel);
 
-    glm::vec2 titlePos = panel.pos + glm::vec2(16.0f, panel.size.y - 32.0f);
+    glm::vec2 titlePos = panel.pos + glm::vec2(16.0f * s, panel.size.y - 32.0f * s);
     buildingInfoTitleLabelIndex_ = uiManager_.addLabel("Building Info", titlePos, 1.6f);
 
-    glm::vec2 textPos = panel.pos + glm::vec2(16.0f, panel.size.y - 86.0f);
+    glm::vec2 textPos = panel.pos + glm::vec2(16.0f * s, panel.size.y - 86.0f * s);
     buildingInfoTextLabelIndex_ = uiManager_.addLabel("Select a building to see its role.", textPos, 1.3f);
 
 
 
     buildingInfoText_.clear();
-    buildingInfoText_[BuildType::TownCenter] = "Town Hall\nTrains villagers, stores goods.";
+    buildingInfoText_[BuildType::TownCenter] = "Centre\nTrains villagers, stores goods.";
     buildingInfoText_[BuildType::Barracks]   = "Barracks\nProduces rangers and knights.";
     buildingInfoText_[BuildType::Farm]       = "Farm\nGenerates a steady food trickle.";
     buildingInfoText_[BuildType::House]      = "House\nAdds +5 population cap.";
@@ -465,9 +601,22 @@ void Scene::setupBuildingInfoPanel()
     updateBuildingInfoPanel(BuildType::None);
 }
 
+void Scene::toggleBuildingInfoPanel()
+{
+    buildingInfoVisible_ = !buildingInfoVisible_;
+    bool show = (currentTab_ == UITab::Buildings) && buildingInfoVisible_;
+    if (buildingInfoPanelIndex_ != SIZE_MAX)
+        uiManager_.setButtonVisibility(buildingInfoPanelIndex_, show);
+    if (buildingInfoTitleLabelIndex_ != SIZE_MAX)
+        uiManager_.setLabelVisibility(buildingInfoTitleLabelIndex_, show);
+    if (buildingInfoTextLabelIndex_ != SIZE_MAX)
+        uiManager_.setLabelVisibility(buildingInfoTextLabelIndex_, show);
+}
+
 void Scene::setupMainMenu()
 {
-    const glm::vec2 menuSize(630.0f, 480.0f);
+    const float s = uiScale(fbWidth, fbHeight);
+    const glm::vec2 menuSize(630.0f * s, 480.0f * s);
     glm::vec2 menuPos(
         (static_cast<float>(fbWidth)  - menuSize.x) * 0.5f,
         (static_cast<float>(fbHeight) - menuSize.y) * 0.5f);
@@ -479,20 +628,20 @@ void Scene::setupMainMenu()
     panel.clickable = false;
     mainMenuBackgroundIndex_ = uiManager_.addButton(panel);
 
-    glm::vec2 titlePos(menuPos.x + 20.0f, menuPos.y + menuSize.y - 60.0f);
+    glm::vec2 titlePos(menuPos.x + 20.0f * s, menuPos.y + menuSize.y - 60.0f * s);
     mainMenuTitleLabelIndex_ = uiManager_.addLabel("Chronicles\nIn\nNature", titlePos, 2.2f);
 
     auto addMenuButton = [&](const std::string& text, float relativeY, std::function<void()> handler,
                              size_t& labelIndex) -> size_t
     {
         UIButton btn;
-        btn.pos = glm::vec2(menuPos.x + 40.0f, menuPos.y + relativeY);
-        btn.size = glm::vec2(menuSize.x - 80.0f, 50.0f);
+        btn.pos = glm::vec2(menuPos.x + 40.0f * s, menuPos.y + relativeY * s);
+        btn.size = glm::vec2(menuSize.x - 80.0f * s, 50.0f * s);
         btn.texture = 0;
         btn.clickable = true;
         btn.onClick = [handler]() { handler(); };
         size_t index = uiManager_.addButton(btn);
-        glm::vec2 labelPos(btn.pos.x + 20.0f, btn.pos.y + 18.0f);
+        glm::vec2 labelPos(btn.pos.x + 20.0f * s, btn.pos.y + 18.0f * s);
         labelIndex = uiManager_.addLabel(text, labelPos, 1.3f);
         return index;
     };
@@ -504,7 +653,7 @@ void Scene::setupMainMenu()
     mainMenuJoinBtnIndex_ = addMenuButton("Join LAN Game", 50.0f,
         [this]() { startLanJoinGame(); }, mainMenuJoinLabelIndex_);
 
-    glm::vec2 statusPos(menuPos.x + 20.0f, menuPos.y + 20.0f);
+    glm::vec2 statusPos(menuPos.x + 20.0f * s, menuPos.y + 20.0f * s);
     lanStatusText_ = "Select a mode to begin.";
     mainMenuStatusLabelIndex_ = uiManager_.addLabel(lanStatusText_, statusPos, 1.2f);
 }
@@ -544,12 +693,13 @@ void Scene::setActiveTab(UITab tab)
         uiManager_.setButtonVisibility(idx, showBuildings);
     for (size_t idx : buildingLabelIndices_)
         uiManager_.setLabelVisibility(idx, showBuildings);
+    bool showInfo = showBuildings && buildingInfoVisible_;
     if (buildingInfoPanelIndex_ != SIZE_MAX)
-        uiManager_.setButtonVisibility(buildingInfoPanelIndex_, showBuildings);
+        uiManager_.setButtonVisibility(buildingInfoPanelIndex_, showInfo);
     if (buildingInfoTitleLabelIndex_ != SIZE_MAX)
-        uiManager_.setLabelVisibility(buildingInfoTitleLabelIndex_, showBuildings);
+        uiManager_.setLabelVisibility(buildingInfoTitleLabelIndex_, showInfo);
     if (buildingInfoTextLabelIndex_ != SIZE_MAX)
-        uiManager_.setLabelVisibility(buildingInfoTextLabelIndex_, showBuildings);
+        uiManager_.setLabelVisibility(buildingInfoTextLabelIndex_, showInfo);
 
     bool showUnits = (tab == UITab::Units);
     if (unitPanelBackgroundIndex_ != SIZE_MAX)
@@ -970,7 +1120,7 @@ std::string Scene::buildingNameForOwner(BuildType type, int ownerId) const
     const bool evil = (ownerId == 2);
     switch (type)
     {
-    case BuildType::TownCenter: return evil ? "Altar" : "Town Hall";
+    case BuildType::TownCenter: return evil ? "Altar" : "Centre";
     case BuildType::Barracks:   return evil ? "Graveyard" : "Barracks";
     case BuildType::Farm:       return evil ? "Hangman" : "Farm";
     case BuildType::House:      return evil ? "Hut" : "House";

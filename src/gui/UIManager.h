@@ -25,6 +25,10 @@ public:
     UIManager() = default;
 
     void init(Shader* shader, int screenW, int screenH);
+    void resize(int screenW, int screenH);
+    void clear();
+    int getScreenW() const { return screenW_; }
+    int getScreenH() const { return screenH_; }
     void setFontTexture(GLuint tex, int cols = 16, int rows = 16,
                         float charW = 8.0f, float charH = 12.0f);
     void setTextScale(float scale);

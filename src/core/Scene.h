@@ -149,6 +149,8 @@ public:
 
     void Init(Camera* activeCamera);
     void Update(float dt, const Camera& cam);
+    void OnResize(int fbW, int fbH);
+    void rebuildUI();
 
     void Draw(Shader& terrainShader,
               Shader& objectShader,
@@ -172,6 +174,7 @@ public:
     void setupBuildingInfoPanel();
     void setupMainMenu();
     void setActiveTab(UITab tab);
+    void toggleBuildingInfoPanel();
     void refreshUnitListUI();
     void selectUnitFromList(size_t entryIndex);
     void updateProductionPanel();
@@ -655,6 +658,7 @@ void DrawLakeWater(const glm::mat4& view,
     size_t buildingInfoPanelIndex_ = SIZE_MAX;
     size_t buildingInfoTitleLabelIndex_ = SIZE_MAX;
     size_t buildingInfoTextLabelIndex_ = SIZE_MAX;
+    bool   buildingInfoVisible_ = true;
 
     std::unordered_map<BuildType, std::string> buildingInfoText_;
     std::unordered_map<BuildType, std::string> evilBuildingInfoText_;

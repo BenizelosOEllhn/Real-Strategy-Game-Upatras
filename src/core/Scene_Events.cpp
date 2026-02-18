@@ -8,8 +8,8 @@ void Scene::Update(float dt, const Camera& cam)
 {   
     int fbW, fbH;
     glfwGetFramebufferSize(glfwGetCurrentContext(), &fbW, &fbH);
-    fbWidth = fbW;
-    fbHeight = fbH;
+    if (fbW != fbWidth || fbH != fbHeight)
+        OnResize(fbW, fbH);
 
     if (!camera)
         camera = const_cast<Camera*>(&cam);
@@ -345,7 +345,8 @@ void Scene::selectSingleUnit(const glm::vec2& screenPos, bool additive)
 
         glm::vec2 projected = worldToScreen(unit->position);
         float dist = glm::length(projected - screenPos);
-        if (dist < bestDist && dist < 30.0f)
+        float selectThreshold = 30.0f * std::min(static_cast<float>(fbWidth) / 1200.0f, static_cast<float>(fbHeight) / 900.0f);
+        if (dist < bestDist && dist < selectThreshold)
         {
             bestDist = dist;
             bestUnit = unit;
@@ -476,7 +477,8 @@ void Scene::selectBuildingAtScreen(const glm::vec2& screenPos)
 
         glm::vec2 projected = worldToScreen(building->position);
         float dist = glm::length(projected - screenPos);
-        if (dist < bestDist && dist < 120.0f)
+        float buildSelectThreshold = 120.0f * std::min(static_cast<float>(fbWidth) / 1200.0f, static_cast<float>(fbHeight) / 900.0f);
+        if (dist < bestDist && dist < buildSelectThreshold)
         {
             bestDist = dist;
             bestBuilding = building;
@@ -511,6 +513,7 @@ void Scene::issueMoveCommand()
     Unit* clickedEnemyUnit = nullptr;
     Building* clickedEnemyBuilding = nullptr;
     float bestDist = std::numeric_limits<float>::max();
+    float enemySelectThreshold = 30.0f * std::min(static_cast<float>(fbWidth) / 1200.0f, static_cast<float>(fbHeight) / 900.0f);
 
     for (GameEntity* entity : entities_)
     {
@@ -519,7 +522,7 @@ void Scene::issueMoveCommand()
         {
             glm::vec2 projected = worldToScreen(unit->position);
             float dist = glm::length(projected - screenPos);
-            if (dist < bestDist && dist < 30.0f)
+            if (dist < bestDist && dist < enemySelectThreshold)
             {
                 bestDist = dist;
                 clickedEnemyUnit = unit;
@@ -535,7 +538,8 @@ void Scene::issueMoveCommand()
 
             glm::vec2 projected = worldToScreen(building->position);
             float dist = glm::length(projected - screenPos);
-            if (dist < bestDist && dist < 45.0f)
+            float enemyBuildThreshold = 45.0f * std::min(static_cast<float>(fbWidth) / 1200.0f, static_cast<float>(fbHeight) / 900.0f);
+            if (dist < bestDist && dist < enemyBuildThreshold)
             {
                 bestDist = dist;
                 clickedEnemyBuilding = building;

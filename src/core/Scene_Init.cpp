@@ -411,7 +411,8 @@ void Scene::Init(Camera* activeCamera) {
     std::string fontPath = AssetPath("gui/UIFont_16x16.png");
     Texture* fontTex = new Texture(fontPath.c_str());
     uiManager_.setFontTexture(fontTex->ID, 16, 16, 8.0f, 8.0f);
-    uiManager_.setTextScale(2.0f);
+    float initScale = std::min(static_cast<float>(fbWidth) / 1200.0f, static_cast<float>(fbHeight) / 900.0f);
+    uiManager_.setTextScale(2.0f * initScale);
     uiManager_.setTextBold(true);
 
     // 2. Init UIManager with shader + window size

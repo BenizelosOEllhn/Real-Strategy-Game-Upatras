@@ -14,20 +14,35 @@ void UIManager::init(Shader* shader, int screenW, int screenH)
                        0.0f, (float)screenH_);
 
     // Simple quad VBO (we overwrite positions per element)
-    glGenVertexArrays(1, &vao_);
-    glGenBuffers(1, &vbo_);
+    if (vao_ == 0) {
+        glGenVertexArrays(1, &vao_);
+        glGenBuffers(1, &vbo_);
 
-    glBindVertexArray(vao_);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
+        glBindVertexArray(vao_);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
 
-    glEnableVertexAttribArray(0); // aPos
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0); // aPos
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
 
-    glEnableVertexAttribArray(1); // aUV
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+        glEnableVertexAttribArray(1); // aUV
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
-    glBindVertexArray(0);
+        glBindVertexArray(0);
+    }
+}
+
+void UIManager::resize(int screenW, int screenH)
+{
+    screenW_ = screenW;
+    screenH_ = screenH;
+    proj_ = glm::ortho(0.0f, (float)screenW_, 0.0f, (float)screenH_);
+}
+
+void UIManager::clear()
+{
+    buttons_.clear();
+    labels_.clear();
 }
 
 void UIManager::setFontTexture(GLuint tex, int cols, int rows, float charW, float charH)
